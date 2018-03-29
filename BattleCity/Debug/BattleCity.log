@@ -1,0 +1,4 @@
+﻿  Player.cpp
+d:\do an game\battlecity_2\battlecity\battlecity\player.cpp(67): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
+d:\do an game\battlecity_2\battlecity\battlecity\player.cpp(69): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
+  BattleCity.vcxproj -> D:\Do an Game\BattleCity_2\BattleCity\Debug\BattleCity.exe
