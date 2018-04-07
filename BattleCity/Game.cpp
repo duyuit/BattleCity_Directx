@@ -2,13 +2,14 @@
 #include "GameGlobal.h"
 #include "SceneManager.h"
 #include "TestScene.h"
+#include "WaitRoomScene.h"
 
 
 Game::Game(int fps)
 {
 	mFPS = fps;
 
-	SceneManager::GetInstance()->ReplaceScene(new TestScene());
+	SceneManager::GetInstance()->ReplaceScene(new WaitRoomScene());
 
 	InitLoop();
 }

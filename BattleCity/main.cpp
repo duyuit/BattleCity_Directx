@@ -1,5 +1,6 @@
 #include <d3d9.h>
 #include <d3dx9.h>
+
 #include <Windows.h>
 #include <iostream>
 #include <sstream>
@@ -9,6 +10,7 @@
 #include "GameTime.h"
 #include "SceneManager.h"
 #include "Game.h"
+#pragma comment(lib,"WS2_32")
 
 using namespace std;
 
@@ -79,6 +81,8 @@ int initWindow(int cmdShow)
 	ShowWindow(hWnd, cmdShow);
 	UpdateWindow(hWnd);
 
+	WSADATA a;
+	WSAStartup(MAKEWORD(2, 2), &a);
 	if (InitDevice())
 	{
 		Game *game = new Game(60);

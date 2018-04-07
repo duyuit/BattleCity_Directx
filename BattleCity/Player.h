@@ -24,7 +24,7 @@ public:
 	MoveDirection getMoveDirection();
 	void setMoveDirection(MoveDirection);
 	RECT GetBound();
-
+	int ID = 0;
 	//xu ly input
 	//gom 256 key tuong ung true = dang dc nhan, false = khong dc nhan
 	void HandleKeyboard(std::map<int, bool> keys);
@@ -32,7 +32,11 @@ public:
 protected:
 
 	//Animation   *mCurrentAnimation;
-	Sprite * mSprite;
+	Sprite * mCurrentSprite;
+	Sprite * mLeftSprite;
+	Sprite * mUpSprite;
+	Sprite * mRightSprite;
+	Sprite * mDownSprite;
 	MoveDirection Dir;
 	void MoveLeft();
 	void MoveRight();

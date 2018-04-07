@@ -79,6 +79,11 @@ void Sprite::InitWithSprite(const char* filePath, RECT sourceRect, int width, in
 		&mTexture);
 }
 
+LPD3DXSPRITE Sprite::GetSpriteHandle()
+{
+	return mSpriteHandler;
+}
+
 bool Sprite::isRect(RECT rect)
 {
 	if (rect.left == rect.right)
@@ -102,13 +107,6 @@ int Sprite::GetHeight()
 
 void Sprite::Draw(D3DXVECTOR3 position, RECT sourceRect, D3DXVECTOR2 scale, D3DXVECTOR2 transform, float angle, D3DXVECTOR2 rotationCenter, D3DXCOLOR colorKey)
 {
-	/*D3DXMATRIX mt;
-	D3DXMatrixIdentity(&mt);
-	mt._22 = -1.0f;
-	mt._41 = (float)-(GameGlobal::GetWidth() / 2);
-	mt._42 = (float)(GameGlobal::GetHeight() / 2);
-	D3DXVECTOR4 */
-
 	D3DXVECTOR3 inPosition = mPosition;
 	RECT inSourceRect = mSourceRect;
 	float inRotation = mRotation;
@@ -134,20 +132,35 @@ void Sprite::Draw(D3DXVECTOR3 position, RECT sourceRect, D3DXVECTOR2 scale, D3DX
 	else
 		mRotationCenter = D3DXVECTOR2(inPosition.x, inPosition.y);// cho phep quay giua hinh
 
-	D3DXMatrixTransformation2D(&mMatrix, &scalingScenter, 0, &inCcale, &inRotationCenter,
-		inRotation, &inTranslation);
+	D3DXMatrixTransformation2D(
+		&mMatrix, 
+		&scalingScenter, 
+		0.0f, 
+		&inCcale, 
+		&inRotationCenter,
+		inRotation, 
+		&inTranslation);
 
 	D3DXMATRIX oldMatrix;
 	mSpriteHandler->GetTransform(&oldMatrix);
 	mSpriteHandler->SetTransform(&mMatrix);
 
+	D3DXMATRIX mt;
+	D3DXMatrixIdentity(&mt);
+	mt._22 = -1.0f;
+	mt._41 = 0;
+	mt._42 = GameGlobal::GetHeight();
+	D3DXVECTOR4 vp_pos;
+	D3DXVec3Transform(&vp_pos, &inPosition, &mt);
 	
+	D3DXVECTOR3 p(vp_pos.x, vp_pos.y, 0);
 	D3DXVECTOR3 center = D3DXVECTOR3(mWidth / 2, mHeight / 2, 0);
 
-	mSpriteHandler->Draw(mTexture,
+	mSpriteHandler->Draw(
+		mTexture,
 		&inSourceRect,
 		&center,
-		&inPosition,
+		&p,
 		D3DCOLOR_ARGB(255, 255, 255, 255)); // nhung pixel nao co mau trang se duoc to mau nay len
 
 	mSpriteHandler->SetTransform(&oldMatrix); // set lai matrix cu~ de Sprite chi ap dung transfrom voi class nay
@@ -233,7 +246,7 @@ void Sprite::FlipHorizontal(bool flag)
 	if (mIsFlipHorizontal != flag)
 	{
 		mIsFlipHorizontal = flag;
-		mScale = D3DXVECTOR2(mScale.x, -mScale.y);
+		mScale = D3DXVECTOR2(-mScale.x, mScale.y);
 	}
 
 }
@@ -243,7 +256,7 @@ void Sprite::FlipVertical(bool flag)
 	if (mIsFlipVertical != flag)
 	{
 		mIsFlipVertical = flag;
-		mScale = D3DXVECTOR2(-mScale.x, mScale.y);
+		mScale = D3DXVECTOR2(mScale.x, -mScale.y);
 	}
 }
 
