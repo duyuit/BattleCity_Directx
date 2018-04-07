@@ -1,0 +1,3 @@
+﻿  TCPServer.cpp
+c:\users\billy\desktop\server_client\tcpserver\tcpserver.cpp(52): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  TCPServer.vcxproj -> C:\Users\Billy\Desktop\server_client\TCPServer\Debug\TCPServer.exe

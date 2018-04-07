@@ -7,7 +7,10 @@ class GameGlobal
 public:
 	GameGlobal();
 	~GameGlobal();
-
+	static const int WelcomePacket = 1;
+	static const int UpdateCountPlayer = 2;
+	static const int LetStart = 3;
+	static const int InfoPacket = 4;
 	static HINSTANCE GetCurrentHINSTACE();
 	static HWND getCurrentHWND();
 
@@ -15,6 +18,7 @@ public:
 	static void SetCurrentHWND(HWND hWnd);
 
 	static void SetCurrentSpriteHandler(LPD3DXSPRITE spriteHandler);
+
 	static LPD3DXSPRITE GetCurrentSpriteHandler();
 
 	static void SetCurrentDevice(LPDIRECT3DDEVICE9 device);

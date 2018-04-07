@@ -136,6 +136,7 @@
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="TestScene.cpp" />
+    <ClCompile Include="WaitRoomScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -145,11 +146,17 @@
     <ClInclude Include="GameDefine.h" />
     <ClInclude Include="GameGlobal.h" />
     <ClInclude Include="GameTime.h" />
+    <ClInclude Include="InputMemoryStream.h" />
+    <ClInclude Include="OutputMemoryStream.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="SocketAddress.h" />
+    <ClInclude Include="SocketUtil.h" />
     <ClInclude Include="Sprite.h" />
+    <ClInclude Include="TCPSocket.h" />
     <ClInclude Include="TestScene.h" />
+    <ClInclude Include="WaitRoomScene.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

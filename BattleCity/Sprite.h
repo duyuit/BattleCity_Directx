@@ -49,10 +49,13 @@ public:
 	void FlipVertical(bool flag); // true: lat hinh theo chieu ngang, false: binh thuong
 	bool IsFlipVertical();
 
-
+	
+	void InitWithSprite(const char* filePath, RECT sourceRect = RECT(), int width = NULL, int height = NULL, D3DCOLOR colorKey = NULL);
+	LPD3DXSPRITE GetSpriteHandle();
+	
 protected:
 	//su dung cho ke thua
-	void InitWithSprite(const char* filePath, RECT sourceRect = RECT(), int width = NULL, int height = NULL, D3DCOLOR colorKey = NULL);
+	
 
 	bool isRect(RECT rect);
 	D3DXVECTOR2				mCenterDraw = D3DXVECTOR2(0.5, 0.5);

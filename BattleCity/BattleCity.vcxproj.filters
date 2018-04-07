@@ -34,6 +34,9 @@
     <Filter Include="FrameWork\GameDefines">
       <UniqueIdentifier>{400cf8a8-7608-466d-917c-e44abe8655ee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FrameWork\GameNetWork">
+      <UniqueIdentifier>{209fee21-acef-41e1-a4a1-4b9d15d845cd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -72,6 +75,9 @@
     <ClCompile Include="Entity.cpp">
       <Filter>FrameWork\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="WaitRoomScene.cpp">
+      <Filter>FrameWork\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameTime.h">
@@ -109,6 +115,24 @@
     </ClInclude>
     <ClInclude Include="GameDefine.h">
       <Filter>FrameWork\GameDefines</Filter>
+    </ClInclude>
+    <ClInclude Include="SocketAddress.h">
+      <Filter>FrameWork\GameNetWork</Filter>
+    </ClInclude>
+    <ClInclude Include="SocketUtil.h">
+      <Filter>FrameWork\GameNetWork</Filter>
+    </ClInclude>
+    <ClInclude Include="TCPSocket.h">
+      <Filter>FrameWork\GameNetWork</Filter>
+    </ClInclude>
+    <ClInclude Include="InputMemoryStream.h">
+      <Filter>FrameWork\GameNetWork</Filter>
+    </ClInclude>
+    <ClInclude Include="OutputMemoryStream.h">
+      <Filter>FrameWork\GameNetWork</Filter>
+    </ClInclude>
+    <ClInclude Include="WaitRoomScene.h">
+      <Filter>FrameWork\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

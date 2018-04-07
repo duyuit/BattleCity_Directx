@@ -9,22 +9,29 @@
 #include "Camera.h"
 #include <map>
 #include "Player.h"
+#include "TCPSocket.h"
+#include "InputMemoryStream.h"
+#include "OutputMemoryStream.h"
+
 
 
 class TestScene : public Scene
 {
 public:
-	TestScene();
+	TestScene(int ID,D3DXVECTOR2 pos, TCPSocketPtr socket);
 	void Update(float dt);
 	void LoadContent();
 	void Draw();
 
+	
+
+	vector<Player* > list_players;
 	void OnKeyDown(int keyCode);
 	void OnKeyUp(int keyCode);
 protected:
 	Camera *mCamera;
 	Player *mPlayer;
-
+	TCPSocketPtr socket;
 	std::map<int, bool> keys;
 };
 
