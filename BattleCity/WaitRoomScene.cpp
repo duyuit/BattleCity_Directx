@@ -1,14 +1,5 @@
 #include "WaitRoomScene.h"
-#include "OutputMemoryStream.h"
-#include "InputMemoryStream.h"
-#include "Sprite.h"
-#include "SocketUtil.h"
 #include "SceneManager.h"
-#include "TestScene.h"
-#include <string>
-#include <iostream>
-
-
 
 
 void WaitRoomScene::LoadContent()
@@ -28,20 +19,16 @@ void WaitRoomScene::LoadContent()
 	
 	char* buff = static_cast<char*>(std::malloc(1024));
 	size_t receivedByteCount = socket->Receive(buff, 1024);
-	OutputMemoryStream os;
 
 	if (receivedByteCount>0)
 	{
-		InputMemoryStream is(buff,
+		InputMemoryBitStream is(buff,
 			static_cast<uint32_t> (receivedByteCount));
 		int typeofPacket = 0;
-		is.Read(typeofPacket);
-		if (typeofPacket ==GameGlobal::WelcomePacket)
+		is.Read(typeofPacket,Define::bitofTypePacket);
+		if (typeofPacket ==Define::WelcomePacket)
 		{
-			int id = 0;
-			is.Read(id);
-			ID = id;
-			socket->Send(os.GetBufferPtr(), os.GetLength());
+			is.Read(ID,Define::bitofID);
 			socket->ChangetoDontWait(1);
 		}
 	}
@@ -54,6 +41,8 @@ void WaitRoomScene::LoadContent()
 			box.push_back(sp);
 			left += 100;
 	}
+
+	m_player = new Player();
 
 	my_string = " .";
 	myFont = NULL;
@@ -80,30 +69,25 @@ void WaitRoomScene::Update(float dt)
 	size_t receivedByteCount = socket->Receive(buff, 1024);
 
 	if(GetTickCount()-timetoStart>=3000 && timetoStart!=0)
-		SceneManager::GetInstance()->ReplaceScene(new TestScene(ID,newPosition,socket));
+		SceneManager::GetInstance()->ReplaceScene(new TestScene(socket,m_player));
 
 	if (receivedByteCount>0)
 	{
-		InputMemoryStream is(buff,
+
+		InputMemoryBitStream is(buff,
 			static_cast<uint32_t> (receivedByteCount));
 		int typeofPacket = 0;
-		is.Read(typeofPacket);
-		if (typeofPacket == GameGlobal::LetStart && timetoStart == 0)
+		is.Read(typeofPacket,Define::bitofTypePacket);
+		if (typeofPacket == Define::LetStart && timetoStart == 0)
 		{
 			//Sau khi nhan duoc goi tin start thi nhan thong tin Position de start game
 			UpdateBox(4);
 			timetoStart = GetTickCount();
-			int ID_temp = 0; 			
-			is.Read(ID_temp); 
-			int x = 0; 	int y = 0;
-			is.Read(x); is.Read(y);
-			newPosition.x = x; newPosition.y = y;
-			
-		
+			is.Read(m_player);
 		}
-		else if (typeofPacket == GameGlobal::UpdateCountPlayer)
+		else if (typeofPacket == Define::UpdateCountPlayer)
 		{
-			is.Read(playerCount);
+			is.Read(playerCount,Define::bitofID);
 			UpdateBox(playerCount);
 			
 		}
@@ -115,7 +99,7 @@ void WaitRoomScene::Update(float dt)
 	
 	
 	
-	if(GetTickCount()-lastAdd>=500 && timetoStart!=0)
+	if(GetTickCount()-lastAdd>=500)
 	{
 		my_string += " .";
 		if (my_string == " . . . .") my_string = " .";

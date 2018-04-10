@@ -24,7 +24,9 @@ Player::~Player(){}
 void Player::Update(float dt)
 {
 
+	lastPosition = GetPosition();
 	Entity::Update(dt);
+	
 }
 void Player::HandleKeyboard(std::map<int, bool> keys)
 {

@@ -131,6 +131,7 @@
     <ClCompile Include="GameGlobal.cpp" />
     <ClCompile Include="GameTime.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MemoryBitStream.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
@@ -146,8 +147,7 @@
     <ClInclude Include="GameDefine.h" />
     <ClInclude Include="GameGlobal.h" />
     <ClInclude Include="GameTime.h" />
-    <ClInclude Include="InputMemoryStream.h" />
-    <ClInclude Include="OutputMemoryStream.h" />
+    <ClInclude Include="MemoryBitStream.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />

@@ -1,7 +1,6 @@
 // TCPServer.cpp : Defines the entry point for the console application.
 //
 
-#include "stdafx.h"
 #include <stdio.h>
 #include <conio.h>
 #include <WinSock2.h>
@@ -10,44 +9,24 @@
 #include "TCPSocket.h"
 #include "SocketAddress.h"
 #include "SocketUtil.h"
-#include "InputMemoryStream.h"
-#include "OutputMemoryStream.h"
+
 #include <ctime>
+#include "MemoryBitStream.h"
+#pragma comment(lib,"WS2_32")
 const int WelcomePacket = 1;
 const int UpdateCountPlayer = 2;
 const int LetStart = 3;
 const int InfoPacket = 4;
-enum MoveDirection
-{
-	Left, // qua trai
-	Right,// qua phai
-	Up,   // di len
-	Down, // di xuong
-};
-struct ObjectInfo
-{
 
-	int x, y;
-	MoveDirection dir;
-};
 
-ObjectInfo *mInfor;
+
 int RandomNumber(int x,int y)
 {
 	return rand() % (y - x + 1) + x;
 }
-void NaivelySendRoboCat(int inSocket, const ObjectInfo* inRoboCat)
-{
-	send(inSocket, reinterpret_cast<const char*>(inRoboCat), sizeof(ObjectInfo), 0);
-}
-
-int NaivelyReceiveRoboCat(int inSocket, ObjectInfo* outRoboCat)
-{
-	return recv(inSocket, reinterpret_cast<char*>(outRoboCat), sizeof(ObjectInfo), 0);
-}
 
 
-int _tmain(int argc, _TCHAR* argv[])
+int main()
 {
 	srand(time(NULL));
 	// B1 - Khoi tao
@@ -77,15 +56,15 @@ int _tmain(int argc, _TCHAR* argv[])
 	vector<TCPSocketPtr> readBlockSockets;
 	vector<TCPSocketPtr> readableSockets;
 	readBlockSockets.push_back(socket_sever);
-	mInfor = new ObjectInfo();
-	
+	Entity * en = new Entity();
+
 	while (1)
 	{
 		
 		if (SocketUtil::Select(&readBlockSockets, &readableSockets, nullptr, nullptr, nullptr, nullptr))
 		{
 			for (const TCPSocketPtr& socket : readableSockets) {
-				OutputMemoryStream os;
+				OutputMemoryBitStream os;
 				if (socket == socket_sever)
 				{ 
 					//it's the listen socket, accept a new connection
@@ -103,35 +82,38 @@ int _tmain(int argc, _TCHAR* argv[])
 					
 					printf("\nCo ket noi moi");
 					
-					
-					os.Write(WelcomePacket);
-					os.Write(ID++);
-					newSocket->Send(os.GetBufferPtr(), os.GetLength());
+			
+					os.Write(WelcomePacket,Define::bitofTypePacket);
+					os.Write(ID++, Define::bitofID);
+					newSocket->Send(os.GetBufferPtr(), os.GetByteLength());
 
 					
-					if (ID == 5) //if enought player, Provide them first position by ID
+					if (ID == 3) //if enought player, Provide them first position by ID
 					{
 						
 						for (auto ele : readBlockSockets)
 						{
 							int x = RandomNumber(150,400);
 							int y = RandomNumber(300, 400);
-							OutputMemoryStream os1;
-							os1.Write(LetStart);
-							os1.Write(ele->ID);
-							os1.Write(x);
-							os1.Write(y);
- 							ele->Send(os1.GetBufferPtr(), os1.GetLength());
+							OutputMemoryBitStream os1;
+							Entity* entity = new Entity();
+							entity->ID = ele->ID;
+							entity->SetPosition(x, y);
+
+							os1.Write(LetStart, Define::bitofTypePacket);
+							os1.Write(entity);
+
+							ele->Send(os1.GetBufferPtr(), os1.GetByteLength());
 						}
 						break;
 					}
 
 					for (auto ele : readBlockSockets)
 					{
-						OutputMemoryStream os1;
-						os1.Write(UpdateCountPlayer);
-						os1.Write(ID - 1);
-						ele->Send(os1.GetBufferPtr(), os1.GetLength());
+						OutputMemoryBitStream os1;
+						os1.Write(UpdateCountPlayer,Define::bitofTypePacket);
+						os1.Write(ID - 1,Define::bitofID);
+						ele->Send(os1.GetBufferPtr(), os1.GetByteLength());
 					}
 
 					
@@ -143,20 +125,20 @@ int _tmain(int argc, _TCHAR* argv[])
 					size_t receivedByteCount = socket->Receive(buff, 1024);
 					if (receivedByteCount > 0)
 					{
-						InputMemoryStream is(buff,
+						InputMemoryBitStream is(buff,
 							static_cast<uint32_t> (receivedByteCount));
 						int typeOfPacket = 0;
-						is.Read(typeOfPacket);
+						is.Read(typeOfPacket,Define::bitofTypePacket);
 						if(typeOfPacket==InfoPacket)
 						{
-							int id = 0; is.Read(id);
-							int x = 0, y = 0; is.Read(x); is.Read(y);
+							is.Read(en);
 							for(auto ele:readBlockSockets)
 							{
-								OutputMemoryStream os;
-								if (ele->ID == id) continue;
-								os.Write(InfoPacket); os.Write(id); os.Write(x); os.Write(y);
-								ele->Send(os.GetBufferPtr(), os.GetLength());
+								if (ele->ID == en->ID) continue;
+								OutputMemoryBitStream os;
+								os.Write(InfoPacket,Define::bitofTypePacket);
+								os.Write(en);
+								ele->Send(os.GetBufferPtr(),os.GetByteLength());
 							}
 						}
 					}

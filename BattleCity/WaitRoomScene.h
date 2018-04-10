@@ -3,6 +3,11 @@
 #include "TCPSocket.h"
 #include "Sprite.h"
 #include <vector>
+#include "Player.h"
+#include "TestScene.h"
+#include <string>
+#include "SocketUtil.h"
+
 
 class WaitRoomScene:public Scene
 {
@@ -13,6 +18,8 @@ public:
 
 	int ID = 0; //Current ID
 	int playerCount = 0; //Curren player
+
+	Player* m_player;
 
 	std::vector<Sprite*> box; //box chua cac o Xanh,Do the hien so nguoi choi
 	ID3DXFont				*myFont; //Font dung de ve chu
