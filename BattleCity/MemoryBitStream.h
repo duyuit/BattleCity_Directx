@@ -143,6 +143,7 @@ public:
 	void		Read(Player* pl)
 				{
 					Read(pl->ID, Define::bitofID);
+					pl->onSetID(pl->ID);
 					int x = 0; int y = 0;
 					Read(x,Define::bitofLocation);
 					Read(y, Define::bitofLocation);

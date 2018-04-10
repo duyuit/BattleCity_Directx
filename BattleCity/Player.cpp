@@ -8,15 +8,16 @@ Player::Player()
 	mLeftSprite		= new Sprite("Resource files/tank.png", RECT{  64,0, 96,30 });
 	mDownSprite		= new Sprite("Resource files/tank.png", RECT{ 128,0,160,30 });
 	mRightSprite	= new Sprite("Resource files/tank.png", RECT{ 192,0,224,30 });
-	mUpSprite->SetScale(D3DXVECTOR2(1.5, 1.5));
+	/*mUpSprite->SetScale(D3DXVECTOR2(1.5, 1.5));
 	mLeftSprite->SetScale(D3DXVECTOR2(1.5, 1.5));
 	mDownSprite->SetScale(D3DXVECTOR2(1.5, 1.5));
-	mRightSprite->SetScale(D3DXVECTOR2(1.5, 1.5));
+	mRightSprite->SetScale(D3DXVECTOR2(1.5, 1.5));*/
 	this->vx = 0;
 	this->vy = 0;
 	mCurrentSprite = mUpSprite;
 	Dir = MoveDirection::Up;
-
+	m_top_sprite = new Sprite("Resource files/topOfplayer.png", RECT(), 0, 0, D3DXCOLOR(255, 0, 255,255));
+	//m_top_sprite->SetScale(D3DXVECTOR2(0.5, 0.5));
 }
 
 Player::~Player(){}
@@ -26,6 +27,7 @@ void Player::Update(float dt)
 
 	lastPosition = GetPosition();
 	Entity::Update(dt);
+
 	
 }
 void Player::HandleKeyboard(std::map<int, bool> keys)
@@ -56,6 +58,11 @@ void Player::Draw(D3DXVECTOR3 position, RECT sourceRect, D3DXVECTOR2 scale, D3DX
 	mCurrentSprite->SetPosition(this->GetPosition());
 
 	mCurrentSprite->Draw(D3DXVECTOR3(posX, posY, 0));
+	if (isMe)
+	{
+		m_top_sprite->SetPosition(D3DXVECTOR3(posX, posY + 35, 0));
+		m_top_sprite->Draw();
+	}
 }
 
 RECT Player::GetBound()
@@ -68,6 +75,35 @@ RECT Player::GetBound()
 
 	return rect;
 }
+
+void Player::onSetID(int ID)
+{
+	this->ID = ID;
+	switch (ID)
+	{
+	case 2:
+		mUpSprite = new Sprite("Resource files/tank.png", RECT{ 257,3,257+ 28,3+28 });
+		mLeftSprite = new Sprite("Resource files/tank.png", RECT{ 323,2, 323+28,2+28 });
+		mDownSprite = new Sprite("Resource files/tank.png", RECT{ 386,2,386+28,28 });
+		mRightSprite = new Sprite("Resource files/tank.png", RECT{ 449,2,449+28,2+28 });
+		break;
+	case 3:
+		mUpSprite = new Sprite("Resource files/tank.png", RECT{ 1,259,1 + 28,259 + 28 });
+		mLeftSprite = new Sprite("Resource files/tank.png", RECT{ 67,257, 67 + 28,257 + 28 });
+		mDownSprite = new Sprite("Resource files/tank.png", RECT{ 129,257,129 + 28,257+28 });
+		mRightSprite = new Sprite("Resource files/tank.png", RECT{ 194,257,194 + 28,257 + 28 });
+		break;
+	case 4:
+		mUpSprite = new Sprite("Resource files/tank.png", RECT{ 257,260,257 + 28,260 + 28 });
+		mLeftSprite = new Sprite("Resource files/tank.png", RECT{ 323,257, 323 + 28,257 + 28 });
+		mDownSprite = new Sprite("Resource files/tank.png", RECT{ 386,258,386 + 28,258 + 28 });
+		mRightSprite = new Sprite("Resource files/tank.png", RECT{ 449,258,449 + 28,258 + 28 });
+		break;
+
+	}
+	mCurrentSprite = mUpSprite;
+}
+
 MoveDirection Player::getMoveDirection()
 {
 	return Dir;

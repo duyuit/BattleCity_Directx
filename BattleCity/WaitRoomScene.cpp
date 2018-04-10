@@ -43,6 +43,7 @@ void WaitRoomScene::LoadContent()
 	}
 
 	m_player = new Player();
+	m_player->isMe = true;
 
 	my_string = " .";
 	myFont = NULL;
@@ -84,6 +85,7 @@ void WaitRoomScene::Update(float dt)
 			UpdateBox(4);
 			timetoStart = GetTickCount();
 			is.Read(m_player);
+			
 		}
 		else if (typeofPacket == Define::UpdateCountPlayer)
 		{

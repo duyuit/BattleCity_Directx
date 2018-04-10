@@ -19,12 +19,12 @@ TestScene::TestScene(TCPSocketPtr socket,Player* m_player)
 
 	mPlayer = m_player;
 
-	for(int i=1;i<3;i++)
+	for(int i=1;i<5;i++)
 	{
 		if (i == mPlayer->ID) continue;
 		Player* temp = new Player();
-		temp->ID = i;
-		temp->SetPosition(300, 300);
+		temp->onSetID(i);;
+		temp->SetPosition(300+i*20, 300);
 		list_players.push_back(temp);
 	}
 	temp_pl = new Player();

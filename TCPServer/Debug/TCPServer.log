@@ -1,10 +1,5 @@
-﻿  MemoryBitStream.cpp
-d:\git\battlecity_directx\tcpserver\memorybitstream.h(158): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-  Generating Code...
-  Compiling...
-  TCPServer.cpp
-d:\git\battlecity_directx\tcpserver\memorybitstream.h(158): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+﻿  TCPServer.cpp
+d:\git\battlecity_directx\tcpserver\memorybitstream.h(153): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 d:\git\battlecity_directx\tcpserver\tcpserver.cpp(31): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
 d:\git\battlecity_directx\tcpserver\tcpserver.cpp(101): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-  Generating Code...
   TCPServer.vcxproj -> D:\Git\BattleCity_Directx\TCPServer\Debug\TCPServer.exe

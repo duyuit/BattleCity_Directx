@@ -50,7 +50,7 @@ public:
 	 void Write( uint32_t inData, uint32_t inBitCount = 32 )	{ WriteBits( &inData, inBitCount ); }
 	void Write( int inData, uint32_t inBitCount = 32 )		{ WriteBits( &inData, inBitCount ); }
 	void Write( float inData )								{ WriteBits( &inData, 32 ); }
-	//void Write(D3DXVECTOR2 pos) { Write((int)pos.x, 12); Write((int)pos.y, 12); };
+	
 	void Write(Entity* pl)
 	{
 		Write(pl->ID, Define::bitofID);
@@ -143,12 +143,7 @@ public:
 
 	void		Read( uint8_t& outData, uint32_t inBitCount = 8 )		{ ReadBits( &outData, inBitCount ); }
 	void		Read( bool& outData )									{ ReadBits( &outData, 1 ); }
-	/*void		Read(D3DXVECTOR2 &pos)
-	{
-		int x = 0; int y = 0; 
-		Read(x,12); Read(y,12);
-		pos.x =x; pos.y = y;
-	}*/
+	
 	void		Read(Entity* pl)
 				{
 					Read(pl->ID, Define::bitofID);
