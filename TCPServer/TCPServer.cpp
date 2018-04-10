@@ -88,7 +88,7 @@ int main()
 					newSocket->Send(os.GetBufferPtr(), os.GetByteLength());
 
 					
-					if (ID == 3) //if enought player, Provide them first position by ID
+					if (ID == 5) //if enought player, Provide them first position by ID
 					{
 						
 						for (auto ele : readBlockSockets)
