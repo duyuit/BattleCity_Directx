@@ -10,21 +10,20 @@
 #include <map>
 #include "Player.h"
 #include "TCPSocket.h"
-#include "InputMemoryStream.h"
-#include "OutputMemoryStream.h"
+#include "MemoryBitStream.h"
 
 
 
 class TestScene : public Scene
 {
 public:
-	TestScene(int ID,D3DXVECTOR2 pos, TCPSocketPtr socket);
+	TestScene(TCPSocketPtr socket, Player* m_player);
 	void Update(float dt);
 	void LoadContent();
 	void Draw();
 
 	
-
+	Player* temp_pl;
 	vector<Player* > list_players;
 	void OnKeyDown(int keyCode);
 	void OnKeyUp(int keyCode);

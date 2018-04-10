@@ -78,6 +78,9 @@
     <ClCompile Include="WaitRoomScene.cpp">
       <Filter>FrameWork\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="MemoryBitStream.cpp">
+      <Filter>FrameWork\GameNetWork</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameTime.h">
@@ -125,14 +128,11 @@
     <ClInclude Include="TCPSocket.h">
       <Filter>FrameWork\GameNetWork</Filter>
     </ClInclude>
-    <ClInclude Include="InputMemoryStream.h">
-      <Filter>FrameWork\GameNetWork</Filter>
-    </ClInclude>
-    <ClInclude Include="OutputMemoryStream.h">
-      <Filter>FrameWork\GameNetWork</Filter>
-    </ClInclude>
     <ClInclude Include="WaitRoomScene.h">
       <Filter>FrameWork\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="MemoryBitStream.h">
+      <Filter>FrameWork\GameNetWork</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,5 +1,7 @@
 #pragma once
-#include "GameGlobal.h"
+
+#include <d3dx9.h>
+
 class Entity
 {
 public:

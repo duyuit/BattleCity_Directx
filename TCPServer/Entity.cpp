@@ -36,8 +36,8 @@ void Entity::Update(float dt)
 
 void Entity::SetPosition(float x, float y)
 {
-	this->posX = x;
-	this->posY = y;
+	posX = x;
+	posY = y;
 }
 
 void Entity::SetPosition(D3DXVECTOR2 pos)

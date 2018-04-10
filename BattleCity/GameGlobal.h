@@ -7,10 +7,7 @@ class GameGlobal
 public:
 	GameGlobal();
 	~GameGlobal();
-	static const int WelcomePacket = 1;
-	static const int UpdateCountPlayer = 2;
-	static const int LetStart = 3;
-	static const int InfoPacket = 4;
+
 	static HINSTANCE GetCurrentHINSTACE();
 	static HWND getCurrentHWND();
 

@@ -15,6 +15,7 @@ class TCPSocket {
 	std::shared_ptr< TCPSocket > Accept(SocketAddress& inFromAddress); 
 	int Send(const void* inData, int inLen);
 	int Receive(void* inBuffer, int inLen);
+	int ReceiveBit(void* inBuffer, int inLen);
 	void Close();
 private:   
 	friend class SocketUtil; 
@@ -96,4 +97,14 @@ inline int TCPSocket::Receive(void* inData, int inLen) {
 		return -1;
 	}
 	return bytesReceivedCount;
+}
+inline int TCPSocket::ReceiveBit(void* inBuffer, int inLen)
+{
+	int bitReceivedCount = recv(mSocket, static_cast<char*>(inBuffer), inLen, 0);
+	if (bitReceivedCount < 0)
+	{
+
+		return -1;
+	}
+	return bitReceivedCount * 8;
 }
