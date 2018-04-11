@@ -46,10 +46,11 @@ public:
 	void Write(Player* pl)
 	{
 		Write(pl->ID, Define::bitofID);
+		Write(pl->Dir, Define::bitofID);
 		Write((int)pl->GetPosition().x, Define::bitofLocation);
 		Write((int)pl->GetPosition().y, Define::bitofLocation);
 	}
-	
+
 	
 	template< typename T >
 	void Write( T inData, uint32_t inBitCount = sizeof( T ) * 8 )
@@ -135,19 +136,15 @@ public:
 
 	void		Read( uint8_t& outData, uint32_t inBitCount = 8 )		{ ReadBits( &outData, inBitCount ); }
 	void		Read( bool& outData )									{ ReadBits( &outData, 1 ); }
-	/*void		Read(D3DXVECTOR2 &pos)
-	{
-		int x = 0; int y = 0; Read(x, 12); Read(y, 12);
-		pos.x = x; pos.y = y;
-	}*/
+
 	void		Read(Player* pl)
 				{
 					Read(pl->ID, Define::bitofID);
-					pl->onSetID(pl->ID);
+					Read(pl->Dir, Define::bitofID);
 					int x = 0; int y = 0;
-					Read(x,Define::bitofLocation);
+					Read(x, Define::bitofLocation);
 					Read(y, Define::bitofLocation);
-					pl->SetPosition(x,y);
+					pl->SetPosition(x, y);
 				}
 	
 

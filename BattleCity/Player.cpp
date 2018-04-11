@@ -14,8 +14,10 @@ Player::Player()
 	mRightSprite->SetScale(D3DXVECTOR2(1.5, 1.5));*/
 	this->vx = 0;
 	this->vy = 0;
+
 	mCurrentSprite = mUpSprite;
-	Dir = MoveDirection::Up;
+	Dir = MoveDirection::IDLE;
+
 	m_top_sprite = new Sprite("Resource files/topOfplayer.png", RECT(), 0, 0, D3DXCOLOR(255, 0, 255,255));
 	//m_top_sprite->SetScale(D3DXVECTOR2(0.5, 0.5));
 }
@@ -26,8 +28,37 @@ void Player::Update(float dt)
 {
 
 	lastPosition = GetPosition();
+	if(Dir!=LastDir)
+	switch (Dir)
+	{
+	case Left:
+		mCurrentSprite = mLeftSprite;
+		this->SetVx(-Define::PLAYER_SPEED);
+		this->SetVy(0);
+		break;
+	case Right: 	
+		mCurrentSprite = mRightSprite;
+		this->SetVx(Define::PLAYER_SPEED);
+		this->SetVy(0);
+		break;
+	case Up:
+		mCurrentSprite = mUpSprite;
+		this->SetVy(Define::PLAYER_SPEED);
+		this->SetVx(0);
+		break;
+	case Down:
+		mCurrentSprite = mDownSprite;
+		this->SetVy(-Define::PLAYER_SPEED);
+		this->SetVx(0); 
+		break;
+	case IDLE:
+		this->SetVx(0);
+		this->SetVy(0); 
+		break;
+	default: ;
+	}
 	Entity::Update(dt);
-
+	LastDir = Dir;
 	
 }
 void Player::HandleKeyboard(std::map<int, bool> keys)
@@ -114,34 +145,26 @@ void Player::setMoveDirection(MoveDirection direction) {
 void Player::MoveLeft() {
 	Stand();
 	mCurrentSprite = mLeftSprite;
-	this->SetVx(-Define::PLAYER_SPEED);
-	this->SetVy(0);
-	
 	Dir = MoveDirection::Left;
 }
 void Player::MoveRight() {
 	Stand();
 	mCurrentSprite = mRightSprite;
-	this->SetVx(Define::PLAYER_SPEED);
-	this->SetVy(0);
 	Dir = MoveDirection::Right;
 }
 void Player::MoveUp() {
 	Stand();
 	mCurrentSprite = mUpSprite;
-	this->SetVy(Define::PLAYER_SPEED);
-	this->SetVx(0);
+	
 	Dir = MoveDirection::Up;
 }
 void Player::MoveDown() {
 	Stand();
 	mCurrentSprite = mDownSprite;
-	this->SetVy(-Define::PLAYER_SPEED);
-	this->SetVx(0);
+	
 	Dir = MoveDirection::Down;
 }
 void Player::Stand() {
-	Dir=IDLE;
-	this->SetVx(0);
-	this->SetVy(0);
+	Dir= MoveDirection::IDLE;
+	
 }

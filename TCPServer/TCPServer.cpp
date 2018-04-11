@@ -88,16 +88,18 @@ int main()
 					newSocket->Send(os.GetBufferPtr(), os.GetByteLength());
 
 					
-					if (ID == 5) //if enought player, Provide them first position by ID
+					if (ID == 3) //if enought player, Provide them first position by ID
 					{
 						
 						for (auto ele : readBlockSockets)
 						{
 							int x = RandomNumber(150,400);
 							int y = RandomNumber(300, 400);
+						
 							OutputMemoryBitStream os1;
 							Entity* entity = new Entity();
 							entity->ID = ele->ID;
+							entity->Dir = 0;
 							entity->SetPosition(x, y);
 
 							os1.Write(LetStart, Define::bitofTypePacket);
