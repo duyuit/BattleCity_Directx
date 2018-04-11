@@ -18,13 +18,14 @@ TestScene::TestScene(TCPSocketPtr socket,Player* m_player)
 	//set position
 
 	mPlayer = m_player;
+	mPlayer->onSetID(m_player->ID);
 
 	for(int i=1;i<5;i++)
 	{
 		if (i == mPlayer->ID) continue;
 		Player* temp = new Player();
 		temp->onSetID(i);;
-		temp->SetPosition(300+i*20, 300);
+		temp->SetPosition(300, 300);
 		list_players.push_back(temp);
 	}
 	temp_pl = new Player();
@@ -33,15 +34,23 @@ TestScene::TestScene(TCPSocketPtr socket,Player* m_player)
 void TestScene::Update(float dt)
 {
 	mPlayer->HandleKeyboard(keys);
-	mPlayer->Update(dt);
 
-	if (mPlayer->lastPosition != mPlayer->GetPosition())
+
+	if (mPlayer->LastDir != mPlayer->Dir)
 	{
 		OutputMemoryBitStream os;
-		os.Write(Define::InfoPacket,Define::bitofTypePacket);
+		os.Write(Define::InfoPacket, Define::bitofTypePacket);
 		os.Write(mPlayer);
-		socket->Send(os.GetBufferPtr(),os.GetByteLength());
+		socket->Send(os.GetBufferPtr(), os.GetByteLength());
 	}
+
+	mPlayer->Update(dt);
+
+	for (auto ele : list_players)
+	{
+		ele->Update(dt);
+	}
+
 
 
 	char* buff = static_cast<char*>(std::malloc(1024));
@@ -62,6 +71,7 @@ void TestScene::Update(float dt)
 			{
 				if (ele->ID == temp_pl->ID)
 				{
+					ele->Dir = temp_pl->Dir;
 					ele->SetPosition(temp_pl->GetPosition());
 					break;
 				}

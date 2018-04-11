@@ -54,6 +54,7 @@ public:
 	void Write(Entity* pl)
 	{
 		Write(pl->ID, Define::bitofID);
+		Write(pl->Dir, Define::bitofID);
 		Write((int)pl->GetPosition().x, Define::bitofLocation);
 		Write((int)pl->GetPosition().y, Define::bitofLocation);
 	}
@@ -147,10 +148,11 @@ public:
 	void		Read(Entity* pl)
 				{
 					Read(pl->ID, Define::bitofID);
-					int x = 0; int y = 0;
-					Read(x, Define::bitofLocation); 
+					Read(pl->Dir, Define::bitofID);
+					int x = 0; int y = 0; 
+					Read(x, Define::bitofLocation);
 					Read(y, Define::bitofLocation);
-					pl->SetPosition(x,y);
+					pl->SetPosition(x, y);
 				}
 	
 

@@ -25,7 +25,7 @@ public:
 	};
 
 	EntityTypes Tag; //Tag de nhan vien loai Entity
-
+	int Dir = 0;
 	virtual RECT GetBound();
 
 	virtual void SetPosition(float x, float y);

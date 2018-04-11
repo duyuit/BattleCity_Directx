@@ -7,11 +7,11 @@
 
 enum MoveDirection
 {
-	Left, // qua trai
-	Right,// qua phai
-	Up,   // di len
-	Down, // di xuong
-	IDLE
+	Left, // qua trai 0
+	Right,// qua phai 1
+	Up,   // di len 2 
+	Down, // di xuong 3 
+	IDLE //4
 };
 class Player : public Entity
 {
@@ -24,6 +24,9 @@ public:
 	void Draw(D3DXVECTOR3 position = D3DXVECTOR3(), RECT sourceRect = RECT(), D3DXVECTOR2 scale = D3DXVECTOR2(), D3DXVECTOR2 transform = D3DXVECTOR2(), float angle = 0, D3DXVECTOR2 rotationCenter = D3DXVECTOR2(), D3DXCOLOR colorKey = D3DCOLOR_XRGB(255, 255, 255));
 	bool isMe = false;
 	D3DXVECTOR2 lastPosition;
+	MoveDirection Dir;
+	MoveDirection LastDir;
+
 	MoveDirection getMoveDirection();
 	void setMoveDirection(MoveDirection);
 	RECT GetBound();
@@ -41,7 +44,8 @@ protected:
 	Sprite * mRightSprite;
 	Sprite * mDownSprite;
 	Sprite *m_top_sprite;
-	MoveDirection Dir;
+
+	
 	void MoveLeft();
 	void MoveRight();
 	void MoveUp();

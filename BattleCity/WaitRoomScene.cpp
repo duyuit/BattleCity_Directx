@@ -85,7 +85,7 @@ void WaitRoomScene::Update(float dt)
 			UpdateBox(4);
 			timetoStart = GetTickCount();
 			is.Read(m_player);
-			
+
 		}
 		else if (typeofPacket == Define::UpdateCountPlayer)
 		{
