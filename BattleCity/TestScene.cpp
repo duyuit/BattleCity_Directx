@@ -14,6 +14,9 @@ void TestScene::LoadContent()
 TestScene::TestScene(TCPSocketPtr socket,Player* m_player)
 {
 	mBackColor = D3DCOLOR_XRGB(0, 0, 0);
+
+	mMap = new GameMap("Resource files/map.tmx");
+
 	this->socket = socket;
 	//set position
 
@@ -28,21 +31,27 @@ TestScene::TestScene(TCPSocketPtr socket,Player* m_player)
 		temp->SetPosition(300, 300);
 		list_players.push_back(temp);
 	}
+
+
+
 	temp_pl = new Player();
 }
 
 void TestScene::Update(float dt)
 {
 	mPlayer->HandleKeyboard(keys);
-
-
-	if (mPlayer->LastDir != mPlayer->Dir)
+	for(auto ele:anotherPlayerBullet)
 	{
+		ele->Update(dt);
+	}
+
+	/*if (mPlayer->LastDir != mPlayer->Dir)
+	{*/
 		OutputMemoryBitStream os;
 		os.Write(Define::InfoPacket, Define::bitofTypePacket);
 		os.Write(mPlayer);
 		socket->Send(os.GetBufferPtr(), os.GetByteLength());
-	}
+	//}
 
 	mPlayer->Update(dt);
 
@@ -67,16 +76,56 @@ void TestScene::Update(float dt)
 			
 			is.Read(temp_pl);
 			if (temp_pl->ID == mPlayer->ID) return;
-			for (auto ele : list_players)
+
+			if(temp_pl->Tag==Entity::player)
 			{
-				if (ele->ID == temp_pl->ID)
+				for (auto ele : list_players)
 				{
-					ele->Dir = temp_pl->Dir;
-					ele->SetPosition(temp_pl->GetPosition());
-					break;
+					if (ele->ID == temp_pl->ID)
+					{
+						ele->Dir = temp_pl->Dir;
+						ele->SetPosition(temp_pl->GetPosition());
+						break;
+					}
+				}
+			}
+			else if(temp_pl->Tag == Entity::bullet)
+			{
+				bool isBulletofMe = false;
+				bool isExisted = false;
+				for(auto ele:mPlayer->mBullet)
+				{
+					if (ele->ID == temp_pl->ID)
+					{
+						isBulletofMe = true;
+						break;
+					}
+				}
+				if(!isBulletofMe)
+				{
+					for (auto ele : anotherPlayerBullet)
+					{
+						if (temp_pl->ID == ele->ID)
+						{
+							isExisted = true;
+							ele->isActive = true;
+							ele->setMoveDirection(temp_pl->Dir);
+							ele->SetPosition(temp_pl->GetPosition());
+
+						}
+					}
+					if (!isExisted)
+					{
+						Bullet* bullet = new Bullet(temp_pl->Dir);
+						bullet->ID = temp_pl->ID;
+						bullet->SetPosition(temp_pl->GetPosition());
+						bullet->isActive = true;
+						anotherPlayerBullet.push_back(bullet);
+					}
 				}
 				
 			}
+			
 		}
 	}
 
@@ -89,11 +138,17 @@ void TestScene::Update(float dt)
 
 void TestScene::Draw()
 {
+	mMap->Draw();
 	mPlayer->Draw();
 	for (auto ele:list_players)
 	{
 		ele->Draw();
 	}
+	for (auto ele : anotherPlayerBullet)
+	{
+		ele->Draw();
+	}
+
 }
 
 void TestScene::OnKeyDown(int keyCode)

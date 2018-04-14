@@ -4,22 +4,32 @@ class Entity
 {
 public:
 	Entity();
-	enum SideCollisions
+	enum MoveDirection
 	{
-		Left, //0
-		Right, //1
-		Top, //2
-		Bottom, //3
-		TopLeft, //4
-		TopRight, //5
-		BottomLeft, //6
-		BottomRight, //7
-		NotKnow
+		Left, // qua trai 0
+		Right,// qua phai 1
+		Up,   // di len 2 
+		Down, // di xuong 3 
+		IDLE //4
 	};
+	MoveDirection Dir;
+
+	//enum SideCollisions
+	//{
+	//	Left, //0
+	//	Right, //1
+	//	Top, //2
+	//	Bottom, //3
+	//	TopLeft, //4
+	//	TopRight, //5
+	//	BottomLeft, //6
+	//	BottomRight, //7
+	//	NotKnow
+	//};
 
 	enum EntityTypes
 	{
-		None, Brick, Enemy, Mario, Static, BrickGoldNormal, BrickGold
+		player,bullet,item,block,none
 	};
 
 	EntityTypes Tag; //Tag de nhan vien loai Entity

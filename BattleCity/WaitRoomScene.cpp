@@ -4,7 +4,7 @@
 
 void WaitRoomScene::LoadContent()
 {
-	
+		
 	socket = SocketUtil::CreateTCPSocket();
 
 	SocketAddress address(inet_addr("127.0.0.1"), 8888);
@@ -30,6 +30,7 @@ void WaitRoomScene::LoadContent()
 		{
 			is.Read(ID,Define::bitofID);
 			socket->ChangetoDontWait(1);
+			GameGlobal::socket = socket;
 		}
 	}
 
@@ -48,6 +49,7 @@ void WaitRoomScene::LoadContent()
 	my_string = " .";
 	myFont = NULL;
 	HRESULT rs = D3DXCreateFont(GameGlobal::GetCurrentDevice(), 30, 10, FW_NORMAL, 1, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, ANTIALIASED_QUALITY, FF_DONTCARE, (LPCWSTR) "Arial", &myFont);
+	
 	
 	
 }

@@ -1,13 +1,14 @@
 #include "Player.h"
 #include "GameDefine.h"
 #include <string>
+#include "MemoryBitStream.h"
 
 Player::Player()
 {
-	mUpSprite		= new Sprite("Resource files/tank.png", RECT{   0,0, 32,30 });
-	mLeftSprite		= new Sprite("Resource files/tank.png", RECT{  64,0, 96,30 });
-	mDownSprite		= new Sprite("Resource files/tank.png", RECT{ 128,0,160,30 });
-	mRightSprite	= new Sprite("Resource files/tank.png", RECT{ 192,0,224,30 });
+	mUpSprite = new Sprite("Resource files/tank.png", RECT{ 2,4,2+ 32,4+ 32 },0,0, D3DXCOLOR(255, 0, 255, 255));
+	mLeftSprite = new Sprite("Resource files/tank.png", RECT{ 82,2,82+32,2+32 },0,0, D3DXCOLOR(255, 0, 255, 255));
+	mDownSprite = new Sprite("Resource files/tank.png", RECT{ 156,2,156+32,2+32 },0,0, D3DXCOLOR(255, 0, 255, 255));
+	mRightSprite = new Sprite("Resource files/tank.png", RECT{ 233,2,233+32,2+32}, 0, 0, D3DXCOLOR(255, 0, 255, 255));
 	/*mUpSprite->SetScale(D3DXVECTOR2(1.5, 1.5));
 	mLeftSprite->SetScale(D3DXVECTOR2(1.5, 1.5));
 	mDownSprite->SetScale(D3DXVECTOR2(1.5, 1.5));
@@ -15,11 +16,12 @@ Player::Player()
 	this->vx = 0;
 	this->vy = 0;
 
+	Tag = Entity::player;
 	mCurrentSprite = mUpSprite;
 	Dir = MoveDirection::IDLE;
 
 	m_top_sprite = new Sprite("Resource files/topOfplayer.png", RECT(), 0, 0, D3DXCOLOR(255, 0, 255,255));
-	//m_top_sprite->SetScale(D3DXVECTOR2(0.5, 0.5));
+	
 }
 
 Player::~Player(){}
@@ -59,10 +61,46 @@ void Player::Update(float dt)
 	}
 	Entity::Update(dt);
 	LastDir = Dir;
+	for(auto bullet:mBullet)
+	{
+		if (!bullet->isActive) continue;
+		bullet->Update(dt);
+		
+		
+	}
+	
 	
 }
 void Player::HandleKeyboard(std::map<int, bool> keys)
 {
+	if (keys[VK_SPACE]) {
+		if (GetTickCount() - lastFire >= 300)
+		{
+			for (auto bullet : mBullet)
+			{
+				if (!bullet->isActive)
+				{
+					bullet->isActive = true;
+					bullet->SetPosition(this->GetPosition());
+					if(mCurrentSprite==mUpSprite) bullet->setMoveDirection(Up);
+					else if (mCurrentSprite == mLeftSprite) bullet->setMoveDirection(Left);
+					else if (mCurrentSprite == mRightSprite) bullet->setMoveDirection(Right);
+					else if (mCurrentSprite == mDownSprite) bullet->setMoveDirection(Down);
+					lastFire = GetTickCount();
+					OutputMemoryBitStream os;
+					os.Write(Define::InfoPacket, Define::bitofTypePacket);
+					Entity* temp = new Entity();
+					temp->ID = bullet->ID;
+					temp->Tag = EntityTypes::bullet;
+					temp->Dir = bullet->Dir;
+					temp->SetPosition(bullet->GetPosition());
+					os.Write(temp);
+					GameGlobal::socket->Send(os.GetBufferPtr(), os.GetByteLength());
+					break;
+				}
+			}
+		}
+	}
 	if (keys[VK_LEFT]) {
 		if (Dir == Left) return;
 		MoveLeft();
@@ -83,11 +121,15 @@ void Player::HandleKeyboard(std::map<int, bool> keys)
 		if (Dir == IDLE) return;
 		Stand();
 	}
+	
 }
 void Player::Draw(D3DXVECTOR3 position, RECT sourceRect, D3DXVECTOR2 scale, D3DXVECTOR2 transform, float angle, D3DXVECTOR2 rotationCenter, D3DXCOLOR colorKey)
 {
 	mCurrentSprite->SetPosition(this->GetPosition());
-
+	for (auto bullet : mBullet)
+	{
+		bullet->Draw();
+	}
 	mCurrentSprite->Draw(D3DXVECTOR3(posX, posY, 0));
 	if (isMe)
 	{
@@ -103,39 +145,46 @@ RECT Player::GetBound()
 	rect.right = rect.left + mCurrentSprite->GetWidth();
 	rect.top = this->posY - mCurrentSprite->GetHeight() / 2;
 	rect.bottom = rect.top + mCurrentSprite->GetHeight();
-
 	return rect;
 }
 
 void Player::onSetID(int ID)
 {
 	this->ID = ID;
+	for (int i = 1; i<4; i++)
+	{
+		Bullet* bullet = new Bullet(Up);
+		bullet->SetPosition(0, 0);
+		bullet->ID = this->ID * 10 + i;
+		bullet->isActive = false;
+		mBullet.push_back(bullet);
+	}
 	switch (ID)
 	{
 	case 2:
-		mUpSprite = new Sprite("Resource files/tank.png", RECT{ 257,3,257+ 28,3+28 });
-		mLeftSprite = new Sprite("Resource files/tank.png", RECT{ 323,2, 323+28,2+28 });
-		mDownSprite = new Sprite("Resource files/tank.png", RECT{ 386,2,386+28,28 });
-		mRightSprite = new Sprite("Resource files/tank.png", RECT{ 449,2,449+28,2+28 });
+		mUpSprite = new Sprite("Resource files/tank.png", RECT{ 310,4,310 + 32,4 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
+		mLeftSprite = new Sprite("Resource files/tank.png", RECT{ 389,2,389 + 32,2 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
+		mDownSprite = new Sprite("Resource files/tank.png", RECT{ 464,2,464 + 32,2 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
+		mRightSprite = new Sprite("Resource files/tank.png", RECT{ 540,2,540 + 32,2 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
 		break;
 	case 3:
-		mUpSprite = new Sprite("Resource files/tank.png", RECT{ 1,259,1 + 28,259 + 28 });
-		mLeftSprite = new Sprite("Resource files/tank.png", RECT{ 67,257, 67 + 28,257 + 28 });
-		mDownSprite = new Sprite("Resource files/tank.png", RECT{ 129,257,129 + 28,257+28 });
-		mRightSprite = new Sprite("Resource files/tank.png", RECT{ 194,257,194 + 28,257 + 28 });
+		mUpSprite = new Sprite("Resource files/tank.png", RECT{ 2,312,2 + 32,312 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
+		mLeftSprite = new Sprite("Resource files/tank.png", RECT{ 82,310,82 + 32,310 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
+		mDownSprite = new Sprite("Resource files/tank.png", RECT{ 156,310,156 + 32,310 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
+		mRightSprite = new Sprite("Resource files/tank.png", RECT{ 233,310,233 + 32,310 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
 		break;
 	case 4:
-		mUpSprite = new Sprite("Resource files/tank.png", RECT{ 257,260,257 + 28,260 + 28 });
-		mLeftSprite = new Sprite("Resource files/tank.png", RECT{ 323,257, 323 + 28,257 + 28 });
-		mDownSprite = new Sprite("Resource files/tank.png", RECT{ 386,258,386 + 28,258 + 28 });
-		mRightSprite = new Sprite("Resource files/tank.png", RECT{ 449,258,449 + 28,258 + 28 });
+		mUpSprite = new Sprite("Resource files/tank.png", RECT{ 310,312,310 + 32,312 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
+		mLeftSprite = new Sprite("Resource files/tank.png", RECT{ 389,310,389 + 32,310 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
+		mDownSprite = new Sprite("Resource files/tank.png", RECT{ 464,310,464 + 32,310 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
+		mRightSprite = new Sprite("Resource files/tank.png", RECT{ 540,310,540 + 32,310 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
 		break;
 
 	}
 	mCurrentSprite = mUpSprite;
 }
 
-MoveDirection Player::getMoveDirection()
+Entity::MoveDirection Player::getMoveDirection()
 {
 	return Dir;
 }

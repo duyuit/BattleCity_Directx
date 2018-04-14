@@ -11,7 +11,7 @@
 #include "Player.h"
 #include "TCPSocket.h"
 #include "MemoryBitStream.h"
-
+#include "GameMap.h"
 
 
 class TestScene : public Scene
@@ -24,6 +24,8 @@ public:
 
 	
 	Player* temp_pl;
+	GameMap *mMap;
+	vector<Bullet*> anotherPlayerBullet;
 	vector<Player* > list_players;
 	void OnKeyDown(int keyCode);
 	void OnKeyUp(int keyCode);

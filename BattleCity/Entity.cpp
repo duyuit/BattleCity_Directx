@@ -2,7 +2,7 @@
 
 Entity::Entity()
 {
-	Tag = None;
+	Tag = none;
 }
 
 D3DXVECTOR2 Entity::GetPosition()
