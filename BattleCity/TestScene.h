@@ -10,8 +10,7 @@
 #include <map>
 #include "Player.h"
 #include "TCPSocket.h"
-#include "MemoryBitStream.h"
-
+#include "GameMap.h"
 
 
 class TestScene : public Scene
@@ -23,14 +22,22 @@ public:
 	void Draw();
 
 	
-	Player* temp_pl;
-	vector<Player* > list_players;
+
+	GameMap *mMap;
+	vector<Entity*> mListObjects;
+	vector<Bullet*> mListBullets;
+	vector<Player* > mListPlayer;
 	void OnKeyDown(int keyCode);
 	void OnKeyUp(int keyCode);
+	void find_and_handle(int tag, InputMemoryBitStream &is);
 protected:
 	Camera *mCamera;
 	Player *mPlayer;
 	TCPSocketPtr socket;
 	std::map<int, bool> keys;
+
+	ID3DXFont				*myFont; //Font dung de ve chu
+	RECT myRect; //RECT chua myFont
+	std::string my_string; //Support Font
 };
 

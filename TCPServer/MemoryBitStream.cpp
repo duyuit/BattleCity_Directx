@@ -1,5 +1,6 @@
 #include "MemoryBitStream.h"
 
+
 void OutputMemoryBitStream::WriteBits( uint8_t inData,
 									  uint32_t inBitCount )
 {
@@ -7,7 +8,8 @@ void OutputMemoryBitStream::WriteBits( uint8_t inData,
 	
 	if( nextBitHead > mBitCapacity )
 	{
-		ReallocBuffer( max( mBitCapacity * 2, nextBitHead ) );
+
+		ReallocBuffer(  mBitCapacity * 2 > nextBitHead? mBitCapacity * 2: nextBitHead);
 	}
 	
 	//calculate the byteOffset into our buffer

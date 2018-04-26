@@ -21,6 +21,7 @@ public:
 
 	Player* m_player;
 
+
 	std::vector<Sprite*> box; //box chua cac o Xanh,Do the hien so nguoi choi
 	ID3DXFont				*myFont; //Font dung de ve chu
 	RECT myRect; //RECT chua myFont

@@ -133,12 +133,12 @@ void Sprite::Draw(D3DXVECTOR3 position, RECT sourceRect, D3DXVECTOR2 scale, D3DX
 		mRotationCenter = D3DXVECTOR2(inPosition.x, inPosition.y);// cho phep quay giua hinh
 
 	D3DXMatrixTransformation2D(
-		&mMatrix, 
-		&scalingScenter, 
-		0.0f, 
-		&inCcale, 
+		&mMatrix,
+		&scalingScenter,
+		0.0f,
+		&inCcale,
 		&inRotationCenter,
-		inRotation, 
+		inRotation,
 		&inTranslation);
 
 	D3DXMATRIX oldMatrix;
@@ -152,7 +152,7 @@ void Sprite::Draw(D3DXVECTOR3 position, RECT sourceRect, D3DXVECTOR2 scale, D3DX
 	mt._42 = GameGlobal::GetHeight();
 	D3DXVECTOR4 vp_pos;
 	D3DXVec3Transform(&vp_pos, &inPosition, &mt);
-	
+
 	D3DXVECTOR3 p(vp_pos.x, vp_pos.y, 0);
 	D3DXVECTOR3 center = D3DXVECTOR3(mWidth / 2, mHeight / 2, 0);
 

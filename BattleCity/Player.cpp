@@ -1,13 +1,12 @@
 #include "Player.h"
-#include "GameDefine.h"
-#include <string>
+
 
 Player::Player()
 {
-	mUpSprite		= new Sprite("Resource files/tank.png", RECT{   0,0, 32,30 });
-	mLeftSprite		= new Sprite("Resource files/tank.png", RECT{  64,0, 96,30 });
-	mDownSprite		= new Sprite("Resource files/tank.png", RECT{ 128,0,160,30 });
-	mRightSprite	= new Sprite("Resource files/tank.png", RECT{ 192,0,224,30 });
+	mUpSprite = new Sprite("Resource files/tank.png", RECT{ 2,4,2+ 32,4+ 32 },0,0, D3DXCOLOR(255, 0, 255, 255));
+	mLeftSprite = new Sprite("Resource files/tank.png", RECT{ 82,2,82+32,2+32 },0,0, D3DXCOLOR(255, 0, 255, 255));
+	mDownSprite = new Sprite("Resource files/tank.png", RECT{ 156,2,156+32,2+32 },0,0, D3DXCOLOR(255, 0, 255, 255));
+	mRightSprite = new Sprite("Resource files/tank.png", RECT{ 233,2,233+32,2+32}, 0, 0, D3DXCOLOR(255, 0, 255, 255));
 	/*mUpSprite->SetScale(D3DXVECTOR2(1.5, 1.5));
 	mLeftSprite->SetScale(D3DXVECTOR2(1.5, 1.5));
 	mDownSprite->SetScale(D3DXVECTOR2(1.5, 1.5));
@@ -15,85 +14,141 @@ Player::Player()
 	this->vx = 0;
 	this->vy = 0;
 
+	Tag = Entity::player;
 	mCurrentSprite = mUpSprite;
-	Dir = MoveDirection::IDLE;
+	mAction = Idle;
 
 	m_top_sprite = new Sprite("Resource files/topOfplayer.png", RECT(), 0, 0, D3DXCOLOR(255, 0, 255,255));
-	//m_top_sprite->SetScale(D3DXVECTOR2(0.5, 0.5));
+	
 }
 
 Player::~Player(){}
+void Player::Write(OutputMemoryBitStream& os)
+{
+	Entity::Write(os);
+	os.Write((int)mAction, Define::bitofID);
+	os.Write(isFight);
+}
 
+
+
+void Player::Read(InputMemoryBitStream& is)
+{
+	Entity::Read(is);
+	int action = 0;
+	is.Read(action, Define::bitofID);
+	//mAction = (Action)action;
+	is.Read(isFight);
+	is.Read(last_move_time);
+}
 void Player::Update(float dt)
 {
 
-	lastPosition = GetPosition();
-	if(Dir!=LastDir)
-	switch (Dir)
-	{
-	case Left:
-		mCurrentSprite = mLeftSprite;
-		this->SetVx(-Define::PLAYER_SPEED);
-		this->SetVy(0);
-		break;
-	case Right: 	
-		mCurrentSprite = mRightSprite;
-		this->SetVx(Define::PLAYER_SPEED);
-		this->SetVy(0);
-		break;
-	case Up:
-		mCurrentSprite = mUpSprite;
-		this->SetVy(Define::PLAYER_SPEED);
-		this->SetVx(0);
-		break;
-	case Down:
-		mCurrentSprite = mDownSprite;
-		this->SetVy(-Define::PLAYER_SPEED);
-		this->SetVx(0); 
-		break;
-	case IDLE:
-		this->SetVx(0);
-		this->SetVy(0); 
-		break;
+
+	Entity::Update(dt);
+	switch (dir) {
+	case Direction::left:mCurrentSprite = mLeftSprite; break;
+	case Direction::right:mCurrentSprite = mRightSprite; break;
+	case up:mCurrentSprite = mUpSprite; break;
+	case down:mCurrentSprite = mDownSprite; break;
 	default: ;
 	}
-	Entity::Update(dt);
-	LastDir = Dir;
+	switch (mAction)
+	{
+	case Idle:  Stand();  break;
+	case GoLeft: MoveLeft(); break;
+	case GoRight:MoveRight(); break;
+	case GoUp:MoveUp(); break;
+	case GoDown:MoveDown(); break;
+	case Action::Fight:break;
+	default: break;
+	}
+
+
+	
 	
 }
-void Player::HandleKeyboard(std::map<int, bool> keys)
+void Player::HandleKeyboard(std::map<int, bool> keys,int &check_to_send)
 {
+	
 	if (keys[VK_LEFT]) {
-		if (Dir == Left) return;
+		if (mAction != GoLeft)
 		MoveLeft();
 	}
 	else if (keys[VK_RIGHT]) {
-		if (Dir == Right) return;
+		if (mAction != GoRight)
 		MoveRight();
 	}
 	else if (keys[VK_DOWN]) {
-		if (Dir == Down) return;
+		if (mAction != GoDown)
 		MoveDown();
 	}
 	else if (keys[VK_UP]) {
-		if (Dir == Up) return;
+		if (mAction != GoUp)
 		MoveUp();
 	}
 	else {
-		if (Dir == IDLE) return;
+		if (mAction != Idle)
 		Stand();
 	}
+	
+
+	if (keys[VK_SPACE])
+	{
+		if (GetTickCount() - lastFire >= 300)
+		{
+			mAction = Fight;
+			lastFire = GetTickCount();
+		}
+	}
+
+	OutputMemoryBitStream os;
+	os.Write(Define::InputPacket, Define::bitofTypePacket);
+	os.Write(ID, Define::bitofID);
+	os.Write((int)mAction, Define::bitofID);
+	int time_of_packet = GetTickCount();
+	os.Write(time_of_packet);
+	GameGlobal::socket->Send(os.GetBufferPtr(), os.GetByteLength());
+
+	/*if(check_to_send==20)
+	{
+		
+	}*/
+	
+
+
+
+
+	//check_to_send = 0;*/
+	
 }
 void Player::Draw(D3DXVECTOR3 position, RECT sourceRect, D3DXVECTOR2 scale, D3DXVECTOR2 transform, float angle, D3DXVECTOR2 rotationCenter, D3DXCOLOR colorKey)
 {
 	mCurrentSprite->SetPosition(this->GetPosition());
-
+	/*for (auto bullet : mBullet)
+	{
+		bullet->Draw();
+	}*/
 	mCurrentSprite->Draw(D3DXVECTOR3(posX, posY, 0));
 	if (isMe)
 	{
 		m_top_sprite->SetPosition(D3DXVECTOR3(posX, posY + 35, 0));
 		m_top_sprite->Draw();
 	}
+}
+
+void Player::CollideWith_World()
+{
+	this->vx = 0;
+	this->vy = 0;
+}
+
+
+void Player::Emplace(Player* pl)
+{
+	Entity::Emplace(pl);
+	this->mAction = pl->mAction;
+	this->isFight = pl->isFight;
 }
 
 RECT Player::GetBound()
@@ -103,68 +158,82 @@ RECT Player::GetBound()
 	rect.right = rect.left + mCurrentSprite->GetWidth();
 	rect.top = this->posY - mCurrentSprite->GetHeight() / 2;
 	rect.bottom = rect.top + mCurrentSprite->GetHeight();
-
 	return rect;
 }
 
 void Player::onSetID(int ID)
 {
 	this->ID = ID;
+	/*for (int i = 1; i<4; i++)
+	{
+		Bullet* bullet = new Bullet(Up);
+		bullet->SetPosition(0, 0);
+		bullet->ID = this->ID * 10 + i;
+		bullet->isActive = false;
+		mBullet.push_back(bullet);
+	}*/
 	switch (ID)
 	{
 	case 2:
-		mUpSprite = new Sprite("Resource files/tank.png", RECT{ 257,3,257+ 28,3+28 });
-		mLeftSprite = new Sprite("Resource files/tank.png", RECT{ 323,2, 323+28,2+28 });
-		mDownSprite = new Sprite("Resource files/tank.png", RECT{ 386,2,386+28,28 });
-		mRightSprite = new Sprite("Resource files/tank.png", RECT{ 449,2,449+28,2+28 });
+		mUpSprite = new Sprite("Resource files/tank.png", RECT{ 310,4,310 + 32,4 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
+		mLeftSprite = new Sprite("Resource files/tank.png", RECT{ 389,2,389 + 32,2 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
+		mDownSprite = new Sprite("Resource files/tank.png", RECT{ 464,2,464 + 32,2 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
+		mRightSprite = new Sprite("Resource files/tank.png", RECT{ 540,2,540 + 32,2 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
 		break;
 	case 3:
-		mUpSprite = new Sprite("Resource files/tank.png", RECT{ 1,259,1 + 28,259 + 28 });
-		mLeftSprite = new Sprite("Resource files/tank.png", RECT{ 67,257, 67 + 28,257 + 28 });
-		mDownSprite = new Sprite("Resource files/tank.png", RECT{ 129,257,129 + 28,257+28 });
-		mRightSprite = new Sprite("Resource files/tank.png", RECT{ 194,257,194 + 28,257 + 28 });
+		mUpSprite = new Sprite("Resource files/tank.png", RECT{ 2,312,2 + 32,312 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
+		mLeftSprite = new Sprite("Resource files/tank.png", RECT{ 82,310,82 + 32,310 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
+		mDownSprite = new Sprite("Resource files/tank.png", RECT{ 156,310,156 + 32,310 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
+		mRightSprite = new Sprite("Resource files/tank.png", RECT{ 233,310,233 + 32,310 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
 		break;
 	case 4:
-		mUpSprite = new Sprite("Resource files/tank.png", RECT{ 257,260,257 + 28,260 + 28 });
-		mLeftSprite = new Sprite("Resource files/tank.png", RECT{ 323,257, 323 + 28,257 + 28 });
-		mDownSprite = new Sprite("Resource files/tank.png", RECT{ 386,258,386 + 28,258 + 28 });
-		mRightSprite = new Sprite("Resource files/tank.png", RECT{ 449,258,449 + 28,258 + 28 });
+		mUpSprite = new Sprite("Resource files/tank.png", RECT{ 310,312,310 + 32,312 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
+		mLeftSprite = new Sprite("Resource files/tank.png", RECT{ 389,310,389 + 32,310 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
+		mDownSprite = new Sprite("Resource files/tank.png", RECT{ 464,310,464 + 32,310 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
+		mRightSprite = new Sprite("Resource files/tank.png", RECT{ 540,310,540 + 32,310 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
 		break;
 
 	}
 	mCurrentSprite = mUpSprite;
 }
 
-MoveDirection Player::getMoveDirection()
-{
-	return Dir;
-}
-void Player::setMoveDirection(MoveDirection direction) {
-	Dir = direction;
-}
+//Entity::MoveDirection Player::getMoveDirection()
+//{
+//	return Dir;
+//}
+//void Player::setMoveDirection(MoveDirection direction) {
+//	Dir = direction;
+//}
 void Player::MoveLeft() {
-	Stand();
+
 	mCurrentSprite = mLeftSprite;
-	Dir = MoveDirection::Left;
+	this->SetVx(-Define::PLAYER_SPEED);
+	this->SetVy(0);
+	this->mAction = GoLeft;
 }
 void Player::MoveRight() {
-	Stand();
+
 	mCurrentSprite = mRightSprite;
-	Dir = MoveDirection::Right;
+	this->SetVx(Define::PLAYER_SPEED);
+	this->SetVy(0);
+	this->mAction = GoRight;
 }
 void Player::MoveUp() {
-	Stand();
-	mCurrentSprite = mUpSprite;
 	
-	Dir = MoveDirection::Up;
+	mCurrentSprite = mUpSprite;
+	this->SetVy(Define::PLAYER_SPEED);
+	this->SetVx(0);
+	this->mAction = GoUp;
 }
 void Player::MoveDown() {
-	Stand();
-	mCurrentSprite = mDownSprite;
 	
-	Dir = MoveDirection::Down;
+	mCurrentSprite = mDownSprite;
+	this->SetVy(-Define::PLAYER_SPEED);
+	this->SetVx(0);
+	this->mAction = GoDown;
 }
 void Player::Stand() {
-	Dir= MoveDirection::IDLE;
-	
+	this->SetVx(0);
+	this->SetVy(0);
+	this->mAction = Idle;
 }

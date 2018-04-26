@@ -4,7 +4,7 @@
 
 void WaitRoomScene::LoadContent()
 {
-	
+		
 	socket = SocketUtil::CreateTCPSocket();
 
 	SocketAddress address(inet_addr("127.0.0.1"), 8888);
@@ -30,6 +30,7 @@ void WaitRoomScene::LoadContent()
 		{
 			is.Read(ID,Define::bitofID);
 			socket->ChangetoDontWait(1);
+			GameGlobal::socket = socket;
 		}
 	}
 
@@ -49,6 +50,10 @@ void WaitRoomScene::LoadContent()
 	myFont = NULL;
 	HRESULT rs = D3DXCreateFont(GameGlobal::GetCurrentDevice(), 30, 10, FW_NORMAL, 1, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, ANTIALIASED_QUALITY, FF_DONTCARE, (LPCWSTR) "Arial", &myFont);
 	
+	myRect.left = GameGlobal::GetWidth() / 2 - 150;
+	myRect.top = GameGlobal::GetHeight() / 2 - 100;
+	myRect.bottom = myRect.top + 200;
+	myRect.right = myRect.left + 400;
 	
 }
 int lastAdd = 0;
@@ -69,7 +74,7 @@ void WaitRoomScene::Update(float dt)
 	char* buff = static_cast<char*>(std::malloc(1024));
 	size_t receivedByteCount = socket->Receive(buff, 1024);
 
-	if(GetTickCount()-timetoStart>=3000 && timetoStart!=0)
+	if(GetTickCount()-timetoStart >=0 && timetoStart!=0)
 		SceneManager::GetInstance()->ReplaceScene(new TestScene(socket,m_player));
 
 	if (receivedByteCount>0)
@@ -84,7 +89,10 @@ void WaitRoomScene::Update(float dt)
 			//Sau khi nhan duoc goi tin start thi nhan thong tin Position de start game
 			UpdateBox(4);
 			timetoStart = GetTickCount();
-			is.Read(m_player);
+			int tag=0; is.Read(tag, Define::bitofID);
+			int id = 0; is.Read(id, Define::bitofID);
+			m_player->ID = id;
+			m_player->Read(is);
 
 		}
 		else if (typeofPacket == Define::UpdateCountPlayer)
@@ -116,10 +124,7 @@ void WaitRoomScene::Draw()
 	{
 		ele->Draw();
 	}
-	myRect.left = GameGlobal::GetWidth() /2-150;
-	myRect.top = GameGlobal::GetHeight()/2-100;
-	myRect.bottom = myRect.top + 200;
-	myRect.right = myRect.left + 400;
+	
 	std::string m_string;
 	if(timetoStart == 0)
 		m_string = "WAITING FOR PLAYER" + my_string;

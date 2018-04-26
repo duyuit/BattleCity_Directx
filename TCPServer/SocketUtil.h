@@ -1,17 +1,20 @@
-#pragma once
+﻿#pragma once
 #include "TCPSocket.h"
+#include <winsock.h>
 #include <vector>
 using namespace std;
 class SocketUtil
 {
 public:
 	static TCPSocketPtr CreateTCPSocket();
-	static fd_set* FillSetFromVector(fd_set& outSet, const std::vector<TCPSocketPtr>* inSockets);
-	static void FillVectorFromSet(std::vector<TCPSocketPtr>* outSockets, const std::vector<TCPSocketPtr>* inSockets,
-	                       const fd_set& inSet);
-	static int Select(const std::vector<TCPSocketPtr>* inReadSet, std::vector<TCPSocketPtr>* outReadSet,
-	           const vector<TCPSocketPtr>* inWriteSet, vector<TCPSocketPtr>* outWriteSet,
-	           const vector<TCPSocketPtr>* inExceptSet, vector<TCPSocketPtr>* outExceptSet);
+	inline static fd_set* FillSetFromVector(fd_set& outSet, const vector< TCPSocketPtr >* inSockets, int& ioNaxNfds);
+	inline static void FillVectorFromSet(vector< TCPSocketPtr >* outSockets, const vector< TCPSocketPtr >* inSockets, const fd_set& inSet);
+	static int			Select(const vector< TCPSocketPtr >* inReadSet,
+		vector< TCPSocketPtr >* outReadSet,
+		const vector< TCPSocketPtr >* inWriteSet,
+		vector< TCPSocketPtr >* outWriteSet,
+		const vector< TCPSocketPtr >* inExceptSet,
+		vector< TCPSocketPtr >* outExceptSet);
 };
 
 TCPSocketPtr SocketUtil::CreateTCPSocket()
@@ -25,15 +28,18 @@ TCPSocketPtr SocketUtil::CreateTCPSocket()
 		return nullptr;
 	}
 }
-
-fd_set* SocketUtil::FillSetFromVector(fd_set& outSet, const std::vector<TCPSocketPtr>* inSockets)
+fd_set* SocketUtil::FillSetFromVector(fd_set& outSet, const vector< TCPSocketPtr >* inSockets, int& ioNaxNfds)
 {
 	if (inSockets)
 	{
 		FD_ZERO(&outSet);
+
 		for (const TCPSocketPtr& socket : *inSockets)
 		{
 			FD_SET(socket->mSocket, &outSet);
+#if !_WIN32
+			ioNaxNfds = std::max(ioNaxNfds, socket->mSocket);
+#endif
 		}
 		return &outSet;
 	}
@@ -43,8 +49,7 @@ fd_set* SocketUtil::FillSetFromVector(fd_set& outSet, const std::vector<TCPSocke
 	}
 }
 
-void SocketUtil::FillVectorFromSet(std::vector<TCPSocketPtr>* outSockets, const std::vector<TCPSocketPtr>* inSockets,
-                                   const fd_set& inSet)
+void SocketUtil::FillVectorFromSet(vector< TCPSocketPtr >* outSockets, const vector< TCPSocketPtr >* inSockets, const fd_set& inSet)
 {
 	if (inSockets && outSockets)
 	{
@@ -60,19 +65,32 @@ void SocketUtil::FillVectorFromSet(std::vector<TCPSocketPtr>* outSockets, const 
 }
 
 
-int SocketUtil::Select(const std::vector<TCPSocketPtr>* inReadSet, std::vector<TCPSocketPtr>* outReadSet,
-	const vector<TCPSocketPtr>* inWriteSet, vector<TCPSocketPtr>* outWriteSet,
-	const vector<TCPSocketPtr>* inExceptSet, vector<TCPSocketPtr>* outExceptSet)
-{     //build up some sets from our vectors     
+int SocketUtil::Select(const vector< TCPSocketPtr >* inReadSet,
+	vector< TCPSocketPtr >* outReadSet,
+	const vector< TCPSocketPtr >* inWriteSet,
+	vector< TCPSocketPtr >* outWriteSet,
+	const vector< TCPSocketPtr >* inExceptSet,
+	vector< TCPSocketPtr >* outExceptSet)
+{
+	//build up some sets from our vectors
 	fd_set read, write, except;
-	fd_set *readPtr = FillSetFromVector(read, inReadSet);
-	fd_set *writePtr = FillSetFromVector(write, inWriteSet);
-	fd_set *exceptPtr = FillSetFromVector(except, inExceptSet);
-	int toRet = select(0, readPtr, writePtr, exceptPtr, nullptr);
+
+	int nfds = 0;
+
+	fd_set *readPtr = FillSetFromVector(read, inReadSet, nfds);
+	fd_set *writePtr = FillSetFromVector(read, inWriteSet, nfds);
+	fd_set *exceptPtr = FillSetFromVector(read, inExceptSet, nfds);
+
+	timeval *timeout=new timeval();
+	timeout->tv_sec = 0; // Server sẽ lắng nghe trong 90s, nếu tham số timeout = NULL thì select sẽ chạy mãi.
+	timeout->tv_usec = 10;
+
+	int toRet = select(nfds + 1, readPtr, writePtr, exceptPtr, nullptr);
+
 	if (toRet > 0)
 	{
-		FillVectorFromSet(outReadSet, inReadSet, read); 
-		FillVectorFromSet(outWriteSet, inWriteSet, write); 
+		FillVectorFromSet(outReadSet, inReadSet, read);
+		FillVectorFromSet(outWriteSet, inWriteSet, write);
 		FillVectorFromSet(outExceptSet, inExceptSet, except);
 	}
 	return toRet;

@@ -37,6 +37,15 @@
     <Filter Include="FrameWork\GameNetWork">
       <UniqueIdentifier>{209fee21-acef-41e1-a4a1-4b9d15d845cd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FrameWork\MapReader">
+      <UniqueIdentifier>{32d99d3d-91d0-4e94-a1cc-3849575a35fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\GameObjects\Bullet">
+      <UniqueIdentifier>{8020ff32-8e58-44ed-826f-cfbeca04c146}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\GameObjects\MapObject">
+      <UniqueIdentifier>{cf8fb7a9-9ec7-41b9-874d-531d165660a4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -80,6 +89,99 @@
     </ClCompile>
     <ClCompile Include="MemoryBitStream.cpp">
       <Filter>FrameWork\GameNetWork</Filter>
+    </ClCompile>
+    <ClCompile Include="GameMap.cpp">
+      <Filter>FrameWork\GameComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="MapReader\base64.cpp">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClCompile>
+    <ClCompile Include="MapReader\miniz.c">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClCompile>
+    <ClCompile Include="MapReader\tinyxml2.cpp">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClCompile>
+    <ClCompile Include="MapReader\TmxEllipse.cpp">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClCompile>
+    <ClCompile Include="MapReader\TmxImage.cpp">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClCompile>
+    <ClCompile Include="MapReader\TmxImageLayer.cpp">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClCompile>
+    <ClCompile Include="MapReader\TmxLayer.cpp">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClCompile>
+    <ClCompile Include="MapReader\TmxMap.cpp">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClCompile>
+    <ClCompile Include="MapReader\TmxObject.cpp">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClCompile>
+    <ClCompile Include="MapReader\TmxObjectGroup.cpp">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClCompile>
+    <ClCompile Include="MapReader\TmxPolygon.cpp">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClCompile>
+    <ClCompile Include="MapReader\TmxPolyline.cpp">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClCompile>
+    <ClCompile Include="MapReader\TmxPropertySet.cpp">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClCompile>
+    <ClCompile Include="MapReader\TmxTerrain.cpp">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClCompile>
+    <ClCompile Include="MapReader\TmxTerrainArray.cpp">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClCompile>
+    <ClCompile Include="MapReader\TmxTile.cpp">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClCompile>
+    <ClCompile Include="MapReader\TmxTileLayer.cpp">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClCompile>
+    <ClCompile Include="MapReader\TmxTileOffset.cpp">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClCompile>
+    <ClCompile Include="MapReader\TmxTileset.cpp">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClCompile>
+    <ClCompile Include="MapReader\TmxUtil.cpp">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>FrameWork\GameObjects\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="TestTiepScene.cpp">
+      <Filter>FrameWork\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="GameCollision.cpp">
+      <Filter>FrameWork\GameComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="Boundary.cpp">
+      <Filter>FrameWork\GameObjects\MapObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Brick.cpp">
+      <Filter>FrameWork\GameObjects\MapObject</Filter>
+    </ClCompile>
+    <ClCompile Include="BrickNormal.cpp">
+      <Filter>FrameWork\GameObjects\MapObject</Filter>
+    </ClCompile>
+    <ClCompile Include="MetalBrick.cpp">
+      <Filter>FrameWork\GameObjects\MapObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Water.cpp">
+      <Filter>FrameWork\GameObjects\MapObject</Filter>
+    </ClCompile>
+    <ClCompile Include="GameDebugDraw.cpp">
+      <Filter>FrameWork\GameComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="GameLog.cpp">
+      <Filter>FrameWork\GameComponents</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -134,5 +236,112 @@
     <ClInclude Include="MemoryBitStream.h">
       <Filter>FrameWork\GameNetWork</Filter>
     </ClInclude>
+    <ClInclude Include="GameMap.h">
+      <Filter>FrameWork\GameComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\base64.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\tinyxml2.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\TmxEllipse.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\TmxImage.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\TmxImageLayer.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\TmxLayer.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\TmxMap.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\TmxMapTile.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\TmxObject.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\TmxObjectGroup.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\TmxPoint.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\TmxPolygon.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\TmxPolyline.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\TmxPropertySet.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\TmxTerrain.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\TmxTerrainArray.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\TmxTile.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\TmxTileLayer.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\TmxTileOffset.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\TmxTileset.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\TmxUtil.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\zconf.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\zlib.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>FrameWork\GameObjects\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="TestTiepScene.h">
+      <Filter>FrameWork\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="GameCollision.h">
+      <Filter>FrameWork\GameComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="Boundary.h">
+      <Filter>FrameWork\GameObjects\MapObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Brick.h">
+      <Filter>FrameWork\GameObjects\MapObject</Filter>
+    </ClInclude>
+    <ClInclude Include="BrickNormal.h">
+      <Filter>FrameWork\GameObjects\MapObject</Filter>
+    </ClInclude>
+    <ClInclude Include="MetalBrick.h">
+      <Filter>FrameWork\GameObjects\MapObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Water.h">
+      <Filter>FrameWork\GameObjects\MapObject</Filter>
+    </ClInclude>
+    <ClInclude Include="GameDebugDraw.h">
+      <Filter>FrameWork\GameComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLog.h">
+      <Filter>FrameWork\GameComponents</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="MapReader\Tmx.h.in">
+      <Filter>FrameWork\MapReader</Filter>
+    </None>
   </ItemGroup>
 </Project>

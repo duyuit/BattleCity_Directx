@@ -1,10 +1,11 @@
 
 
 
-#include "Player.h"
+#include <cstdint>
+#include <cstdlib>
+#include <string>
 #include "GameDefine.h"
 
-//
 //inline uint32_t ConvertToFixed( float inNumber, float inMin, float inPrecision )
 //{
 //	return static_cast< int > ( ( inNumber - inMin ) / inPrecision );
@@ -42,14 +43,24 @@ public:
 	void Write( uint32_t inData, uint32_t inBitCount = 32 )	{ WriteBits( &inData, inBitCount ); }
 	void Write( int inData, uint32_t inBitCount = 32 )		{ WriteBits( &inData, inBitCount ); }
 	void Write( float inData )								{ WriteBits( &inData, 32 ); }
-	//void Write(D3DXVECTOR2 pos) { Write((int)pos.x, 12); Write((int)pos.y, 12); };
-	void Write(Player* pl)
-	{
-		Write(pl->ID, Define::bitofID);
-		Write(pl->Dir, Define::bitofID);
-		Write((int)pl->GetPosition().x, Define::bitofLocation);
-		Write((int)pl->GetPosition().y, Define::bitofLocation);
-	}
+
+	//void Write(Player* pl)
+	//{
+	//	Write(pl->ID,Define::bitofID);
+	//	Write((int)pl->mAction,Define::bitofID);
+	//	Write(pl->isFight);
+	//	Write((int)pl->GetPosition().x,Define::bitofLocation);
+	//	Write((int)pl->GetPosition().y, Define::bitofLocation);
+	//}
+	//void Write(Entity* pl)
+	//{
+	//	Write(pl->ID, Define::bitofID);
+	//	Write(pl->Tag, Define::bitofID);
+	//	//Write(pl->Dir, Define::bitofID);
+	//	Write((int)pl->GetPosition().x, Define::bitofLocation);
+	//	Write((int)pl->GetPosition().y, Define::bitofLocation);
+	//}
+
 
 	
 	template< typename T >
@@ -137,16 +148,29 @@ public:
 	void		Read( uint8_t& outData, uint32_t inBitCount = 8 )		{ ReadBits( &outData, inBitCount ); }
 	void		Read( bool& outData )									{ ReadBits( &outData, 1 ); }
 
-	void		Read(Player* pl)
-				{
-					Read(pl->ID, Define::bitofID);
-					Read(pl->Dir, Define::bitofID);
-					int x = 0; int y = 0;
-					Read(x, Define::bitofLocation);
-					Read(y, Define::bitofLocation);
-					pl->SetPosition(x, y);
-				}
-	
+	//void		Read(Player* pl)
+	//			{
+	//				Read(pl->ID,Define::bitofID);
+	//				int action = 0;
+	//				Read(action, Define::bitofID);
+	//				pl->mAction = (Action)action;
+	//				Read(pl->isFight);
+	//				int x = 0; int y = 0;
+	//				Read(x,Define::bitofLocation);
+	//				Read(y,Define::bitofLocation);
+	//				pl->SetPosition(x, y);
+	//			}
+	//void		Read(Entity* pl)
+	//{
+	//	Read(pl->ID, Define::bitofID);
+	//	Read(pl->Tag, Define::bitofID);
+	////	Read(pl->Dir, Define::bitofID);
+	//	int x = 0; int y = 0;
+	//	Read(x, Define::bitofLocation);
+	//	Read(y, Define::bitofLocation);
+	//	pl->SetPosition(x, y);
+	//}
+	//
 
 	void		ResetToCapacity( uint32_t inByteCapacity )				{ mBitCapacity = inByteCapacity << 3; mBitHead = 0; }
 

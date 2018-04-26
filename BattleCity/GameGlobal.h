@@ -2,6 +2,8 @@
 #include <d3dx9.h>
 #include <d3d9.h>
 #include <Windows.h>
+#include "TCPSocket.h"
+
 class GameGlobal
 {
 public:
@@ -28,8 +30,9 @@ public:
 	static int GetHeight();
 
 	static LPDIRECT3DSURFACE9 backSurface;
-
+	static TCPSocketPtr socket;
 	static bool isGameRunning; //trang thai xem game co dang chay khong
+	static int RTT;
 
 private:
 	static HINSTANCE mHInstance; //hInstance của windows hiện tại

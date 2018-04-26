@@ -1,34 +1,50 @@
 #pragma once
 #include "GameGlobal.h"
+#include "MemoryBitStream.h"
+#include "Sprite.h"
+class Player;
+enum Direction
+{
+	left,
+	right,
+	up,
+	down
+};
 class Entity
 {
 public:
+	virtual ~Entity() = default;
 	Entity();
-	enum SideCollisions
-	{
-		Left, //0
-		Right, //1
-		Top, //2
-		Bottom, //3
-		TopLeft, //4
-		TopRight, //5
-		BottomLeft, //6
-		BottomRight, //7
-		NotKnow
-	};
+
+	
 
 	enum EntityTypes
 	{
-		None, Brick, Enemy, Mario, Static, BrickGoldNormal, BrickGold
+		player, bullet, item, block, none, Brick,
+		MetalBrick,
+		Water
 	};
+	int ID = 0;
+	Direction dir = up;
 
-	EntityTypes Tag; //Tag de nhan vien loai Entity
+	EntityTypes Tag=none; //Tag de nhan vien loai Entity
+
+	virtual void Write(OutputMemoryBitStream &os);
+	virtual void Read(InputMemoryBitStream &is);
+	virtual void Emplace(Entity* en);
+
+
+
+	EntityTypes getTag();
 
 	virtual RECT GetBound();
 
 	virtual void SetPosition(float x, float y);
 
 	virtual void SetPosition(D3DXVECTOR2 pos);
+
+	virtual void SetPosition(D3DXVECTOR3 pos);
+
 
 	virtual void AddPosition(D3DXVECTOR2 pos);
 
@@ -55,13 +71,12 @@ public:
 	virtual void AddVy(float vy);
 
 	virtual D3DXVECTOR2 GetPosition();
-
 	virtual void Update(float dt);
-	int ID = 0;
+
 protected:
 
 	//duoc goi khi set position cua Entity, dung cho ke thua
-	virtual void OnSetPosition(D3DXVECTOR2 pos);
+	virtual void OnSetPosition(D3DXVECTOR3 pos);
 
 	//vi tri tam position x va y
 	float posX, posY;
@@ -71,5 +86,6 @@ protected:
 
 	//size cua entity
 	float width, height;
+
 };
 

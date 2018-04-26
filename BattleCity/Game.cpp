@@ -3,6 +3,7 @@
 #include "SceneManager.h"
 #include "TestScene.h"
 #include "WaitRoomScene.h"
+#include "TestTiepScene.h"
 
 
 Game::Game(int fps)
@@ -66,7 +67,8 @@ void Game::InitLoop()
 		}
 		else
 		{
-			Sleep(tickPerFrame - delta);
+			int delta_time = tickPerFrame - delta;
+			Sleep(delta_time);
 			delta = tickPerFrame;
 		}
 	}
