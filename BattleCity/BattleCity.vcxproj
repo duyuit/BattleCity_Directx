@@ -126,11 +126,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="Boundary.cpp" />
+    <ClCompile Include="Brick.cpp" />
+    <ClCompile Include="BrickNormal.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameCollision.cpp" />
+    <ClCompile Include="GameDebugDraw.cpp" />
     <ClCompile Include="GameGlobal.cpp" />
+    <ClCompile Include="GameLog.cpp" />
     <ClCompile Include="GameMap.cpp" />
     <ClCompile Include="GameTime.cpp" />
     <ClCompile Include="main.cpp" />
@@ -155,21 +161,30 @@
     <ClCompile Include="MapReader\TmxTileset.cpp" />
     <ClCompile Include="MapReader\TmxUtil.cpp" />
     <ClCompile Include="MemoryBitStream.cpp" />
+    <ClCompile Include="MetalBrick.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="TestScene.cpp" />
+    <ClCompile Include="TestTiepScene.cpp" />
     <ClCompile Include="WaitRoomScene.cpp" />
+    <ClCompile Include="Water.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
+    <ClInclude Include="Boundary.h" />
+    <ClInclude Include="Brick.h" />
+    <ClInclude Include="BrickNormal.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameCollision.h" />
+    <ClInclude Include="GameDebugDraw.h" />
     <ClInclude Include="GameDefine.h" />
     <ClInclude Include="GameGlobal.h" />
+    <ClInclude Include="GameLog.h" />
     <ClInclude Include="GameMap.h" />
     <ClInclude Include="GameTime.h" />
     <ClInclude Include="MapReader\base64.h" />
@@ -196,6 +211,7 @@
     <ClInclude Include="MapReader\zconf.h" />
     <ClInclude Include="MapReader\zlib.h" />
     <ClInclude Include="MemoryBitStream.h" />
+    <ClInclude Include="MetalBrick.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
@@ -204,7 +220,9 @@
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="TCPSocket.h" />
     <ClInclude Include="TestScene.h" />
+    <ClInclude Include="TestTiepScene.h" />
     <ClInclude Include="WaitRoomScene.h" />
+    <ClInclude Include="Water.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MapReader\Tmx.h.in" />

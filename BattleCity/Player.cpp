@@ -1,7 +1,5 @@
 #include "Player.h"
-#include "GameDefine.h"
-#include <string>
-#include "MemoryBitStream.h"
+
 
 Player::Player()
 {
@@ -18,124 +16,139 @@ Player::Player()
 
 	Tag = Entity::player;
 	mCurrentSprite = mUpSprite;
-	Dir = MoveDirection::IDLE;
+	mAction = Idle;
 
 	m_top_sprite = new Sprite("Resource files/topOfplayer.png", RECT(), 0, 0, D3DXCOLOR(255, 0, 255,255));
 	
 }
 
 Player::~Player(){}
+void Player::Write(OutputMemoryBitStream& os)
+{
+	Entity::Write(os);
+	os.Write((int)mAction, Define::bitofID);
+	os.Write(isFight);
+}
 
+
+
+void Player::Read(InputMemoryBitStream& is)
+{
+	Entity::Read(is);
+	int action = 0;
+	is.Read(action, Define::bitofID);
+	//mAction = (Action)action;
+	is.Read(isFight);
+	is.Read(last_move_time);
+}
 void Player::Update(float dt)
 {
 
-	lastPosition = GetPosition();
-	if(Dir!=LastDir)
-	switch (Dir)
-	{
-	case Left:
-		mCurrentSprite = mLeftSprite;
-		this->SetVx(-Define::PLAYER_SPEED);
-		this->SetVy(0);
-		break;
-	case Right: 	
-		mCurrentSprite = mRightSprite;
-		this->SetVx(Define::PLAYER_SPEED);
-		this->SetVy(0);
-		break;
-	case Up:
-		mCurrentSprite = mUpSprite;
-		this->SetVy(Define::PLAYER_SPEED);
-		this->SetVx(0);
-		break;
-	case Down:
-		mCurrentSprite = mDownSprite;
-		this->SetVy(-Define::PLAYER_SPEED);
-		this->SetVx(0); 
-		break;
-	case IDLE:
-		this->SetVx(0);
-		this->SetVy(0); 
-		break;
+
+	Entity::Update(dt);
+	switch (dir) {
+	case Direction::left:mCurrentSprite = mLeftSprite; break;
+	case Direction::right:mCurrentSprite = mRightSprite; break;
+	case up:mCurrentSprite = mUpSprite; break;
+	case down:mCurrentSprite = mDownSprite; break;
 	default: ;
 	}
-	Entity::Update(dt);
-	LastDir = Dir;
-	for(auto bullet:mBullet)
+	switch (mAction)
 	{
-		if (!bullet->isActive) continue;
-		bullet->Update(dt);
-		
-		
+	case Idle:  Stand();  break;
+	case GoLeft: MoveLeft(); break;
+	case GoRight:MoveRight(); break;
+	case GoUp:MoveUp(); break;
+	case GoDown:MoveDown(); break;
+	case Action::Fight:break;
+	default: break;
 	}
+
+
 	
 	
 }
-void Player::HandleKeyboard(std::map<int, bool> keys)
+void Player::HandleKeyboard(std::map<int, bool> keys,int &check_to_send)
 {
-	if (keys[VK_SPACE]) {
-		if (GetTickCount() - lastFire >= 300)
-		{
-			for (auto bullet : mBullet)
-			{
-				if (!bullet->isActive)
-				{
-					bullet->isActive = true;
-					bullet->SetPosition(this->GetPosition());
-					if(mCurrentSprite==mUpSprite) bullet->setMoveDirection(Up);
-					else if (mCurrentSprite == mLeftSprite) bullet->setMoveDirection(Left);
-					else if (mCurrentSprite == mRightSprite) bullet->setMoveDirection(Right);
-					else if (mCurrentSprite == mDownSprite) bullet->setMoveDirection(Down);
-					lastFire = GetTickCount();
-					OutputMemoryBitStream os;
-					os.Write(Define::InfoPacket, Define::bitofTypePacket);
-					Entity* temp = new Entity();
-					temp->ID = bullet->ID;
-					temp->Tag = EntityTypes::bullet;
-					temp->Dir = bullet->Dir;
-					temp->SetPosition(bullet->GetPosition());
-					os.Write(temp);
-					GameGlobal::socket->Send(os.GetBufferPtr(), os.GetByteLength());
-					break;
-				}
-			}
-		}
-	}
+	
 	if (keys[VK_LEFT]) {
-		if (Dir == Left) return;
+		if (mAction != GoLeft)
 		MoveLeft();
 	}
 	else if (keys[VK_RIGHT]) {
-		if (Dir == Right) return;
+		if (mAction != GoRight)
 		MoveRight();
 	}
 	else if (keys[VK_DOWN]) {
-		if (Dir == Down) return;
+		if (mAction != GoDown)
 		MoveDown();
 	}
 	else if (keys[VK_UP]) {
-		if (Dir == Up) return;
+		if (mAction != GoUp)
 		MoveUp();
 	}
 	else {
-		if (Dir == IDLE) return;
+		if (mAction != Idle)
 		Stand();
 	}
+	
+
+	if (keys[VK_SPACE])
+	{
+		if (GetTickCount() - lastFire >= 300)
+		{
+			mAction = Fight;
+			lastFire = GetTickCount();
+		}
+	}
+
+	OutputMemoryBitStream os;
+	os.Write(Define::InputPacket, Define::bitofTypePacket);
+	os.Write(ID, Define::bitofID);
+	os.Write((int)mAction, Define::bitofID);
+	int time_of_packet = GetTickCount();
+	os.Write(time_of_packet);
+	GameGlobal::socket->Send(os.GetBufferPtr(), os.GetByteLength());
+
+	/*if(check_to_send==20)
+	{
+		
+	}*/
+	
+
+
+
+
+	//check_to_send = 0;*/
 	
 }
 void Player::Draw(D3DXVECTOR3 position, RECT sourceRect, D3DXVECTOR2 scale, D3DXVECTOR2 transform, float angle, D3DXVECTOR2 rotationCenter, D3DXCOLOR colorKey)
 {
 	mCurrentSprite->SetPosition(this->GetPosition());
-	for (auto bullet : mBullet)
+	/*for (auto bullet : mBullet)
 	{
 		bullet->Draw();
-	}
+	}*/
 	mCurrentSprite->Draw(D3DXVECTOR3(posX, posY, 0));
 	if (isMe)
 	{
 		m_top_sprite->SetPosition(D3DXVECTOR3(posX, posY + 35, 0));
 		m_top_sprite->Draw();
 	}
+}
+
+void Player::CollideWith_World()
+{
+	this->vx = 0;
+	this->vy = 0;
+}
+
+
+void Player::Emplace(Player* pl)
+{
+	Entity::Emplace(pl);
+	this->mAction = pl->mAction;
+	this->isFight = pl->isFight;
 }
 
 RECT Player::GetBound()
@@ -151,14 +164,14 @@ RECT Player::GetBound()
 void Player::onSetID(int ID)
 {
 	this->ID = ID;
-	for (int i = 1; i<4; i++)
+	/*for (int i = 1; i<4; i++)
 	{
 		Bullet* bullet = new Bullet(Up);
 		bullet->SetPosition(0, 0);
 		bullet->ID = this->ID * 10 + i;
 		bullet->isActive = false;
 		mBullet.push_back(bullet);
-	}
+	}*/
 	switch (ID)
 	{
 	case 2:
@@ -184,36 +197,43 @@ void Player::onSetID(int ID)
 	mCurrentSprite = mUpSprite;
 }
 
-Entity::MoveDirection Player::getMoveDirection()
-{
-	return Dir;
-}
-void Player::setMoveDirection(MoveDirection direction) {
-	Dir = direction;
-}
+//Entity::MoveDirection Player::getMoveDirection()
+//{
+//	return Dir;
+//}
+//void Player::setMoveDirection(MoveDirection direction) {
+//	Dir = direction;
+//}
 void Player::MoveLeft() {
-	Stand();
+
 	mCurrentSprite = mLeftSprite;
-	Dir = MoveDirection::Left;
+	this->SetVx(-Define::PLAYER_SPEED);
+	this->SetVy(0);
+	this->mAction = GoLeft;
 }
 void Player::MoveRight() {
-	Stand();
+
 	mCurrentSprite = mRightSprite;
-	Dir = MoveDirection::Right;
+	this->SetVx(Define::PLAYER_SPEED);
+	this->SetVy(0);
+	this->mAction = GoRight;
 }
 void Player::MoveUp() {
-	Stand();
-	mCurrentSprite = mUpSprite;
 	
-	Dir = MoveDirection::Up;
+	mCurrentSprite = mUpSprite;
+	this->SetVy(Define::PLAYER_SPEED);
+	this->SetVx(0);
+	this->mAction = GoUp;
 }
 void Player::MoveDown() {
-	Stand();
-	mCurrentSprite = mDownSprite;
 	
-	Dir = MoveDirection::Down;
+	mCurrentSprite = mDownSprite;
+	this->SetVy(-Define::PLAYER_SPEED);
+	this->SetVx(0);
+	this->mAction = GoDown;
 }
 void Player::Stand() {
-	Dir= MoveDirection::IDLE;
-	
+	this->SetVx(0);
+	this->SetVy(0);
+	this->mAction = Idle;
 }

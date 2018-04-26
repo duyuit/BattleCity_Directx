@@ -43,6 +43,9 @@
     <Filter Include="FrameWork\GameObjects\Bullet">
       <UniqueIdentifier>{8020ff32-8e58-44ed-826f-cfbeca04c146}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FrameWork\GameObjects\MapObject">
+      <UniqueIdentifier>{cf8fb7a9-9ec7-41b9-874d-531d165660a4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -152,6 +155,33 @@
     </ClCompile>
     <ClCompile Include="Bullet.cpp">
       <Filter>FrameWork\GameObjects\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="TestTiepScene.cpp">
+      <Filter>FrameWork\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="GameCollision.cpp">
+      <Filter>FrameWork\GameComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="Boundary.cpp">
+      <Filter>FrameWork\GameObjects\MapObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Brick.cpp">
+      <Filter>FrameWork\GameObjects\MapObject</Filter>
+    </ClCompile>
+    <ClCompile Include="BrickNormal.cpp">
+      <Filter>FrameWork\GameObjects\MapObject</Filter>
+    </ClCompile>
+    <ClCompile Include="MetalBrick.cpp">
+      <Filter>FrameWork\GameObjects\MapObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Water.cpp">
+      <Filter>FrameWork\GameObjects\MapObject</Filter>
+    </ClCompile>
+    <ClCompile Include="GameDebugDraw.cpp">
+      <Filter>FrameWork\GameComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="GameLog.cpp">
+      <Filter>FrameWork\GameComponents</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -280,6 +310,33 @@
     </ClInclude>
     <ClInclude Include="Bullet.h">
       <Filter>FrameWork\GameObjects\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="TestTiepScene.h">
+      <Filter>FrameWork\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="GameCollision.h">
+      <Filter>FrameWork\GameComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="Boundary.h">
+      <Filter>FrameWork\GameObjects\MapObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Brick.h">
+      <Filter>FrameWork\GameObjects\MapObject</Filter>
+    </ClInclude>
+    <ClInclude Include="BrickNormal.h">
+      <Filter>FrameWork\GameObjects\MapObject</Filter>
+    </ClInclude>
+    <ClInclude Include="MetalBrick.h">
+      <Filter>FrameWork\GameObjects\MapObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Water.h">
+      <Filter>FrameWork\GameObjects\MapObject</Filter>
+    </ClInclude>
+    <ClInclude Include="GameDebugDraw.h">
+      <Filter>FrameWork\GameComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLog.h">
+      <Filter>FrameWork\GameComponents</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

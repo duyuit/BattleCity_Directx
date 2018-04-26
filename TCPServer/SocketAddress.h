@@ -1,6 +1,8 @@
 #pragma once
+
+
+#include <winsock.h>
 #include <memory>
-#include "WinSock2.h"
 class SocketAddress 
 {
 public: 

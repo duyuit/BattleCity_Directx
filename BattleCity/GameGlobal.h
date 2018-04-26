@@ -32,6 +32,7 @@ public:
 	static LPDIRECT3DSURFACE9 backSurface;
 	static TCPSocketPtr socket;
 	static bool isGameRunning; //trang thai xem game co dang chay khong
+	static int RTT;
 
 private:
 	static HINSTANCE mHInstance; //hInstance của windows hiện tại

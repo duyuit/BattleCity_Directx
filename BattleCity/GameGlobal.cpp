@@ -9,6 +9,7 @@ LPDIRECT3DDEVICE9 GameGlobal::mDevice = nullptr;
 bool GameGlobal::isGameRunning = true;
 IDirect3DSurface9* GameGlobal::backSurface = nullptr;
 TCPSocketPtr GameGlobal::socket = NULL;
+int GameGlobal::RTT = 0;
 GameGlobal::GameGlobal()
 {
 

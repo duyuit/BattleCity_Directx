@@ -10,9 +10,11 @@ namespace Define {
 	const int WelcomePacket = 1;
 	const int UpdateCountPlayer = 2;
 	const int LetStart = 3;
-	const int InfoPacket = 4;
+	const int TankPacket = 4;
+	const int WorldStatePacket = 5;
+	const int InputPacket = 6;
 
 	const int bitofTypePacket = 4;
-	const int bitofID = 3;
+	const int bitofID = 10;
 	const int bitofLocation = 12;
 }

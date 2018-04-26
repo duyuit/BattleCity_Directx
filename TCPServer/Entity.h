@@ -1,10 +1,19 @@
 #pragma once
 
 #include <d3dx9.h>
-
+#include "MemoryBitStream.h"
+class PlayerServer;
+enum Direction
+{
+	left,
+	right,
+	up,
+	down
+};
 class Entity
 {
 public:
+	virtual ~Entity() = default;
 	Entity();
 	//enum SideCollisions
 	//{
@@ -19,19 +28,25 @@ public:
 	//	NotKnow
 	//};
 
+
 	enum EntityTypes
 	{
-		player, bullet, item, block,none
+		player, bullet, item, block,none,Brick,
+		MetalBrick,
+		Water
 	};
-
-	EntityTypes Tag; //Tag de nhan vien loai Entity
-	int Dir = 0;
+	int ID = 0;
+	Direction dir = up;
+	EntityTypes Tag=none; //Tag de nhan vien loai Entity
+	virtual void Write(OutputMemoryBitStream &os);
+	virtual void Read(InputMemoryBitStream &is);
+ 
 	virtual RECT GetBound();
 
 	virtual void SetPosition(float x, float y);
-
+	virtual void Emplace(Entity* en);
 	virtual void SetPosition(D3DXVECTOR2 pos);
-
+	virtual void SetPosition(D3DXVECTOR3 pos);
 	virtual void AddPosition(D3DXVECTOR2 pos);
 
 	virtual void AddPosition(float x, float y);
@@ -59,7 +74,7 @@ public:
 	virtual D3DXVECTOR2 GetPosition();
 
 	virtual void Update(float dt);
-	int ID = 0;
+
 protected:
 
 	//duoc goi khi set position cua Entity, dung cho ke thua
