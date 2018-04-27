@@ -7,12 +7,12 @@ public:
 	~Brick();
 
 	virtual void Update();
-
+	bool isNeedToSend = false;
 	
 	void OnSetPosition(D3DXVECTOR3 position);
 
 	virtual void BeCollideWith_Bullet(D3DXVECTOR2 BulletVelocity);
-
+	void Write(OutputMemoryBitStream& os) override;
 	void setDelete(bool deleted);
 	bool getDelete();
 protected:
@@ -22,7 +22,6 @@ protected:
 	virtual const char* FileName() = 0;
 	virtual RECT rect() = 0;
 	RECT reg;
-
 	bool isDelete;
 };
 

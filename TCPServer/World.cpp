@@ -53,6 +53,15 @@ void World::HandleObject(InputMemoryBitStream &is)
 	}
 }
 
+bool World::CheckDifferent(RECT a, RECT b)
+{
+	if (a.left != b.left || a.right != b.right || a.top != b.top || a.bottom != b.bottom)
+		return true;
+	return false;
+}
+
+
+
 void World::find_or_create(int ID,int action,int time_of_packet)
 {
 
@@ -70,7 +79,6 @@ void World::find_or_create(int ID,int action,int time_of_packet)
 					if (bullet->ID == ele->ID_currentBullet)
 					{
 						
-					
 						bullet->SetPosition(ele->GetPosition());
 						bullet->SetActive(true);
 						bullet->setMoveDirection(ele->dir);
@@ -86,13 +94,27 @@ void World::find_or_create(int ID,int action,int time_of_packet)
 void World::CheckCollision(float dt)
 {
 	vector<Brick*> listCollision = mMap->GetListBrick();
-	
 
+	count_brick_send = 0;
 	for (size_t i = 0; i < listCollision.size(); i++) 
 	{
 		for(auto pl: mListPlayer)
 			if (GameCollision::isCollide(pl, listCollision[i], dt))
 				pl->CollideWith_World();
+		for (auto bl : mListBullets)
+			if (GameCollision::isCollide(bl, listCollision[i], dt))
+			{
+				bl->OnCollision(); 
+				count_brick_send++;
+				listCollision[i]->BeCollideWith_Bullet(D3DXVECTOR2(bl->GetVx(), bl->GetVy()));
+				
+			}
+
+		if (listCollision[i]->getDelete()) {
+			mMap->eraseBrick(i);
+			listCollision.erase(listCollision.begin() + i);
+			i--;
+		}
 	}
 	
 			
@@ -105,17 +127,12 @@ void World::CheckCollision(float dt)
 				}
 			}
 		}*/
-		/*if (listCollision[i]->getDelete()) {
-			mMap->eraseBrick(i);
-			listCollision.erase(listCollision.begin() + i);
-			i--;
-		}*/
+	
 	
 }
 
 void World::Update(float dt)
 {
-	mMap->Update(dt);
 
 	for (auto ele : mListPlayer)
 	{
@@ -125,6 +142,8 @@ void World::Update(float dt)
 	{
 		ele->Update(dt);
 	}
+
+	mMap->Update(dt);
 }
 
 void World::SendWorld(std::vector<TCPSocketPtr> listClient)
@@ -134,34 +153,45 @@ void World::SendWorld(std::vector<TCPSocketPtr> listClient)
 		if (client->ID == 0) continue;
 		OutputMemoryBitStream os;
 		os.Write(Define::WorldStatePacket, Define::bitofTypePacket);
-		
-		int realSizebullet = 0;
+		int count_bullet_send = 0;
 		for (auto ele : mListBullets)
 		{
-			if (ele->lastActive != ele->isActive)
-				realSizebullet++;
-
+			if (ele->isActive || ele->lastActive)
+			{
+				count_bullet_send++;
+			}
 		}
-		int size = mListPlayer.size() + realSizebullet;
+		
+		int size = mListPlayer.size() + count_brick_send +count_bullet_send;
 		os.Write(size);
 		for (auto ele : mListPlayer)
 		{
 			ele->Write(os);
-
 		}
 
 		for (auto ele : mListBullets)
 		{
-			if (ele->lastActive != ele->isActive)
-			{
+			if (ele->isActive || ele->lastActive)
+					ele->Write(os);
+		}
+		
+		for (auto ele : mMap->GetListBrick())
+		{
+				if(ele->isNeedToSend)
 				ele->Write(os);
-			}
+
 		}
 	
 		client->Send(os.GetBufferPtr(),os.GetByteLength());
 
 	}
-	
+	for (auto br : mMap->GetListBrick())
+		br->isNeedToSend = false;
+	for (auto ele : mListBullets)
+	{
+		if (ele->isActive || ele->lastActive)
+			ele->lastActive = false;
+	}
 }
 
 

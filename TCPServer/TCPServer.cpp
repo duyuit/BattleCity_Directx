@@ -31,7 +31,7 @@ int main()
 			current_time = GetTickCount();
 			net_work->Update(delta);
 		}*/
-		
+		net_work->ReceivePacket();
 		
 		GameTime::GetInstance()->StartCounter();
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))

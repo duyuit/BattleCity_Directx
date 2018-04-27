@@ -16,6 +16,7 @@ Brick::Brick()
 bool Brick::Init(D3DXVECTOR3 position) {
 	Entity::SetWidth(32);
 	Entity::SetHeight(32);
+	dir = Direction::none;
 	mSprite = new Sprite(FileName(), rect());
 	SetPosition(position);
 	mSprite->SetPosition(position);
@@ -24,9 +25,21 @@ bool Brick::Init(D3DXVECTOR3 position) {
 void Brick::OnSetPosition(D3DXVECTOR3 position) {
 	mSprite->SetPosition(position);
 }
-void Brick::BeCollideWith_Bullet(D3DXVECTOR2 BulletVelocity)
+
+void Brick::BeCollideWith_Bullet(Direction dir)
 {
 }
+
+void Brick::Read(InputMemoryBitStream& is)
+{
+	int _dir=0;
+	is.Read(_dir, Define::bitofID);
+	dir = (Direction)_dir;
+	
+}
+
+
+
 void Brick::Update()
 {
 }

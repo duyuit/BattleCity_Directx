@@ -40,6 +40,11 @@ RECT Bullet::GetBound()
 	
 }
 
+void Bullet::OnCollision()
+{
+	SetActive(false);
+}
+
 void Bullet::Update(float dt)
 {
 	

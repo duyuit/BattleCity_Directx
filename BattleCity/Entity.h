@@ -8,7 +8,8 @@ enum Direction
 	left,
 	right,
 	up,
-	down
+	down,
+	none
 };
 class Entity
 {

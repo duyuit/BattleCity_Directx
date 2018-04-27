@@ -7,7 +7,7 @@ void WaitRoomScene::LoadContent()
 		
 	socket = SocketUtil::CreateTCPSocket();
 
-	SocketAddress address(inet_addr("127.0.0.1"), 8888);
+	SocketAddress address(inet_addr("192.168.1.100"), 8888); //"127.0.0.1"
 	// B4 - Ket noi
 	if (socket->Connect(address) == SOCKET_ERROR)
 	{

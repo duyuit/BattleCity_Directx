@@ -14,7 +14,7 @@ public:
 	void Update(float dt);
 	void ProcessNewClient();
 	void UpdatePlayerCount();
-
+	void ReceivePacket();
 	int RandomNumber(int x, int y);
 };
 

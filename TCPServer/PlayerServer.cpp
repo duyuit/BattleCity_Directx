@@ -45,7 +45,7 @@ void PlayerServer::OnChangeAction(Action action)
 	case GoLeft: MoveLeft(); break;
 	case GoRight:MoveRight(); break;
 	case GoUp:MoveUp(); break;
-	case GoDown:MoveDown(); break;
+	case Action::GoDown:MoveDown(); break;
 	case Action::Fight:
 		ID_currentBullet++;
 		if (ID_currentBullet == ID * 10 + 5)
@@ -71,7 +71,7 @@ void PlayerServer::Emplace(PlayerServer* pl)
 {
 	Entity::Emplace(pl);
 	this->mAction = pl->mAction;
-	this->isFight = pl->isFight;
+	
 
 }
 
@@ -80,7 +80,6 @@ void PlayerServer::Write(OutputMemoryBitStream& os)
 	Entity::Write(os);
 	int a = (int)mAction;
 	os.Write(a, Define::bitofID);
-	os.Write(isFight);
 	os.Write(last_move_time);
 }
 
@@ -92,7 +91,6 @@ void PlayerServer::Read(InputMemoryBitStream& is)
 	int action = 0;
 	is.Read(action, Define::bitofID);
 	mAction = (Action)action;
-	is.Read(isFight);
 	OnChangeAction(mAction);
 }
 
