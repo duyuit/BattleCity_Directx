@@ -16,7 +16,10 @@ public:
 
 	std::vector<PlayerServer*>  mListPlayer;
 	std::vector<Entity* > mListObject;
+	
+	int count_brick_send = 0;
 	void HandleObject(InputMemoryBitStream &is);
+	bool CheckDifferent(RECT a, RECT);
 
 	void find_or_create(int ID, int action,int time_of_packet);
 	void CheckCollision(float dt);

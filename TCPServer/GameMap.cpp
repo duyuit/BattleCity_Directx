@@ -13,7 +13,7 @@ void GameMap::LoadMap(char* filePath)
 {
 	mMap = new Tmx::Map();
 	mMap->ParseFile(filePath);
-
+	int cur_ID = 100;
 	RECT r;
 	r.left = 0;
 	r.top = 0;
@@ -69,13 +69,26 @@ void GameMap::LoadMap(char* filePath)
 
 							Brick* brick;
 							if (layer->GetName() == "Brick")
+							{
 								brick = new BrickNormal(position);
+								brick->ID = cur_ID++;
+							}
 							else if (layer->GetName() == "Metal Brick")
+							{
 								brick = new MetalBrick(position);
+								brick->ID = cur_ID++;
+							}
 							else if (layer->GetName() == "Water")
+							{
 								brick = new Water(position);
+								brick->ID = cur_ID++;
+							}
 							else if (layer->GetName() == "Tile Layer 1")
+							{
 								brick = new Boundary(position);
+								brick->ID = cur_ID++;
+							}
+
 							mListBrick.push_back(brick);
 							GAMELOG("Position  %f, %f", position.x, position.y);
 						}

@@ -31,61 +31,7 @@ NetWorkManager::~NetWorkManager()
 
 void NetWorkManager::Update(float dt)
 {
-	if (SocketUtil::Select(&readBlockSockets, &readableSockets, nullptr, nullptr, nullptr, nullptr))
-	{
-		for (const TCPSocketPtr& socket : readableSockets) {
-
-			if (socket == socket_sever)
-			{
-			
-				ProcessNewClient();
-				printf("\nCo ket noi moi");
-
-				if (ID == 5) //if enought player, Provide them first position by ID
-				{
-
-					for (auto ele : readBlockSockets)
-					{
-						if (ele->ID == 0) continue;
-						int x = 200; //RandomNumber(150, 400);
-						int y = 200;//RandomNumber(300, 400);
-					/*	int x = RandomNumber(150, 400);
-						int y = RandomNumber(300, 400);*/
-
-						OutputMemoryBitStream os1;
-						PlayerServer* pl = new PlayerServer(ele->ID);
-						pl->SetPosition(x, y);
-						pl->mAction = Action::GoRight;
-						mWorld->mListPlayer.push_back(pl);
-
-						os1.Write(Define::LetStart, Define::bitofTypePacket);
-						pl->Write(os1);
-						ele->Send(os1.GetBufferPtr(), os1.GetByteLength());
-					}
-					break;
-				}
-
-				UpdatePlayerCount();
-
-			}
-			else
-			{
-				
-					char* buff = static_cast<char*>(std::malloc(1024));
-					size_t receivedByteCount = socket->Receive(buff, 1024);
-					if (receivedByteCount == 0) break;
-					if (receivedByteCount > 0)
-					{
-						InputMemoryBitStream is(buff,
-							static_cast<uint32_t> (receivedByteCount));
-						mWorld->HandleObject(is);
-
-					}
-				
-			}
-		}
-	}
-
+	
 	
 		
 	mWorld->CheckCollision(dt);
@@ -116,6 +62,65 @@ void NetWorkManager::UpdatePlayerCount()
 		os1.Write(Define::UpdateCountPlayer, Define::bitofTypePacket);
 		os1.Write(ID - 1, Define::bitofID);
 		ele->Send(os1.GetBufferPtr(), os1.GetByteLength());
+	}
+
+}
+
+void NetWorkManager::ReceivePacket()
+{
+	if (SocketUtil::Select(&readBlockSockets, &readableSockets, nullptr, nullptr, nullptr, nullptr))
+	{
+		for (const TCPSocketPtr& socket : readableSockets) {
+
+			if (socket == socket_sever)
+			{
+
+				ProcessNewClient();
+				printf("\nCo ket noi moi");
+
+				if (ID ==3) //if enought player, Provide them first position by ID
+				{
+
+					for (auto ele : readBlockSockets)
+					{
+						if (ele->ID == 0) continue;
+						int x = 200; //RandomNumber(150, 400);
+						int y = 200;//RandomNumber(300, 400);
+									/*	int x = RandomNumber(150, 400);
+									int y = RandomNumber(300, 400);*/
+
+						OutputMemoryBitStream os1;
+						PlayerServer* pl = new PlayerServer(ele->ID);
+						pl->SetPosition(x, y);
+						pl->mAction = Action::GoRight;
+						mWorld->mListPlayer.push_back(pl);
+
+						os1.Write(Define::LetStart, Define::bitofTypePacket);
+						pl->Write(os1);
+						ele->Send(os1.GetBufferPtr(), os1.GetByteLength());
+					}
+					break;
+				}
+
+				UpdatePlayerCount();
+
+			}
+			else
+			{
+
+				char* buff = static_cast<char*>(std::malloc(1024));
+				size_t receivedByteCount = socket->Receive(buff, 1024);
+				if (receivedByteCount == 0) break;
+				if (receivedByteCount > 0)
+				{
+					InputMemoryBitStream is(buff,
+						static_cast<uint32_t> (receivedByteCount));
+					mWorld->HandleObject(is);
+
+				}
+
+			}
+		}
 	}
 
 }

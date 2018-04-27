@@ -20,8 +20,8 @@ public:
 	void Update(float dt);
 	void LoadContent();
 	void Draw();
-
-	
+	void ReceivePacket();
+	void CheckCollision(float dt);
 
 	GameMap *mMap;
 	vector<Entity*> mListObjects;

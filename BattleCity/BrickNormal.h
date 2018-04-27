@@ -9,7 +9,7 @@ public:
 	const char* FileName();
 	RECT rect();
 	void Update();
-	void BeCollideWith_Bullet(D3DXVECTOR2 BulletVelocity);
+	void BeCollideWith_Bullet(Direction dir) override;
 
 	RECT GetBound();
 private:

@@ -12,8 +12,8 @@ public:
 
 	void OnSetPosition(D3DXVECTOR3 position);
 
-	virtual void BeCollideWith_Bullet(D3DXVECTOR2 BulletVelocity);
-
+	virtual void BeCollideWith_Bullet(Direction dir);
+	void Read(InputMemoryBitStream& is) override;
 	void setDelete(bool deleted);
 	bool getDelete();
 protected:

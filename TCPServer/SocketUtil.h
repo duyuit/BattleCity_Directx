@@ -82,10 +82,10 @@ int SocketUtil::Select(const vector< TCPSocketPtr >* inReadSet,
 	fd_set *exceptPtr = FillSetFromVector(read, inExceptSet, nfds);
 
 	timeval *timeout=new timeval();
-	timeout->tv_sec = 0; // Server sẽ lắng nghe trong 90s, nếu tham số timeout = NULL thì select sẽ chạy mãi.
-	timeout->tv_usec = 10;
+	timeout->tv_sec = 1; // Server sẽ lắng nghe trong 90s, nếu tham số timeout = NULL thì select sẽ chạy mãi.
+	timeout->tv_usec = 0;
 
-	int toRet = select(nfds + 1, readPtr, writePtr, exceptPtr, nullptr);
+	int toRet = select(nfds + 1, readPtr, writePtr, exceptPtr, timeout);
 
 	if (toRet > 0)
 	{

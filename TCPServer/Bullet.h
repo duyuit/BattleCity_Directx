@@ -10,6 +10,8 @@ public:
 	bool isActive = false;
 	bool lastActive = false;
 	RECT GetBound();
+
+	void OnCollision();
 	/*void Emplace(Bullet *newBullet);
 	bool Compare(Bullet* newBullet);*/
 

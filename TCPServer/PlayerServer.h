@@ -21,7 +21,7 @@ public:
 	void CollideWith_World();
 	int ID_currentBullet = 0;
 	Action mAction=Idle;
-	bool isFight = false;
+
 	int id_of_bullet = 10;
 	int last_move_time = 0;
 	void OnChangeAction(Action action);

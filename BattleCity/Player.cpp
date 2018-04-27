@@ -27,7 +27,7 @@ void Player::Write(OutputMemoryBitStream& os)
 {
 	Entity::Write(os);
 	os.Write((int)mAction, Define::bitofID);
-	os.Write(isFight);
+	
 }
 
 
@@ -38,7 +38,6 @@ void Player::Read(InputMemoryBitStream& is)
 	int action = 0;
 	is.Read(action, Define::bitofID);
 	//mAction = (Action)action;
-	is.Read(isFight);
 	is.Read(last_move_time);
 }
 void Player::Update(float dt)
@@ -102,33 +101,28 @@ void Player::HandleKeyboard(std::map<int, bool> keys,int &check_to_send)
 		}
 	}
 
-	OutputMemoryBitStream os;
-	os.Write(Define::InputPacket, Define::bitofTypePacket);
-	os.Write(ID, Define::bitofID);
-	os.Write((int)mAction, Define::bitofID);
-	int time_of_packet = GetTickCount();
-	os.Write(time_of_packet);
-	GameGlobal::socket->Send(os.GetBufferPtr(), os.GetByteLength());
-
-	/*if(check_to_send==20)
-	{
-		
-	}*/
 	
 
+	//if(mLastAction!=mAction)
+	//{
+		OutputMemoryBitStream os;
+		os.Write(Define::InputPacket, Define::bitofTypePacket);
+		os.Write(ID, Define::bitofID);
+		os.Write((int)mAction, Define::bitofID);
+		int time_of_packet = GetTickCount();
+		os.Write(time_of_packet);
+		GameGlobal::socket->Send(os.GetBufferPtr(), os.GetByteLength());
 
-
-
-	//check_to_send = 0;*/
+	//}
+		
+	mLastAction = mAction;
+	
 	
 }
 void Player::Draw(D3DXVECTOR3 position, RECT sourceRect, D3DXVECTOR2 scale, D3DXVECTOR2 transform, float angle, D3DXVECTOR2 rotationCenter, D3DXCOLOR colorKey)
 {
 	mCurrentSprite->SetPosition(this->GetPosition());
-	/*for (auto bullet : mBullet)
-	{
-		bullet->Draw();
-	}*/
+	
 	mCurrentSprite->Draw(D3DXVECTOR3(posX, posY, 0));
 	if (isMe)
 	{
@@ -148,7 +142,7 @@ void Player::Emplace(Player* pl)
 {
 	Entity::Emplace(pl);
 	this->mAction = pl->mAction;
-	this->isFight = pl->isFight;
+
 }
 
 RECT Player::GetBound()

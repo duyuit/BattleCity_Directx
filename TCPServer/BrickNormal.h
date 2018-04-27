@@ -10,10 +10,10 @@ public:
 	RECT rect();
 	void Update();
 	void BeCollideWith_Bullet(D3DXVECTOR2 BulletVelocity);
-
+	//void Write(OutputMemoryBitStream& os) override;
+	
 	RECT GetBound();
 private:
 	RECT oldReg;
 	RECT bound;
 };
-

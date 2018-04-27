@@ -16,6 +16,7 @@ TestScene::TestScene(TCPSocketPtr socket,Player* m_player)
 	mBackColor = D3DCOLOR_XRGB(0, 0, 0);
 
 	mMap = new GameMap("Resource files/map.tmx");
+	mMap->GetListBrick().at(209)->BeCollideWith_Bullet(Direction::down);
 	int x=mMap->GetListBrick().size();
 	this->socket = socket;
 
@@ -74,44 +75,22 @@ int check_to_send = 0;
 void TestScene::Update(float dt)
 {
 	
-	//check_to_send++;
+	check_to_send++;
 	mPlayer->HandleKeyboard(keys, check_to_send);
 
+	ReceivePacket();
+	CheckCollision(dt);
 
-	char* buff = static_cast<char*>(std::malloc(1024));
-	size_t receivedByteCount = socket->Receive(buff, 1024);
-	if (receivedByteCount>0)
-	{
-		InputMemoryBitStream is(buff,
-		static_cast<uint32_t> (receivedByteCount));
-		int typeofPacket = 0;
-		is.Read(typeofPacket, Define::bitofTypePacket);
-		if (typeofPacket == Define::WorldStatePacket)
-		{
-			int ObjectCount = 0;
-			is.Read(ObjectCount);
-			for(int i=0;i<ObjectCount;i++)
-			{
-				int tag=0;
-				is.Read(tag, Define::bitofID);
-				find_and_handle(tag, is);
-			}
-
-			}
-		
-		
-	}
-	
-
-
-	/*for (auto ele : mListPlayer)
+	mMap->Update(dt);
+	for (auto ele : mListPlayer)
 	{
 		ele->Update(dt);
 	}
-	for (auto ele : mListBullets)
+	/*for (auto ele : mListBullets)
 	{
 		ele->Update(dt);
 	}*/
+
 
 }
 
@@ -137,6 +116,52 @@ void TestScene::Draw()
 		}
 	}
 	
+
+}
+
+void TestScene::ReceivePacket()
+{
+	char* buff = static_cast<char*>(std::malloc(1024));
+	size_t receivedByteCount = socket->Receive(buff, 1024);
+	if (receivedByteCount>0)
+	{
+		InputMemoryBitStream is(buff,
+			static_cast<uint32_t> (receivedByteCount));
+		int typeofPacket = 0;
+		is.Read(typeofPacket, Define::bitofTypePacket);
+		if (typeofPacket == Define::WorldStatePacket)
+		{
+			int ObjectCount = 0;
+			is.Read(ObjectCount);
+			for (int i = 0; i<ObjectCount; i++)
+			{
+				int tag = 0;
+				is.Read(tag, Define::bitofID);
+				find_and_handle(tag, is);
+			}
+
+		}
+
+
+	}
+}
+
+void TestScene::CheckCollision(float dt)
+{
+	vector<Brick*> listCollision = mMap->GetListBrick();
+
+
+	for (size_t i = 0; i < listCollision.size(); i++)
+	{
+		for (auto pl : mListPlayer)
+			if (GameCollision::isCollide(pl, listCollision[i], dt))
+				pl->CollideWith_World();
+		if (listCollision[i]->getDelete()) {
+			mMap->eraseBrick(i);
+			listCollision.erase(listCollision.begin() + i);
+			i--;
+		}
+	}
 
 }
 
@@ -179,6 +204,21 @@ void TestScene::find_and_handle(int tag, InputMemoryBitStream &is)
 			if (ele->ID == id)
 			{
 				ele->Read(is);
+				if (!ele->isActive)
+					int x = 1;
+				return;
+
+			}
+
+		}
+		break;
+	case Entity::Brick:
+		for (auto ele : mMap->GetListBrick())
+		{
+			if (ele->ID == id)
+			{
+				ele->Read(is);
+				ele->BeCollideWith_Bullet(ele->dir);
 				return;
 
 			}
