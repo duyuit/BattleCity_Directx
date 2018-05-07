@@ -20,9 +20,10 @@ public:
 	void Update(float dt);
 	void LoadContent();
 	void Draw();
-	void ReceivePacket();
+	void ReceivePakcet() override;
 	void CheckCollision(float dt);
 
+	bool isReady = false;
 	GameMap *mMap;
 	vector<Entity*> mListObjects;
 	vector<Bullet*> mListBullets;
@@ -36,8 +37,13 @@ protected:
 	TCPSocketPtr socket;
 	std::map<int, bool> keys;
 
-	ID3DXFont				*myFont; //Font dung de ve chu
-	RECT myRect; //RECT chua myFont
-	std::string my_string; //Support Font
+	ID3DXFont				*RTT_Font; //Font dung de ve chu
+	RECT RTT_RECT; //RECT chua myFont
+	std::string RTT_String; //Support Font
+
+	ID3DXFont				*Ready_Font;
+	RECT Ready_RECT; //RECT chua myFont
+	std::string Ready_String; //Support Font
+	int Ready_count = 6;
 };
 

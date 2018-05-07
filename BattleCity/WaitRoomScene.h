@@ -29,6 +29,7 @@ public:
 
 	void Update(float dt);
 	void LoadContent();
+	void ReceivePakcet() override;
 	void Draw();
 	void UpdateBox(int i);
 	WaitRoomScene();

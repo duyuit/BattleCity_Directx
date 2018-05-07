@@ -1,6 +1,17 @@
 #include "NetWorkManager.h"
 
 #include "SocketUtil.h"
+
+void NetWorkManager::Handle_Packet()
+{
+	if (!queue_packet.empty())
+	{
+		Packet p = queue_packet.at(queue_packet.size() - 1);
+		mWorld->HandleObject(p);
+		queue_packet.pop_back();
+	}
+}
+
 NetWorkManager::NetWorkManager()
 {
 	WSADATA		wsaData;
@@ -19,7 +30,7 @@ NetWorkManager::NetWorkManager()
 	printf("Dang doi ket noi o cong 8888...");
 
 	readBlockSockets.push_back(socket_sever);
-	en = new Entity();
+
 	mWorld = new World();
 	
 }
@@ -32,11 +43,11 @@ NetWorkManager::~NetWorkManager()
 void NetWorkManager::Update(float dt)
 {
 	
-	
-		
 	mWorld->CheckCollision(dt);
 	mWorld->Update(dt);
 	mWorld->SendWorld(readBlockSockets);
+	
+	
 }
 
 void NetWorkManager::ProcessNewClient()
@@ -68,6 +79,9 @@ void NetWorkManager::UpdatePlayerCount()
 
 void NetWorkManager::ReceivePacket()
 {
+
+		
+
 	if (SocketUtil::Select(&readBlockSockets, &readableSockets, nullptr, nullptr, nullptr, nullptr))
 	{
 		for (const TCPSocketPtr& socket : readableSockets) {
@@ -78,7 +92,7 @@ void NetWorkManager::ReceivePacket()
 				ProcessNewClient();
 				printf("\nCo ket noi moi");
 
-				if (ID ==3) //if enought player, Provide them first position by ID
+				if (ID ==5) //if enought player, Provide them first position by ID
 				{
 
 					for (auto ele : readBlockSockets)
@@ -110,12 +124,12 @@ void NetWorkManager::ReceivePacket()
 
 				char* buff = static_cast<char*>(std::malloc(1024));
 				size_t receivedByteCount = socket->Receive(buff, 1024);
-				if (receivedByteCount == 0) break;
 				if (receivedByteCount > 0)
 				{
 					InputMemoryBitStream is(buff,
 						static_cast<uint32_t> (receivedByteCount));
-					mWorld->HandleObject(is);
+					Packet p(is);
+					queue_packet.push_back(p);
 
 				}
 

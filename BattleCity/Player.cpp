@@ -37,7 +37,7 @@ void Player::Read(InputMemoryBitStream& is)
 	Entity::Read(is);
 	int action = 0;
 	is.Read(action, Define::bitofID);
-	//mAction = (Action)action;
+	mAction = (Action)action;
 	is.Read(last_move_time);
 }
 void Player::Update(float dt)
@@ -103,8 +103,8 @@ void Player::HandleKeyboard(std::map<int, bool> keys,int &check_to_send)
 
 	
 
-	//if(mLastAction!=mAction)
-	//{
+	if(mLastAction!=mAction)
+	{
 		OutputMemoryBitStream os;
 		os.Write(Define::InputPacket, Define::bitofTypePacket);
 		os.Write(ID, Define::bitofID);
@@ -113,7 +113,7 @@ void Player::HandleKeyboard(std::map<int, bool> keys,int &check_to_send)
 		os.Write(time_of_packet);
 		GameGlobal::socket->Send(os.GetBufferPtr(), os.GetByteLength());
 
-	//}
+	}
 		
 	mLastAction = mAction;
 	

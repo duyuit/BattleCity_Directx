@@ -1,3 +1,5 @@
-﻿  WaitRoomScene.cpp
-d:\git\battlecity_directx\battlecity\waitroomscene.cpp(41): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+﻿  Game.cpp
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+d:\git\battlecity_directx\battlecity\game.cpp(11): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\git\battlecity_directx\battlecity\game.cpp(72): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   BattleCity.vcxproj -> D:\Git\BattleCity_Directx\Debug\BattleCity.exe

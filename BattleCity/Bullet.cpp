@@ -45,6 +45,7 @@ void Bullet::Emplace(Bullet* bl)
 
 void Bullet::setMoveDirection(Direction direction) {
 	dir = direction;
+	delete mCurrentSprite;
 	switch (dir) 
 	{
 	case Direction::left:  MoveLeft(); break;
@@ -70,6 +71,7 @@ void Bullet::Write(OutputMemoryBitStream& os)
 
 
 void Bullet::MoveLeft() {
+
 	mCurrentSprite = new Sprite("Resource files/Somethings.png", RECT{ 148,12, 156,20 },  0, 0 ,D3DXCOLOR(255, 0, 255, 255));
 	this->SetVx(-Define::BULLET_SPEED);
 	this->SetVy(0);

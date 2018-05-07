@@ -50,6 +50,7 @@ void Game::InitLoop()
 
 	while (GameGlobal::isGameRunning)
 	{
+		
 		GameTime::GetInstance()->StartCounter();
 
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
@@ -57,9 +58,10 @@ void Game::InitLoop()
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
-
+		SceneManager::GetInstance()->GetCurrentScene()->ReceivePakcet();
+		
 		delta += GameTime::GetInstance()->GetCouter();
-
+		
 		if (delta >= tickPerFrame)
 		{
 			Update((delta));

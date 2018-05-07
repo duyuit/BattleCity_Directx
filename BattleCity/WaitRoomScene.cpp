@@ -7,7 +7,7 @@ void WaitRoomScene::LoadContent()
 		
 	socket = SocketUtil::CreateTCPSocket();
 
-	SocketAddress address(inet_addr("192.168.1.100"), 8888); //"127.0.0.1"
+	SocketAddress address(inet_addr("127.0.0.1"), 8888); //"127.0.0.1"
 	// B4 - Ket noi
 	if (socket->Connect(address) == SOCKET_ERROR)
 	{
@@ -56,9 +56,51 @@ void WaitRoomScene::LoadContent()
 	myRect.right = myRect.left + 400;
 	
 }
+
 int lastAdd = 0;
 
 int timetoStart = 0;
+
+void WaitRoomScene::ReceivePakcet()
+{
+	char* buff = static_cast<char*>(std::malloc(1024));
+	size_t receivedByteCount = socket->Receive(buff, 1024);
+
+	if (GetTickCount() - timetoStart >= 0 && timetoStart != 0)
+		SceneManager::GetInstance()->ReplaceScene(new TestScene(socket, m_player));
+
+	if (receivedByteCount>0)
+	{
+
+		InputMemoryBitStream is(buff,
+			static_cast<uint32_t> (receivedByteCount));
+		int typeofPacket = 0;
+		is.Read(typeofPacket, Define::bitofTypePacket);
+		if (typeofPacket == Define::LetStart && timetoStart == 0)
+		{
+			//Sau khi nhan duoc goi tin start thi nhan thong tin Position de start game
+			UpdateBox(4);
+			timetoStart = GetTickCount();
+			int tag = 0; is.Read(tag, Define::bitofID);
+			int id = 0; is.Read(id, Define::bitofID);
+			m_player->ID = id;
+			m_player->Read(is);
+
+		}
+		else if (typeofPacket == Define::UpdateCountPlayer)
+		{
+			is.Read(playerCount, Define::bitofID);
+			UpdateBox(playerCount);
+
+		}
+
+
+	}
+
+
+
+}
+
 void WaitRoomScene::UpdateBox(int k)
 {
 	if (k<5 && k>0)
@@ -71,44 +113,7 @@ void WaitRoomScene::UpdateBox(int k)
 }
 void WaitRoomScene::Update(float dt)
 {
-	char* buff = static_cast<char*>(std::malloc(1024));
-	size_t receivedByteCount = socket->Receive(buff, 1024);
 
-	if(GetTickCount()-timetoStart >=0 && timetoStart!=0)
-		SceneManager::GetInstance()->ReplaceScene(new TestScene(socket,m_player));
-
-	if (receivedByteCount>0)
-	{
-
-		InputMemoryBitStream is(buff,
-			static_cast<uint32_t> (receivedByteCount));
-		int typeofPacket = 0;
-		is.Read(typeofPacket,Define::bitofTypePacket);
-		if (typeofPacket == Define::LetStart && timetoStart == 0)
-		{
-			//Sau khi nhan duoc goi tin start thi nhan thong tin Position de start game
-			UpdateBox(4);
-			timetoStart = GetTickCount();
-			int tag=0; is.Read(tag, Define::bitofID);
-			int id = 0; is.Read(id, Define::bitofID);
-			m_player->ID = id;
-			m_player->Read(is);
-
-		}
-		else if (typeofPacket == Define::UpdateCountPlayer)
-		{
-			is.Read(playerCount,Define::bitofID);
-			UpdateBox(playerCount);
-			
-		}
-	
-	
-	
-	}
-
-	
-	
-	
 	if(GetTickCount()-lastAdd>=500)
 	{
 		my_string += " .";

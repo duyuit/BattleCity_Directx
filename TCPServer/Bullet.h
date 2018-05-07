@@ -8,7 +8,7 @@ public:
 	Bullet(int id);
 	~Bullet();
 	bool isActive = false;
-	bool lastActive = false;
+	bool isChange = false;
 	RECT GetBound();
 
 	void OnCollision();

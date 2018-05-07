@@ -120,6 +120,7 @@
     <ClInclude Include="MemoryBitStream.h" />
     <ClInclude Include="MetalBrick.h" />
     <ClInclude Include="NetWorkManager.h" />
+    <ClInclude Include="Packet.h" />
     <ClInclude Include="PlayerServer.h" />
     <ClInclude Include="SocketAddress.h" />
     <ClInclude Include="SocketUtil.h" />
@@ -161,6 +162,7 @@
     <ClCompile Include="MemoryBitStream.cpp" />
     <ClCompile Include="MetalBrick.cpp" />
     <ClCompile Include="NetWorkManager.cpp" />
+    <ClCompile Include="Packet.cpp" />
     <ClCompile Include="PlayerServer.cpp" />
     <ClCompile Include="TCPServer.cpp" />
     <ClCompile Include="Water.cpp" />

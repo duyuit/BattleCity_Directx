@@ -8,7 +8,7 @@ public:
 	virtual void Update(float dt);
 	virtual void LoadContent();
 	virtual void Draw();
-
+	virtual void ReceivePakcet();
 	virtual void OnKeyDown(int keyCode);
 	virtual void OnKeyUp(int keyCode);
 

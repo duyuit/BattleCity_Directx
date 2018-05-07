@@ -32,24 +32,35 @@ World::~World()
 {
 }
 
-void World::HandleObject(InputMemoryBitStream &is)
+void World::HandleObject(Packet p)
 {
-	int type=0;
-	is.Read(type,Define::bitofTypePacket);
+	int ID = p.id;
+	int action = p.action;
+	int time_of_packet = p.time;
 
-	switch (type)
-	{ 
-	case Define::TankPacket:
-		break;
-	case Define::InputPacket:
-		int time_of_packet = 0;
-		int ID = 0, action = 0;
-		is.Read(ID, Define::bitofID); 
-		is.Read(action, Define::bitofID);
-		is.Read(time_of_packet);
-		find_or_create(ID, action,time_of_packet);
-		break;
-//	default: ;
+	for (auto ele : mListPlayer)
+	{
+		if (ele->ID == ID)
+		{
+			ele->OnChangeAction((Action)action);
+			ele->last_move_time = time_of_packet;
+			if (ele->mAction == Fight)
+			{
+				ele->Up_ID_OfBullet();
+				for (auto bullet : mListBullets)
+				{
+					if (bullet->ID == ele->ID_currentBullet)
+					{
+
+						bullet->SetPosition(ele->GetPosition());
+						bullet->SetActive(true);
+						bullet->setMoveDirection(ele->dir);
+						break;
+					}
+				}
+			}
+			break;
+		}
 	}
 }
 
@@ -64,30 +75,7 @@ bool World::CheckDifferent(RECT a, RECT b)
 
 void World::find_or_create(int ID,int action,int time_of_packet)
 {
-
-	for(auto ele:mListPlayer)
-	{
-		if(ele->ID==ID)
-		{
-			ele->OnChangeAction((Action)action);
-			ele->last_move_time = time_of_packet;
-			if (ele->mAction == Fight)
-			{
-				
-				for(auto bullet:mListBullets)
-				{
-					if (bullet->ID == ele->ID_currentBullet)
-					{
-						
-						bullet->SetPosition(ele->GetPosition());
-						bullet->SetActive(true);
-						bullet->setMoveDirection(ele->dir);
-					}
-				}
-			}
-			break;
-		}
-	}
+	
 	
 }
 
@@ -105,6 +93,8 @@ void World::CheckCollision(float dt)
 			if (GameCollision::isCollide(bl, listCollision[i], dt))
 			{
 				bl->OnCollision(); 
+				bl->isChange = true;
+
 				count_brick_send++;
 				listCollision[i]->BeCollideWith_Bullet(D3DXVECTOR2(bl->GetVx(), bl->GetVy()));
 				
@@ -130,7 +120,7 @@ void World::CheckCollision(float dt)
 	
 	
 }
-
+int count_to_send = 0;
 void World::Update(float dt)
 {
 
@@ -144,54 +134,60 @@ void World::Update(float dt)
 	}
 
 	mMap->Update(dt);
+	//count_to_send++;
 }
 
 void World::SendWorld(std::vector<TCPSocketPtr> listClient)
 {
+	//bool check_to_send = false;
+	OutputMemoryBitStream os;
+	os.Write(Define::WorldStatePacket, Define::bitofTypePacket);
+	int count_bullet_send = 0;
+	for (auto ele : mListBullets)
+	{
+		if (ele->isChange)
+		{
+			count_bullet_send++;
+		}
+	}
+
+	int size = mListPlayer.size() + count_brick_send + count_bullet_send;
+	os.Write(size);
+	for (auto ele : mListPlayer)
+	{
+		/*	if (ele->mAction != ele->mLastAction)
+		check_to_send = true;*/
+		ele->Write(os);
+	}
+
+
+	for (auto ele : mListBullets)
+	{
+		if (ele->isChange)
+			ele->Write(os);
+	}
+
+	for (auto ele : mMap->GetListBrick())
+	{
+		if (ele->isNeedToSend)
+			ele->Write(os);
+
+	}
 	for (auto client : listClient)
 	{
 		if (client->ID == 0) continue;
-		OutputMemoryBitStream os;
-		os.Write(Define::WorldStatePacket, Define::bitofTypePacket);
-		int count_bullet_send = 0;
-		for (auto ele : mListBullets)
-		{
-			if (ele->isActive || ele->lastActive)
-			{
-				count_bullet_send++;
-			}
-		}
-		
-		int size = mListPlayer.size() + count_brick_send +count_bullet_send;
-		os.Write(size);
-		for (auto ele : mListPlayer)
-		{
-			ele->Write(os);
-		}
-
-		for (auto ele : mListBullets)
-		{
-			if (ele->isActive || ele->lastActive)
-					ele->Write(os);
-		}
-		
-		for (auto ele : mMap->GetListBrick())
-		{
-				if(ele->isNeedToSend)
-				ele->Write(os);
-
-		}
-	
-		client->Send(os.GetBufferPtr(),os.GetByteLength());
+			client->Send(os.GetBufferPtr(), os.GetByteLength());
 
 	}
+
+
 	for (auto br : mMap->GetListBrick())
 		br->isNeedToSend = false;
 	for (auto ele : mListBullets)
 	{
-		if (ele->isActive || ele->lastActive)
-			ele->lastActive = false;
+			ele->isChange = false;
 	}
+	//if (check_to_send == 20) count_to_send = 0;
 }
 
 
