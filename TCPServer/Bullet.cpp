@@ -50,15 +50,13 @@ void Bullet::Update(float dt)
 	
 	 if (isActive)
 		 Entity::Update(dt);
-	 if (posY < 0 || posY>1000 || posX < 0 || posX>1000)
-		 SetActive(false);
 	 
 
 }
 
 void Bullet::SetActive(bool flag)
 {
-	lastActive = isActive;
+	isChange = true;
 	isActive = flag;
 }
 

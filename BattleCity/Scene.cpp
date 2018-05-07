@@ -23,6 +23,10 @@ void Scene::Draw()
 
 }
 
+void Scene::ReceivePakcet()
+{
+}
+
 void Scene::OnKeyDown(int keyCode)
 {
 

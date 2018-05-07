@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "TCPSocket.h"
+
 #include <winsock.h>
 #include <vector>
 using namespace std;
@@ -82,10 +82,11 @@ int SocketUtil::Select(const vector< TCPSocketPtr >* inReadSet,
 	fd_set *exceptPtr = FillSetFromVector(read, inExceptSet, nfds);
 
 	timeval *timeout=new timeval();
-	timeout->tv_sec = 1; // Server sẽ lắng nghe trong 90s, nếu tham số timeout = NULL thì select sẽ chạy mãi.
+	timeout->tv_sec = 0; // Server sẽ lắng nghe trong 90s, nếu tham số timeout = NULL thì select sẽ chạy mãi.
 	timeout->tv_usec = 0;
+	
 
-	int toRet = select(nfds + 1, readPtr, writePtr, exceptPtr, timeout);
+	int toRet = select(nfds + 1, readPtr, writePtr, exceptPtr, nullptr);
 
 	if (toRet > 0)
 	{

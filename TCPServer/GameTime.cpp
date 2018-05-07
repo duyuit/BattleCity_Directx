@@ -1,33 +1,42 @@
-#include "GameTime.h"
+﻿#include "GameTime.h"
 
-GameTime* GameTime::mInstance = NULL;
-
-GameTime::GameTime(){}
-GameTime::~GameTime(){}
-
-GameTime* GameTime::GetInstance()
+GameTime::GameTime()
 {
-	if (!mInstance)
-		mInstance = new GameTime();
-
-	return mInstance;
 }
 
-void GameTime::StartCounter()
+GameTime::~GameTime()
 {
-	if (!QueryPerformanceFrequency(&mClockRate))
-	{
-		return;
-	}
-
-	QueryPerformanceCounter(&mStartTime);
-
 }
 
-float GameTime::GetCouter()
+void GameTime::init()
 {
-	QueryPerformanceCounter(&mEndTime);
-	mDelta.QuadPart = mEndTime.QuadPart - mStartTime.QuadPart;
+	_totalTime = (float)clock() / CLOCKS_PER_SEC;
+	_elapsedTime = 0;
+}
 
-	return ((float)mDelta.QuadPart / mClockRate.QuadPart);
+void GameTime::update()
+{
+	// thời gian hiện tại
+	float curTime = (float)clock() / CLOCKS_PER_SEC;
+
+	// thời gian trôi qua từ lần update trước
+	_elapsedTime = curTime - _totalTime;
+
+	// tổng thời gian = thời gian hiện tại
+	_totalTime = curTime;
+}
+
+float GameTime::getElapsedTime() const
+{
+	return _elapsedTime;
+}
+
+float GameTime::getTotalTime() const
+{
+	return _totalTime;
+}
+
+clock_t GameTime::getTicks() const
+{
+	return clock();
 }

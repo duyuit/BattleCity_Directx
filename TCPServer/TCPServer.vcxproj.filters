@@ -153,6 +153,9 @@
     <ClInclude Include="GameLog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Packet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TCPServer.cpp">
@@ -261,6 +264,9 @@
       <Filter>Header Files\MapReader</Filter>
     </ClCompile>
     <ClCompile Include="GameLog.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Packet.cpp">
       <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>

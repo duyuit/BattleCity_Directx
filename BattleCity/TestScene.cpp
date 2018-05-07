@@ -17,7 +17,6 @@ TestScene::TestScene(TCPSocketPtr socket,Player* m_player)
 
 	mMap = new GameMap("Resource files/map.tmx");
 	mMap->GetListBrick().at(209)->BeCollideWith_Bullet(Direction::down);
-	int x=mMap->GetListBrick().size();
 	this->socket = socket;
 
 
@@ -57,28 +56,51 @@ TestScene::TestScene(TCPSocketPtr socket,Player* m_player)
 	}
 
 	
-	my_string = " .";
-	myFont = NULL;
+	RTT_String = " .";
+	RTT_Font = NULL;
 	HRESULT rs = D3DXCreateFont(GameGlobal::GetCurrentDevice()
 		, 30, 10
 		, FW_NORMAL, 1
 		, false, DEFAULT_CHARSET
-		, OUT_DEFAULT_PRECIS, ANTIALIASED_QUALITY, FF_DONTCARE, (LPCWSTR) "Arial", &myFont);
+		, OUT_DEFAULT_PRECIS, ANTIALIASED_QUALITY, FF_DONTCARE, (LPCWSTR) "Arial", &RTT_Font);
 
-	myRect.left = 50;
-	myRect.top = GameGlobal::GetHeight() - 100;
-	myRect.bottom = myRect.top + 200;
-	myRect.right = myRect.left + 400;
+	Ready_Font = NULL;
+	HRESULT rs1 = D3DXCreateFont(GameGlobal::GetCurrentDevice()
+		, 80, 50
+		, FW_NORMAL, 1
+		, false, DEFAULT_CHARSET
+		, OUT_DEFAULT_PRECIS, ANTIALIASED_QUALITY, FF_DONTCARE, (LPCWSTR) "Arial", &Ready_Font);
+
+
+	RTT_RECT.left = 50;
+	RTT_RECT.top = GameGlobal::GetHeight() - 100;
+	RTT_RECT.bottom = RTT_RECT.top + 200;
+	RTT_RECT.right = RTT_RECT.left + 400;
+
+	Ready_RECT.left =GameGlobal::GetWidth()/2 - 300;
+	Ready_RECT.top = GameGlobal::GetHeight()/2;
+	Ready_RECT.bottom = Ready_RECT.top + 100;
+	Ready_RECT.right = Ready_RECT.left +1000;
 
 }
 int check_to_send = 0;
+int lastTime_Ready = 0;
 void TestScene::Update(float dt)
 {
-	
-	check_to_send++;
+	//
+	//check_to_send++;
+	/*if(!isReady)
+	{
+		if(GetTickCount()-lastTime_Ready>=1000)
+		{
+			lastTime_Ready = GetTickCount();
+			Ready_count--;
+			if (Ready_count == 0) isReady=true;
+			
+		}
+		return;
+	}*/
 	mPlayer->HandleKeyboard(keys, check_to_send);
-
-	ReceivePacket();
 	CheckCollision(dt);
 
 	mMap->Update(dt);
@@ -86,10 +108,10 @@ void TestScene::Update(float dt)
 	{
 		ele->Update(dt);
 	}
-	/*for (auto ele : mListBullets)
+	for (auto ele : mListBullets)
 	{
 		ele->Update(dt);
-	}*/
+	}
 
 
 }
@@ -106,20 +128,26 @@ void TestScene::Draw()
 		ele->Draw();
 	}
 	mMap->Draw();
-	if (myFont)
+	if (RTT_Font)
 	{
 		int delta = GameGlobal::RTT;
 		if (delta != 16)
 		{
-			string s = "RTT: " + to_string(delta);
-			myFont->DrawTextA(mPlayer->mCurrentSprite->GetSpriteHandle(), s.c_str(), -1, &myRect, DT_LEFT, D3DCOLOR_XRGB(240, 255, 255));
+			RTT_String = "RTT: " + to_string(delta);
+			RTT_Font->DrawTextA(mPlayer->mCurrentSprite->GetSpriteHandle(), RTT_String.c_str(), -1, &RTT_RECT, DT_LEFT, D3DCOLOR_XRGB(240, 255, 255));
 		}
+		
 	}
-	
+	/*if(Ready_Font)
+	if (!isReady)
+	{
+		Ready_String = "Ready!!!   " + to_string(Ready_count);
+		Ready_Font->DrawTextA(mPlayer->mCurrentSprite->GetSpriteHandle(), Ready_String.c_str(), -1, &Ready_RECT, DT_LEFT, D3DCOLOR_XRGB(240, 255, 255));
+	}*/
 
 }
 
-void TestScene::ReceivePacket()
+void TestScene::ReceivePakcet()
 {
 	char* buff = static_cast<char*>(std::malloc(1024));
 	size_t receivedByteCount = socket->Receive(buff, 1024);
@@ -141,26 +169,25 @@ void TestScene::ReceivePacket()
 			}
 
 		}
-
-
 	}
+	delete buff;
 }
 
 void TestScene::CheckCollision(float dt)
 {
-	vector<Brick*> listCollision = mMap->GetListBrick();
+	
 
 
-	for (size_t i = 0; i < listCollision.size(); i++)
+	for (size_t i = 0; i < mMap->GetListBrick().size(); i++)
 	{
 		for (auto pl : mListPlayer)
-			if (GameCollision::isCollide(pl, listCollision[i], dt))
+			if (GameCollision::isCollide(pl, mMap->GetListBrick()[i], dt))
 				pl->CollideWith_World();
-		if (listCollision[i]->getDelete()) {
+		/*if (mMap->GetListBrick()[i]->getDelete()) {
 			mMap->eraseBrick(i);
-			listCollision.erase(listCollision.begin() + i);
+			mMap->GetListBrick().erase(mMap->GetListBrick().begin() + i);
 			i--;
-		}
+		}*/
 	}
 
 }
@@ -204,8 +231,6 @@ void TestScene::find_and_handle(int tag, InputMemoryBitStream &is)
 			if (ele->ID == id)
 			{
 				ele->Read(is);
-				if (!ele->isActive)
-					int x = 1;
 				return;
 
 			}

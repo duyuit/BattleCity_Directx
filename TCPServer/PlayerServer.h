@@ -21,11 +21,12 @@ public:
 	void CollideWith_World();
 	int ID_currentBullet = 0;
 	Action mAction=Idle;
-
+	Action mLastAction = Idle;
 	int id_of_bullet = 10;
 	int last_move_time = 0;
 	void OnChangeAction(Action action);
 	RECT GetBound() override;
+	void Up_ID_OfBullet();
 	void Emplace(PlayerServer* pl);
 	void Write(OutputMemoryBitStream& os) override;
 	void Read(InputMemoryBitStream& is) override;

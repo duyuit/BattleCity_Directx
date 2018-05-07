@@ -47,12 +47,11 @@ void PlayerServer::OnChangeAction(Action action)
 	case GoUp:MoveUp(); break;
 	case Action::GoDown:MoveDown(); break;
 	case Action::Fight:
-		ID_currentBullet++;
-		if (ID_currentBullet == ID * 10 + 5)
-			ID_currentBullet = ID * 10 + 1;
+	
 		break;
 	default: break;
 	}
+	if (mAction != mLastAction) mLastAction = mAction;
 }
 
 RECT PlayerServer::GetBound()
@@ -65,6 +64,13 @@ RECT PlayerServer::GetBound()
 	rect.bottom = rect.top + 32;
 
 	return rect;
+}
+
+void PlayerServer::Up_ID_OfBullet()
+{
+	ID_currentBullet++;
+	if (ID_currentBullet == ID * 10 + 5)
+		ID_currentBullet = ID * 10 + 1;
 }
 
 void PlayerServer::Emplace(PlayerServer* pl)
