@@ -20,9 +20,10 @@ public:
 	void Update(float dt);
 	void LoadContent();
 	void Draw();
+	//void find_and_update_brick(int id);
 	void ReceivePakcet() override;
 	void CheckCollision(float dt);
-
+	void SendData() override;
 	bool isReady = false;
 	GameMap *mMap;
 	vector<Entity*> mListObjects;
@@ -32,6 +33,7 @@ public:
 	void OnKeyUp(int keyCode);
 	void find_and_handle(int tag, InputMemoryBitStream &is);
 protected:
+	vector<Animation*> mListAnimate;
 	Camera *mCamera;
 	Player *mPlayer;
 	TCPSocketPtr socket;

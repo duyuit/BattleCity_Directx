@@ -4,6 +4,7 @@
 #include "TestScene.h"
 #include "WaitRoomScene.h"
 #include "TestTiepScene.h"
+#include <thread>
 
 
 Game::Game(int fps)
@@ -42,15 +43,27 @@ void Game::Render()
 
 	device->Present(0, 0, 0, 0);
 }
+
+void ReceivePacket()
+{
+	while (1)
+	{
+		SceneManager::GetInstance()->GetCurrentScene()->ReceivePakcet();
+	}
+}
+
 void Game::InitLoop()
 {
 	MSG msg;
 
+	//std::thread task_receive_packet(ReceivePacket);
+	//task_receive_packet.detach();
 	float tickPerFrame = 1.0f / mFPS, delta = 0;
 
 	while (GameGlobal::isGameRunning)
 	{
 		
+		SceneManager::GetInstance()->GetCurrentScene()->ReceivePakcet();
 		GameTime::GetInstance()->StartCounter();
 
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
@@ -58,21 +71,24 @@ void Game::InitLoop()
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
-		SceneManager::GetInstance()->GetCurrentScene()->ReceivePakcet();
+	
 		
 		delta += GameTime::GetInstance()->GetCouter();
 		
 		if (delta >= tickPerFrame)
 		{
-			Update((delta));
+		
+			Update(1.0f / 60);
 			delta = 0;
 		}
 		else
 		{
 			int delta_time = tickPerFrame - delta;
+			SceneManager::GetInstance()->GetCurrentScene()->ReceivePakcet();
 			Sleep(delta_time);
 			delta = tickPerFrame;
 		}
+
 	}
 }
 Game::~Game()

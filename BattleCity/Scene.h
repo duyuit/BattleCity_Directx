@@ -11,7 +11,7 @@ public:
 	virtual void ReceivePakcet();
 	virtual void OnKeyDown(int keyCode);
 	virtual void OnKeyUp(int keyCode);
-
+	virtual void SendData();
 	D3DCOLOR GetBackcolor();
 
 	~Scene();

@@ -34,7 +34,7 @@ public:
 	virtual void Read(InputMemoryBitStream &is);
 	virtual void Emplace(Entity* en);
 
-
+	bool isDelete = false;
 
 	EntityTypes getTag();
 
@@ -73,7 +73,7 @@ public:
 
 	virtual D3DXVECTOR2 GetPosition();
 	virtual void Update(float dt);
-
+	virtual void CollisionWith(Entity* en);
 protected:
 
 	//duoc goi khi set position cua Entity, dung cho ke thua

@@ -1,5 +1,6 @@
 #include "WaitRoomScene.h"
 #include "SceneManager.h"
+#include "GameLog.h"
 
 
 void WaitRoomScene::LoadContent()
@@ -66,12 +67,13 @@ void WaitRoomScene::ReceivePakcet()
 	char* buff = static_cast<char*>(std::malloc(1024));
 	size_t receivedByteCount = socket->Receive(buff, 1024);
 
+
 	if (GetTickCount() - timetoStart >= 0 && timetoStart != 0)
 		SceneManager::GetInstance()->ReplaceScene(new TestScene(socket, m_player));
 
 	if (receivedByteCount>0)
 	{
-
+		//GAMELOG("%i\n", receivedByteCount);
 		InputMemoryBitStream is(buff,
 			static_cast<uint32_t> (receivedByteCount));
 		int typeofPacket = 0;
@@ -120,6 +122,9 @@ void WaitRoomScene::Update(float dt)
 		if (my_string == " . . . .") my_string = " .";
 		lastAdd = GetTickCount();
 	}
+	OutputMemoryBitStream os;
+	os.Write(Define::UpdateCountPlayer, Define::bitofTypePacket);
+	socket->Send(os.GetBufferPtr(),os.GetByteLength());
 
 }
 

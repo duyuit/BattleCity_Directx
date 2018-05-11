@@ -1,5 +1,6 @@
 #include "Bullet.h"
 #include "GameDefine.h"
+#include "GameLog.h"
 
 Bullet::Bullet()
 {
@@ -55,7 +56,6 @@ void Bullet::setMoveDirection(Direction direction) {
 	default: ;
 	}
 }
-
 void Bullet::Read(InputMemoryBitStream& is)
 {
 	Entity::Read(is);
@@ -65,8 +65,9 @@ void Bullet::Read(InputMemoryBitStream& is)
 
 void Bullet::Write(OutputMemoryBitStream& os)
 {
-	Entity::Write(os);
+	//Entity::Write(os);
 	os.Write(isActive);
+
 }
 
 

@@ -37,6 +37,10 @@ void Scene::OnKeyUp(int keyCode)
 
 }
 
+void Scene::SendData()
+{
+}
+
 D3DCOLOR Scene::GetBackcolor()
 {
 	return mBackColor;

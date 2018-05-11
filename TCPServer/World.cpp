@@ -1,5 +1,5 @@
 #include "World.h"
-#include "Bullet.h"
+//#include "Bullet.h"
 
 
 World::World()
@@ -23,7 +23,7 @@ World::World()
 		mListBullets.push_back(new Bullet(44));
 	}
 	mMap = new GameMap("Resource files/map.tmx");
-	int size = mMap->GetListBrick().size();
+	
 	
 }
 
@@ -37,6 +37,8 @@ void World::HandleObject(Packet p)
 	int ID = p.id;
 	int action = p.action;
 	int time_of_packet = p.time;
+
+
 
 	for (auto ele : mListPlayer)
 	{
@@ -55,6 +57,7 @@ void World::HandleObject(Packet p)
 						bullet->SetPosition(ele->GetPosition());
 						bullet->SetActive(true);
 						bullet->setMoveDirection(ele->dir);
+						printf("co thang ban kia\n");
 						break;
 					}
 				}
@@ -64,12 +67,7 @@ void World::HandleObject(Packet p)
 	}
 }
 
-bool World::CheckDifferent(RECT a, RECT b)
-{
-	if (a.left != b.left || a.right != b.right || a.top != b.top || a.bottom != b.bottom)
-		return true;
-	return false;
-}
+
 
 
 
@@ -81,67 +79,83 @@ void World::find_or_create(int ID,int action,int time_of_packet)
 
 void World::CheckCollision(float dt)
 {
-	vector<Brick*> listCollision = mMap->GetListBrick();
 
-	count_brick_send = 0;
-	for (size_t i = 0; i < listCollision.size(); i++) 
+
+
+	for (auto pl : mListPlayer)
 	{
-		for(auto pl: mListPlayer)
-			if (GameCollision::isCollide(pl, listCollision[i], dt))
+		vector<Entity*> listCollision;
+		mMap->GetQuadTree()->getEntitiesCollideAble(listCollision, pl);
+		for (auto brick : listCollision)
+		{
+			if (brick->isDelete) continue;
+			if (GameCollision::isCollide(pl, brick, dt))
 				pl->CollideWith_World();
-		for (auto bl : mListBullets)
-			if (GameCollision::isCollide(bl, listCollision[i], dt))
+		}
+
+	}
+
+	
+	for (auto bl : mListBullets)
+	{
+		if (!bl->isActive) continue;
+		vector<Entity*> listCollision;
+		mMap->GetQuadTree()->getEntitiesCollideAble(listCollision, bl);
+		for (auto brick : listCollision)
+		{
+			if (brick->isDelete) continue;
+			if (GameCollision::isCollide(bl, brick, dt))
 			{
-				bl->OnCollision(); 
+				bl->OnCollision();
 				bl->isChange = true;
 
-				count_brick_send++;
-				listCollision[i]->BeCollideWith_Bullet(D3DXVECTOR2(bl->GetVx(), bl->GetVy()));
+			
+				for(auto brick2:mMap->GetListBrick())
+				{
+					if (brick2->ID == brick->ID)
+					{
+						brick2->CollisionWith(bl);
+    						count_brick_send++;
+						break;
+					}
+				}
+				//break;
+				
 				
 			}
-
-		if (listCollision[i]->getDelete()) {
-			mMap->eraseBrick(i);
-			listCollision.erase(listCollision.begin() + i);
-			i--;
 		}
 	}
 	
+	
 			
-		/*if (listCollision[i]->getTag() != Entity::EntityTypes::Water) {
-			for (int k = 0; k < PlayerBullet.size(); k++) {
-				if (GameCollision::isCollide(PlayerBullet[k], listCollision[i], dt)) {
-					PlayerBullet[k]->CollideWith_World();
-					if (listCollision[i]->getTag() == Entity::EntityTypes::Brick)
-						listCollision[i]->BeCollideWith_Bullet(D3DXVECTOR2(PlayerBullet[k]->GetVx(), PlayerBullet[k]->GetVy()));
-				}
-			}
-		}*/
+	
 	
 	
 }
-int count_to_send = 0;
 void World::Update(float dt)
 {
 
 	for (auto ele : mListPlayer)
 	{
-		ele->Update(dt);
+		ele->Update(1.0f/60);
 	}
 	for (auto ele : mListBullets)
 	{
-		ele->Update(dt);
+		ele->Update(1.0f / 60);
 	}
 
-	mMap->Update(dt);
-	//count_to_send++;
+	
 }
-
+int Packet_id = 0;
 void World::SendWorld(std::vector<TCPSocketPtr> listClient)
 {
-	//bool check_to_send = false;
+	
 	OutputMemoryBitStream os;
+	os.Write(++Packet_id, Define::bitofID);
 	os.Write(Define::WorldStatePacket, Define::bitofTypePacket);
+
+	
+
 	int count_bullet_send = 0;
 	for (auto ele : mListBullets)
 	{
@@ -150,44 +164,61 @@ void World::SendWorld(std::vector<TCPSocketPtr> listClient)
 			count_bullet_send++;
 		}
 	}
-
+	
 	int size = mListPlayer.size() + count_brick_send + count_bullet_send;
-	os.Write(size);
+	
+	os.Write(size,Define::bitofID);
+
+
 	for (auto ele : mListPlayer)
 	{
-		/*	if (ele->mAction != ele->mLastAction)
-		check_to_send = true;*/
 		ele->Write(os);
 	}
 
-
+	
 	for (auto ele : mListBullets)
 	{
 		if (ele->isChange)
+		{
 			ele->Write(os);
-	}
+			if (!ele->isActive)
+				int l = 0;
 
-	for (auto ele : mMap->GetListBrick())
+		}
+	}
+	for (auto ele :mMap->GetListBrick())
 	{
-		if (ele->isNeedToSend)
+		if (ele->isDelete)
+		{
 			ele->Write(os);
+		}
 
 	}
+
+
+
+	
+
+
+	
+
 	for (auto client : listClient)
 	{
 		if (client->ID == 0) continue;
-			client->Send(os.GetBufferPtr(), os.GetByteLength());
+		int byte_send = client->Send(os.GetBufferPtr(), os.GetByteLength());
+		if(byte_send<0)
+			printf("Send error");
 
 	}
 
-
-	for (auto br : mMap->GetListBrick())
-		br->isNeedToSend = false;
+	
+	
+	mMap->Update(0);
+	count_brick_send = 0;
 	for (auto ele : mListBullets)
 	{
 			ele->isChange = false;
 	}
-	//if (check_to_send == 20) count_to_send = 0;
 }
 
 

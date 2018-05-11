@@ -7,8 +7,8 @@ public:
 	vector<TCPSocketPtr> readBlockSockets;
 	vector<TCPSocketPtr> readableSockets;
 	TCPSocketPtr socket_sever;
-
-
+	bool isStart = false;
+	void CreatePlayerAndSend();
 	vector<Packet> queue_packet;
 	void Handle_Packet();
 	int ID = 1;

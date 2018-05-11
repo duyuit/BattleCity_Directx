@@ -11,6 +11,7 @@
 #include "Water.h"
 #include "Boundary.h"
 #include "GameCollision.h"
+#include "QuadTree.h"
 
 class GameMap
 {
@@ -19,6 +20,7 @@ public:
 	void Update(float dt);
 	Tmx::Map* GetMap();
 	RECT GetWorldMapBound();
+	QuadTree* GetQuadTree();
 	int GetWidth();
 	int GetHeight();
 	int GetTileWidth();
@@ -28,6 +30,7 @@ public:
 	void eraseBrick(int i);
 	~GameMap();
 private:
+	QuadTree * mQuadTree;
 	void LoadMap(char* filePath);
 	bool isContain(RECT rect1, RECT rect2);
 

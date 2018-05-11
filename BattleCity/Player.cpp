@@ -94,7 +94,7 @@ void Player::HandleKeyboard(std::map<int, bool> keys,int &check_to_send)
 
 	if (keys[VK_SPACE])
 	{
-		if (GetTickCount() - lastFire >= 300)
+		if (GetTickCount() - lastFire >= 1000)
 		{
 			mAction = Fight;
 			lastFire = GetTickCount();
@@ -105,14 +105,15 @@ void Player::HandleKeyboard(std::map<int, bool> keys,int &check_to_send)
 
 	if(mLastAction!=mAction)
 	{
+	
 		OutputMemoryBitStream os;
 		os.Write(Define::InputPacket, Define::bitofTypePacket);
 		os.Write(ID, Define::bitofID);
 		os.Write((int)mAction, Define::bitofID);
+		//os.Write(mMap->GetListBrick().size(), Define::bitofID);
 		int time_of_packet = GetTickCount();
 		os.Write(time_of_packet);
 		GameGlobal::socket->Send(os.GetBufferPtr(), os.GetByteLength());
-
 	}
 		
 	mLastAction = mAction;

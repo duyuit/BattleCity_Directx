@@ -122,6 +122,7 @@
     <ClInclude Include="NetWorkManager.h" />
     <ClInclude Include="Packet.h" />
     <ClInclude Include="PlayerServer.h" />
+    <ClInclude Include="QuadTree.h" />
     <ClInclude Include="SocketAddress.h" />
     <ClInclude Include="SocketUtil.h" />
     <ClInclude Include="targetver.h" />
@@ -164,6 +165,7 @@
     <ClCompile Include="NetWorkManager.cpp" />
     <ClCompile Include="Packet.cpp" />
     <ClCompile Include="PlayerServer.cpp" />
+    <ClCompile Include="QuadTree.cpp" />
     <ClCompile Include="TCPServer.cpp" />
     <ClCompile Include="Water.cpp" />
     <ClCompile Include="World.cpp" />

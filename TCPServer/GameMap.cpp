@@ -7,7 +7,25 @@ GameMap::GameMap(char* filePath)
 void GameMap::Update(float dt)
 {
 	for (int i = 0; i < mListBrick.size(); ++i)
-		mListBrick[i]->Update();
+	{
+		if (mListBrick[i]->isDelete)
+		{
+			
+			
+			vector<Entity*> list_of_brick_quad;
+			this->GetQuadTree()->getAllEntities(list_of_brick_quad);
+			for (auto brick2 : list_of_brick_quad)
+			{
+				if (mListBrick[i]->ID == brick2->ID)
+				{
+					brick2->isDelete = true;
+					break;
+				}
+			}
+			eraseBrick(i);
+			i--;
+		}
+	}
 }
 void GameMap::LoadMap(char* filePath)
 {
@@ -19,15 +37,7 @@ void GameMap::LoadMap(char* filePath)
 	r.top = 0;
 	r.right = this->GetWidth();
 	r.bottom = this->GetHeight();
-
-	for (size_t i = 0; i < mMap->GetNumTilesets(); i++)
-	{
-		const Tmx::Tileset *tileset = mMap->GetTileset(i);
-
-		if (tileset->GetName() != "Brick") {
-
-		}
-	}
+	mQuadTree = new QuadTree(1, r);
 	for (size_t i = 0; i < mMap->GetNumTileLayers(); i++)
 	{
 		const Tmx::TileLayer *layer = mMap->GetTileLayer(i);
@@ -67,11 +77,13 @@ void GameMap::LoadMap(char* filePath)
 
 							D3DXVECTOR3 position(n * tileWidth + tileWidth / 2, 770 - m * tileHeight + tileHeight / 2, 0);
 
+						
 							Brick* brick;
 							if (layer->GetName() == "Brick")
 							{
 								brick = new BrickNormal(position);
 								brick->ID = cur_ID++;
+
 							}
 							else if (layer->GetName() == "Metal Brick")
 							{
@@ -88,15 +100,22 @@ void GameMap::LoadMap(char* filePath)
 								brick = new Boundary(position);
 								brick->ID = cur_ID++;
 							}
-
-							mListBrick.push_back(brick);
-							GAMELOG("Position  %f, %f", position.x, position.y);
+							else
+							{
+								brick = nullptr;
+							}
+							if (brick != nullptr)
+							{
+								mQuadTree->insertEntity(brick);
+								mListBrick.push_back(brick);
+							}
 						}
 					}
 				}
 			}
 		}
 	}
+	//printf("%i", mListBrick.size());
 }
 bool GameMap::isContain(RECT rect1, RECT rect2)
 {
@@ -146,6 +165,11 @@ RECT GameMap::GetWorldMapBound()
 	bound.bottom = mMap->GetHeight() * mMap->GetTileHeight();
 
 	return bound;
+}
+
+QuadTree* GameMap::GetQuadTree()
+{
+	return mQuadTree;
 }
 
 GameMap::~GameMap()

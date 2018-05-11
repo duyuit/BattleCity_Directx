@@ -85,4 +85,5 @@ void Bullet::Write(OutputMemoryBitStream& os)
 {
 	Entity::Write(os);
 	os.Write(isActive);
+
 }

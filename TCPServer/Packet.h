@@ -8,6 +8,7 @@ public:
 	int id = 0;
 	int action = 0;
 	int time = 0;
+
 	~Packet();
 };
 

@@ -14,10 +14,9 @@ Brick::Brick()
 }
 
 bool Brick::Init(D3DXVECTOR3 position) {
-	Entity::SetWidth(32);
-	Entity::SetHeight(32);
-	dir = Direction::none;
-	mSprite = new Sprite(FileName(), rect());
+	Entity::SetWidth(16);
+	Entity::SetHeight(16);
+	mSprite = new Sprite("Resource files/tileset.png", rect());
 	SetPosition(position);
 	mSprite->SetPosition(position);
 	return true;
@@ -26,16 +25,17 @@ void Brick::OnSetPosition(D3DXVECTOR3 position) {
 	mSprite->SetPosition(position);
 }
 
-void Brick::BeCollideWith_Bullet(Direction dir)
+void Brick::BeCollideWith_Bullet()
 {
+	
 }
+
+
 
 void Brick::Read(InputMemoryBitStream& is)
 {
-	int _dir=0;
-	is.Read(_dir, Define::bitofID);
-	dir = (Direction)_dir;
 	
+	is.Read(isDelete);
 }
 
 

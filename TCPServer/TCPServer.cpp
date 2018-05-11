@@ -21,6 +21,7 @@ void Receive_thread(NetWorkManager* net)
 	while (1)
 	{
 		net->ReceivePacket();
+		
 	}
 
 }
@@ -40,30 +41,35 @@ int main()
 	MSG msg;
 	std::thread task_receive_packet(Receive_thread, net_work);
 	task_receive_packet.detach();
+	
 	while (1)
 	{
-		//net_work->ReceivePacket();
-		net_work->Handle_Packet();
-	
+		/*if (net_work->isStart)
+		{*/
+			
+
 			_gameTime->update();
 			_detalTime = _gameTime->getTotalTime() - _lastTime;
 
 			if (_detalTime >= tickPerFrame)
 			{
+				net_work->Handle_Packet();
 				_lastTime += tickPerFrame;
-				net_work->Update(_detalTime);
+				net_work->Update(1.0f/60);//_detalTime
 				temp++;
 				if (temp == 60)
 				{
 					temp1++;
 					temp = 0;
-					printf("%i\t%f\n",temp1,_detalTime);
+					printf("%i\t%f\n", temp1, _detalTime);
 				}
 			}
 			else
 			{
 				Sleep((tickPerFrame - _detalTime) * 1000.0f);
 			}
+		//}
+		
 	
 		
 	}
@@ -73,27 +79,3 @@ int main()
 }
 
 
-//_gameTime->update();
-//
-//_detalTime = _gameTime->getTotalTime() - _lastTime;
-//net_work->ReceivePacket();
-//
-//GameTime::GetInstance()->StartCounter();
-//if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
-//{
-//	TranslateMessage(&msg);
-//	DispatchMessage(&msg);
-//}
-//delta += GameTime::GetInstance()->GetCouter();
-//
-//if (delta >= tickPerFrame)
-//{
-//	net_work->Update(delta);
-//	delta = 0;
-//}
-//else
-//{
-//	int delta_time = tickPerFrame - delta;
-//	Sleep(delta_time);
-//	delta = tickPerFrame;
-//}

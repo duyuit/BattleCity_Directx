@@ -1,10 +1,18 @@
 #include "TestScene.h"
 #include "SocketAddress.h"
 #include "SocketUtil.h"
+#include "GameLog.h"
 
+vector<RECT> source_of_explotion()
+{
+	vector<RECT> temp;
+	RECT rect;
 
-
-
+	rect.left = 5; rect.top = 67; rect.right = rect.left + 42; rect.bottom = rect.top + 38; 	temp.push_back(rect);
+	rect.left = 46; rect.top = 64; rect.right = rect.left + 49; rect.bottom = rect.top + 48;	temp.push_back(rect);
+	rect.left =94; rect.top = 63; rect.right = rect.left + 51; rect.bottom = rect.top + 51;	    temp.push_back(rect);
+	return temp;
+};
 
 void TestScene::LoadContent()
 {
@@ -16,7 +24,6 @@ TestScene::TestScene(TCPSocketPtr socket,Player* m_player)
 	mBackColor = D3DCOLOR_XRGB(0, 0, 0);
 
 	mMap = new GameMap("Resource files/map.tmx");
-	mMap->GetListBrick().at(209)->BeCollideWith_Bullet(Direction::down);
 	this->socket = socket;
 
 
@@ -102,8 +109,10 @@ void TestScene::Update(float dt)
 	}*/
 	mPlayer->HandleKeyboard(keys, check_to_send);
 	CheckCollision(dt);
-
 	mMap->Update(dt);
+
+
+
 	for (auto ele : mListPlayer)
 	{
 		ele->Update(dt);
@@ -112,12 +121,16 @@ void TestScene::Update(float dt)
 	{
 		ele->Update(dt);
 	}
-
+	for (auto ele : mListAnimate)
+	{
+		ele->Update(dt);
+	}
 
 }
 
 void TestScene::Draw()
 {
+	
 	
 	for (auto ele:mListPlayer)
 	{
@@ -128,6 +141,16 @@ void TestScene::Draw()
 		ele->Draw();
 	}
 	mMap->Draw();
+	for (int i=0;i<mListAnimate.size();i++)
+	{
+		mListAnimate[i]->Draw();
+		if (mListAnimate[i]->GetCurrentFrame() == mListAnimate[i]->mSourceRect.size() - 1)
+		{
+			mListAnimate.erase(mListAnimate.begin() + i);
+			i--;
+		}
+
+	}
 	if (RTT_Font)
 	{
 		int delta = GameGlobal::RTT;
@@ -146,21 +169,31 @@ void TestScene::Draw()
 	}*/
 
 }
-
+int last_id = 0;
 void TestScene::ReceivePakcet()
 {
 	char* buff = static_cast<char*>(std::malloc(1024));
 	size_t receivedByteCount = socket->Receive(buff, 1024);
+	//GAMELOG("%i\n", receivedByteCount);
 	if (receivedByteCount>0)
 	{
+		
 		InputMemoryBitStream is(buff,
 			static_cast<uint32_t> (receivedByteCount));
+		int Packet_id = 0;
+		is.Read(Packet_id, Define::bitofID);
+		if (Packet_id == 1485) return;
+		
+	
+		GAMELOG("%i\n", Packet_id);
+
 		int typeofPacket = 0;
 		is.Read(typeofPacket, Define::bitofTypePacket);
 		if (typeofPacket == Define::WorldStatePacket)
 		{
 			int ObjectCount = 0;
-			is.Read(ObjectCount);
+			is.Read(ObjectCount,Define::bitofID);
+		
 			for (int i = 0; i<ObjectCount; i++)
 			{
 				int tag = 0;
@@ -169,26 +202,59 @@ void TestScene::ReceivePakcet()
 			}
 
 		}
+		last_id++;
 	}
-	delete buff;
+	free(buff);
 }
 
 void TestScene::CheckCollision(float dt)
 {
 	
-
-
-	for (size_t i = 0; i < mMap->GetListBrick().size(); i++)
+	
+	for (auto pl : mListPlayer)
 	{
-		for (auto pl : mListPlayer)
-			if (GameCollision::isCollide(pl, mMap->GetListBrick()[i], dt))
+		vector<Entity*> listCollision;
+		mMap->GetQuadTree()->getEntitiesCollideAble(listCollision, pl);
+		for(auto brick: listCollision)
+		{
+			if (brick->isDelete) continue;
+			if (GameCollision::isCollide(pl,brick, dt))
 				pl->CollideWith_World();
-		/*if (mMap->GetListBrick()[i]->getDelete()) {
-			mMap->eraseBrick(i);
-			mMap->GetListBrick().erase(mMap->GetListBrick().begin() + i);
-			i--;
-		}*/
+		}
+		
 	}
+	for (auto bl : mListBullets)
+	{
+		if (!bl->isActive) continue;
+		vector<Entity*> listCollision;
+		mMap->GetQuadTree()->getEntitiesCollideAble(listCollision, bl);
+		for (auto brick : listCollision)
+		{
+			if (brick->isDelete) continue;
+			if (GameCollision::isCollide(bl, brick, dt))
+			{
+				
+				
+				bl->isActive = false;
+			}
+
+		}
+
+	}
+
+
+
+}
+
+void TestScene::SendData()
+{
+	OutputMemoryBitStream os;
+	os.Write(Define::InputPacket, Define::bitofTypePacket);
+	os.Write(mPlayer->ID, Define::bitofID);
+	os.Write((int)mPlayer->mAction, Define::bitofID);
+	int time_of_packet = GetTickCount();
+	os.Write(time_of_packet);
+	GameGlobal::socket->Send(os.GetBufferPtr(), os.GetByteLength());
 
 }
 
@@ -201,7 +267,7 @@ void TestScene::OnKeyUp(int keyCode)
 {
 	keys[keyCode] = false;
 }
-
+int count_brick = 0;
 void TestScene::find_and_handle(int tag, InputMemoryBitStream &is)
 {
 	Entity::EntityTypes new_tag = (Entity::EntityTypes)tag;
@@ -216,6 +282,7 @@ void TestScene::find_and_handle(int tag, InputMemoryBitStream &is)
 			if(ele->ID== id)
 			{
 				ele->Read(is);
+				if(id==mPlayer->ID)
 				GameGlobal::RTT = GetTickCount() - ele->last_move_time;
 				return;
 
@@ -238,16 +305,20 @@ void TestScene::find_and_handle(int tag, InputMemoryBitStream &is)
 		}
 		break;
 	case Entity::Brick:
-		for (auto ele : mMap->GetListBrick())
+		for (int i = 0; i < mMap->GetListBrick().size(); i++)
 		{
-			if (ele->ID == id)
+			Brick* br = mMap->GetListBrick().at(i);
+			if (br->ID == id)
 			{
-				ele->Read(is);
-				ele->BeCollideWith_Bullet(ele->dir);
-				return;
+				Animation *explore = new Animation("Resource files/Somethings.png", source_of_explotion(), 0.05f, D3DXCOLOR(255, 0, 255, 255));
+				//explore->SetScale(D3DXVECTOR2(2, 2));
+				explore->SetPosition(br->GetPosition());
+				mListAnimate.push_back(explore);
 
+				is.Read(br->isDelete);
+
+				break;
 			}
-
 		}
 		break;
 			/*case Entity::item: break;

@@ -58,6 +58,11 @@ void Entity::Update(float dt)
 	posY += vy * dt;
 }
 
+void Entity::CollisionWith(Entity* en)
+{
+
+}
+
 void Entity::SetPosition(float x, float y)
 {
 	posX = x;

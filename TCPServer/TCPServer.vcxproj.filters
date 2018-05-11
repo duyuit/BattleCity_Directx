@@ -63,21 +63,6 @@
     <ClInclude Include="GameMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Boundary.h">
-      <Filter>GameObject\Map Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Brick.h">
-      <Filter>GameObject\Map Object</Filter>
-    </ClInclude>
-    <ClInclude Include="BrickNormal.h">
-      <Filter>GameObject\Map Object</Filter>
-    </ClInclude>
-    <ClInclude Include="MetalBrick.h">
-      <Filter>GameObject\Map Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Water.h">
-      <Filter>GameObject\Map Object</Filter>
-    </ClInclude>
     <ClInclude Include="GameCollision.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -156,6 +141,24 @@
     <ClInclude Include="Packet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Boundary.h">
+      <Filter>GameObject\Map Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Brick.h">
+      <Filter>GameObject\Map Object</Filter>
+    </ClInclude>
+    <ClInclude Include="BrickNormal.h">
+      <Filter>GameObject\Map Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Water.h">
+      <Filter>GameObject\Map Object</Filter>
+    </ClInclude>
+    <ClInclude Include="MetalBrick.h">
+      <Filter>GameObject\Map Object</Filter>
+    </ClInclude>
+    <ClInclude Include="QuadTree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TCPServer.cpp">
@@ -184,21 +187,6 @@
     </ClCompile>
     <ClCompile Include="GameMap.cpp">
       <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Boundary.cpp">
-      <Filter>GameObject\Map Object</Filter>
-    </ClCompile>
-    <ClCompile Include="Brick.cpp">
-      <Filter>GameObject\Map Object</Filter>
-    </ClCompile>
-    <ClCompile Include="BrickNormal.cpp">
-      <Filter>GameObject\Map Object</Filter>
-    </ClCompile>
-    <ClCompile Include="MetalBrick.cpp">
-      <Filter>GameObject\Map Object</Filter>
-    </ClCompile>
-    <ClCompile Include="Water.cpp">
-      <Filter>GameObject\Map Object</Filter>
     </ClCompile>
     <ClCompile Include="GameCollision.cpp">
       <Filter>Header Files</Filter>
@@ -267,6 +255,24 @@
       <Filter>Header Files</Filter>
     </ClCompile>
     <ClCompile Include="Packet.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Boundary.cpp">
+      <Filter>GameObject\Map Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Brick.cpp">
+      <Filter>GameObject\Map Object</Filter>
+    </ClCompile>
+    <ClCompile Include="BrickNormal.cpp">
+      <Filter>GameObject\Map Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Water.cpp">
+      <Filter>GameObject\Map Object</Filter>
+    </ClCompile>
+    <ClCompile Include="MetalBrick.cpp">
+      <Filter>GameObject\Map Object</Filter>
+    </ClCompile>
+    <ClCompile Include="QuadTree.cpp">
       <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>

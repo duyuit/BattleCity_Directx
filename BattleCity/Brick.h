@@ -12,7 +12,7 @@ public:
 
 	void OnSetPosition(D3DXVECTOR3 position);
 
-	virtual void BeCollideWith_Bullet(Direction dir);
+	virtual void BeCollideWith_Bullet();
 	void Read(InputMemoryBitStream& is) override;
 	void setDelete(bool deleted);
 	bool getDelete();
@@ -20,11 +20,9 @@ protected:
 	Brick();
 	bool Init(D3DXVECTOR3 position);
 
-	virtual const char* FileName() = 0;
 	virtual RECT rect() = 0;
 	Sprite* mSprite;
 	RECT reg;
 
-	bool isDelete;
 };
 

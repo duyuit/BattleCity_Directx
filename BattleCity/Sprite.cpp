@@ -169,6 +169,8 @@ void Sprite::Draw(D3DXVECTOR3 position, RECT sourceRect, D3DXVECTOR2 scale, D3DX
 void Sprite::SetSourceRect(RECT rect)
 {
 	mSourceRect = rect;
+	mWidth = rect.left - rect.right;
+	mHeight = rect.bottom - rect.top;
 }
 
 LPDIRECT3DTEXTURE9 Sprite::GetTexture()

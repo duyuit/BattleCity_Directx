@@ -183,6 +183,9 @@
     <ClCompile Include="GameLog.cpp">
       <Filter>FrameWork\GameComponents</Filter>
     </ClCompile>
+    <ClCompile Include="QuadTree.cpp">
+      <Filter>FrameWork\GameComponents</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameTime.h">
@@ -336,6 +339,9 @@
       <Filter>FrameWork\GameComponents</Filter>
     </ClInclude>
     <ClInclude Include="GameLog.h">
+      <Filter>FrameWork\GameComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="QuadTree.h">
       <Filter>FrameWork\GameComponents</Filter>
     </ClInclude>
   </ItemGroup>
