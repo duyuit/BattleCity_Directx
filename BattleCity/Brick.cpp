@@ -16,7 +16,7 @@ Brick::Brick()
 bool Brick::Init(D3DXVECTOR3 position) {
 	Entity::SetWidth(16);
 	Entity::SetHeight(16);
-	mSprite = new Sprite("Resource files/tileset.png", rect());
+	mSprite = new Sprite("Resource files/tileset.png", rect(),0,16,16,GameGlobal::mMapTexture);
 	SetPosition(position);
 	mSprite->SetPosition(position);
 	return true;

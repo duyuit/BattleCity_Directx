@@ -72,7 +72,7 @@ void NetWorkManager::Update(float dt)
 	count_to_send++;
 	if(count_to_send ==6)
 	{
-		//mWorld->Update(dt);
+		
 		mWorld->SendWorld(readBlockSockets);
 		count_to_send = 0;
 	}
@@ -124,7 +124,7 @@ void NetWorkManager::ReceivePacket()
 				ProcessNewClient();
 				printf("\nCo ket noi moi");
 			
-				if (ID ==2) //if enought player, Provide them first position by ID
+				if (ID ==3) //if enought player, Provide them first position by ID
 				{
 					CreatePlayerAndSend();
 					isStart = true;
@@ -157,16 +157,7 @@ void NetWorkManager::ReceivePacket()
 						{
 							CreatePlayerAndSend();
 							continue;
-						}/*else
-						if (type_of_packet == Define::RequestOldPacket)
-						{
-							int id = 0;
-							is.Read(id, Define::bitofID);
-							auto it = mWorld->packet_sended.find(id);
-							for (auto client : readBlockSockets)
-								client->Send(it->second.GetBufferPtr(), it->second.GetByteLength());
-							continue;
-						}*/
+						}
 					}
 					Packet p(is);
 					queue_packet.push_back(p);

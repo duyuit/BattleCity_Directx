@@ -1,2 +1,5 @@
-﻿  Animation.cpp
+﻿  TestScene.cpp
+d:\git\battlecity_directx\battlecity\testscene.cpp(146): warning C4018: '<': signed/unsigned mismatch
+d:\git\battlecity_directx\battlecity\testscene.cpp(172): warning C4018: '<': signed/unsigned mismatch
+d:\git\battlecity_directx\battlecity\testscene.cpp(347): warning C4018: '<': signed/unsigned mismatch
   BattleCity.vcxproj -> D:\Git\BattleCity_Directx\Debug\BattleCity.exe

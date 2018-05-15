@@ -5,12 +5,13 @@ class Bullet:public Entity
 {
 public:
 	Bullet();
+	Bullet(int id,int id_pl);
 	Bullet(int id);
 	~Bullet();
 	bool isActive = false;
 	bool isChange = false;
 	RECT GetBound();
-
+	int ID_of_player=0;
 	void OnCollision();
 	/*void Emplace(Bullet *newBullet);
 	bool Compare(Bullet* newBullet);*/

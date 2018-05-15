@@ -34,7 +34,10 @@ public:
 	{
 		player, bullet, item, block,none,Brick,
 		MetalBrick,
-		Water, boundary
+		Water,
+		ProtectPlayerItem,
+		UpgradeItem,
+		boundary
 	};
 	bool isDelete = false;
 	int ID = 0;

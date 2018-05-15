@@ -4,7 +4,7 @@
 class Sprite
 {
 public:
-	Sprite(const char* filePath, RECT sourceRect = RECT(), int width = NULL, int height = NULL, D3DCOLOR colorKey = NULL);
+	Sprite(const char* filePath, RECT sourceRect = RECT(), int width = NULL, int height = NULL, D3DCOLOR colorKey = NULL, LPDIRECT3DTEXTURE9 textureType=NULL);
 
 	Sprite();
 
@@ -52,16 +52,16 @@ public:
 	
 	void InitWithSprite(const char* filePath, RECT sourceRect = RECT(), int width = NULL, int height = NULL, D3DCOLOR colorKey = NULL);
 	LPD3DXSPRITE GetSpriteHandle();
-	
+	LPDIRECT3DTEXTURE9      mTexture = NULL; // load hinh anh vao day
 protected:
 	//su dung cho ke thua
 	
-
+	
 	bool isRect(RECT rect);
 	D3DXVECTOR2				mCenterDraw = D3DXVECTOR2(0.5, 0.5);
 
 	D3DXVECTOR3             mPosition; // vi tri cua Sprite, co goc la chinh giua hinh anh Texture
-	LPDIRECT3DTEXTURE9      mTexture; // load hinh anh vao day
+
 	LPD3DXSPRITE            mSpriteHandler; //SpriteHandler ho tro ve hinh
 	D3DXIMAGE_INFO          mImageInfo; // thong tin thuc cua hinh anh duoc lay
 	RECT                    mSourceRect; // hinh chu nhat cat tu anh cua texture

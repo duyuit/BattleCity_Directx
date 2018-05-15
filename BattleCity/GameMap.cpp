@@ -49,8 +49,7 @@ void GameMap::LoadMap(char* filePath)
 		const Tmx::Tileset *tileset = mMap->GetTileset(i);
 
 		if (tileset->GetName() != "Brick") {
-			Sprite *sprite = new Sprite(tileset->GetImage()->GetSource().c_str());
-
+			Sprite *sprite = new Sprite(tileset->GetImage()->GetSource().c_str(),RECT(),0,0,0,GameGlobal::mMapTexture);
 			mListTileset.insert(std::pair<int, Sprite*>(i, sprite));
 		}
 	}

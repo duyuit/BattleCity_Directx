@@ -20,6 +20,11 @@ Player::Player()
 
 	m_top_sprite = new Sprite("Resource files/topOfplayer.png", RECT(), 0, 0, D3DXCOLOR(255, 0, 255,255));
 	
+	vector<RECT> list;
+	RECT a;
+	a.left = 0; a.right = a.left + 39; a.top = 111; a.bottom = a.top + 42; list.push_back(a);
+	a.left = 39; a.right = a.left + 40; a.top = 111; a.bottom = a.top + 40; list.push_back(a);
+	shield = new Animation("Resource files/Somethings.png", list, 0.05f, D3DXCOLOR(255, 0, 255, 255));
 }
 
 Player::~Player(){}
@@ -30,6 +35,70 @@ void Player::Write(OutputMemoryBitStream& os)
 	
 }
 
+void Player::OnsetLevel(int m_level)
+{
+	if (m_level == 2)
+	{
+		switch (ID)
+		{
+		case 1:
+			mUpSprite = new Sprite("Resource files/tank.png", RECT{ 2,192,34,192 + 36 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			mLeftSprite = new Sprite("Resource files/tank.png", RECT{ 76,196,76 + 37,196 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			mDownSprite = new Sprite("Resource files/tank.png", RECT{ 156,195,156 + 31,195 + 34 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			mRightSprite = new Sprite("Resource files/tank.png", RECT{ 233,195,233 + 36,195 + 30 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			break;
+		case 2:
+			mUpSprite = new Sprite("Resource files/tank.png", RECT{ 310,192,310+32,192 + 36 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			mLeftSprite = new Sprite("Resource files/tank.png", RECT{ 384,196,384 + 37,196 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			mDownSprite = new Sprite("Resource files/tank.png", RECT{ 464,195,464 + 31,195 + 34 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			mRightSprite = new Sprite("Resource files/tank.png", RECT{ 540,195,540 + 36,195 + 30 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			break;
+		case 3:
+			mUpSprite = new Sprite("Resource files/tank.png", RECT{ 2,500,34,500 + 36 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			mLeftSprite = new Sprite("Resource files/tank.png", RECT{ 76,504,76 + 37,504 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			mDownSprite = new Sprite("Resource files/tank.png", RECT{ 156,502,156 + 31,502 + 34 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			mRightSprite = new Sprite("Resource files/tank.png", RECT{ 233,502,233 + 36,502 + 30 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			break;
+		case 4:
+			mUpSprite = new Sprite("Resource files/tank.png", RECT{ 310,500,310 + 32,500 + 36 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			mLeftSprite = new Sprite("Resource files/tank.png", RECT{ 384,504,384 + 37,504 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			mDownSprite = new Sprite("Resource files/tank.png", RECT{ 464,502,464 + 31,502 + 34 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			mRightSprite = new Sprite("Resource files/tank.png", RECT{ 540,502,540 + 36,502 + 30 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			break;
+
+		}
+	}else if(m_level==3)
+	{
+		switch (ID)
+		{
+		case 1:
+			mUpSprite = new Sprite("Resource files/tank.png", RECT{ 2,77,34,77 + 37 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			mLeftSprite = new Sprite("Resource files/tank.png", RECT{ 77,79,77 + 37,79 + 31 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			mDownSprite = new Sprite("Resource files/tank.png", RECT{ 156,78,156 + 31,78 + 37 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			mRightSprite = new Sprite("Resource files/tank.png", RECT{ 233,79,233 + 36,79 + 31 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			break;
+		case 2:
+			mUpSprite = new Sprite("Resource files/tank.png", RECT{ 310,77,310+32,77 + 37 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			mLeftSprite = new Sprite("Resource files/tank.png", RECT{ 384,79,384 + 37,79 + 31 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			mDownSprite = new Sprite("Resource files/tank.png", RECT{ 464,78,464 + 31,78 + 37 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			mRightSprite = new Sprite("Resource files/tank.png", RECT{ 540,79,540 + 36,79 + 31 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			break;
+		case 3:
+			mUpSprite = new Sprite("Resource files/tank.png", RECT{ 2,384,34,384 + 37 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			mLeftSprite = new Sprite("Resource files/tank.png", RECT{ 77,387,77 + 37,387 + 31 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			mDownSprite = new Sprite("Resource files/tank.png", RECT{ 156,387,156 + 31,387 + 37 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			mRightSprite = new Sprite("Resource files/tank.png", RECT{ 233,387,233 + 36,387 + 31 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			break;
+		case 4:
+			mUpSprite = new Sprite("Resource files/tank.png", RECT{ 310,384,310 + 32,384 + 37 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			mLeftSprite = new Sprite("Resource files/tank.png", RECT{ 384,387,384 + 37,387 + 31 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			mDownSprite = new Sprite("Resource files/tank.png", RECT{ 464,387,464 + 31,387 + 37 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			mRightSprite = new Sprite("Resource files/tank.png", RECT{ 540,387,540 + 36,387 + 31 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			break;
+
+		}
+	}
+}
 
 
 void Player::Read(InputMemoryBitStream& is)
@@ -37,8 +106,19 @@ void Player::Read(InputMemoryBitStream& is)
 	Entity::Read(is);
 	int action = 0;
 	is.Read(action, Define::bitofID);
+
+	int level = 0;
+	is.Read(level, Define::bitofTypePacket);
+	if(level!=mLevel)
+	{
+		mLevel = level;
+		OnsetLevel(mLevel);
+	}
 	mAction = (Action)action;
+	is.Read(is_protect);
 	is.Read(last_move_time);
+	is.Read(mScore, Define::bitofID);
+
 }
 void Player::Update(float dt)
 {
@@ -63,11 +143,12 @@ void Player::Update(float dt)
 	default: break;
 	}
 
+	if (is_protect) shield->Update(dt);
 
 	
 	
 }
-void Player::HandleKeyboard(std::map<int, bool> keys,int &check_to_send)
+void Player::HandleKeyboard(std::map<int, bool> keys)
 {
 	
 	if (keys[VK_LEFT]) {
@@ -91,10 +172,12 @@ void Player::HandleKeyboard(std::map<int, bool> keys,int &check_to_send)
 		Stand();
 	}
 	
-
+	int time_to_fight = 1000;
 	if (keys[VK_SPACE])
 	{
-		if (GetTickCount() - lastFire >= 1000)
+		if (mLevel > 2)
+			time_to_fight = 700;
+		if (GetTickCount() - lastFire > time_to_fight)
 		{
 			mAction = Fight;
 			lastFire = GetTickCount();
@@ -110,7 +193,6 @@ void Player::HandleKeyboard(std::map<int, bool> keys,int &check_to_send)
 		os.Write(Define::InputPacket, Define::bitofTypePacket);
 		os.Write(ID, Define::bitofID);
 		os.Write((int)mAction, Define::bitofID);
-		//os.Write(mMap->GetListBrick().size(), Define::bitofID);
 		int time_of_packet = GetTickCount();
 		os.Write(time_of_packet);
 		GameGlobal::socket->Send(os.GetBufferPtr(), os.GetByteLength());
@@ -130,6 +212,12 @@ void Player::Draw(D3DXVECTOR3 position, RECT sourceRect, D3DXVECTOR2 scale, D3DX
 		m_top_sprite->SetPosition(D3DXVECTOR3(posX, posY + 35, 0));
 		m_top_sprite->Draw();
 	}
+
+	if(is_protect)
+	{
+		shield->SetPosition(GetPosition());
+		shield->Draw();
+	}
 }
 
 void Player::CollideWith_World()
@@ -139,12 +227,7 @@ void Player::CollideWith_World()
 }
 
 
-void Player::Emplace(Player* pl)
-{
-	Entity::Emplace(pl);
-	this->mAction = pl->mAction;
 
-}
 
 RECT Player::GetBound()
 {
@@ -159,33 +242,25 @@ RECT Player::GetBound()
 void Player::onSetID(int ID)
 {
 	this->ID = ID;
-	/*for (int i = 1; i<4; i++)
-	{
-		Bullet* bullet = new Bullet(Up);
-		bullet->SetPosition(0, 0);
-		bullet->ID = this->ID * 10 + i;
-		bullet->isActive = false;
-		mBullet.push_back(bullet);
-	}*/
 	switch (ID)
 	{
 	case 2:
-		mUpSprite = new Sprite("Resource files/tank.png", RECT{ 310,4,310 + 32,4 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
-		mLeftSprite = new Sprite("Resource files/tank.png", RECT{ 389,2,389 + 32,2 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
-		mDownSprite = new Sprite("Resource files/tank.png", RECT{ 464,2,464 + 32,2 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
-		mRightSprite = new Sprite("Resource files/tank.png", RECT{ 540,2,540 + 32,2 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
+		mUpSprite = new Sprite("Resource files/tank.png", RECT{ 310,4,310 + 32,4 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255),GameGlobal::mTankTexture);
+		mLeftSprite = new Sprite("Resource files/tank.png", RECT{ 389,2,389 + 32,2 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255),GameGlobal::mTankTexture);
+		mDownSprite = new Sprite("Resource files/tank.png", RECT{ 464,2,464 + 32,2 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+		mRightSprite = new Sprite("Resource files/tank.png", RECT{ 540,2,540 + 32,2 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
 		break;
 	case 3:
-		mUpSprite = new Sprite("Resource files/tank.png", RECT{ 2,312,2 + 32,312 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
-		mLeftSprite = new Sprite("Resource files/tank.png", RECT{ 82,310,82 + 32,310 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
-		mDownSprite = new Sprite("Resource files/tank.png", RECT{ 156,310,156 + 32,310 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
-		mRightSprite = new Sprite("Resource files/tank.png", RECT{ 233,310,233 + 32,310 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
+		mUpSprite = new Sprite("Resource files/tank.png", RECT{ 2,312,2 + 32,312 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+		mLeftSprite = new Sprite("Resource files/tank.png", RECT{ 82,310,82 + 32,310 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+		mDownSprite = new Sprite("Resource files/tank.png", RECT{ 156,310,156 + 32,310 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+		mRightSprite = new Sprite("Resource files/tank.png", RECT{ 233,310,233 + 32,310 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
 		break;
 	case 4:
-		mUpSprite = new Sprite("Resource files/tank.png", RECT{ 310,312,310 + 32,312 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
-		mLeftSprite = new Sprite("Resource files/tank.png", RECT{ 389,310,389 + 32,310 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
-		mDownSprite = new Sprite("Resource files/tank.png", RECT{ 464,310,464 + 32,310 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
-		mRightSprite = new Sprite("Resource files/tank.png", RECT{ 540,310,540 + 32,310 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
+		mUpSprite = new Sprite("Resource files/tank.png", RECT{ 310,312,310 + 32,312 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+		mLeftSprite = new Sprite("Resource files/tank.png", RECT{ 389,310,389 + 32,310 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+		mDownSprite = new Sprite("Resource files/tank.png", RECT{ 464,310,464 + 32,310 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+		mRightSprite = new Sprite("Resource files/tank.png", RECT{ 540,310,540 + 32,310 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
 		break;
 
 	}

@@ -5,15 +5,16 @@ Animation::Animation()
 
 }
 
-Animation::Animation(const char* filePath, vector<RECT> source, float timePerFrame, D3DCOLOR colorKey)
+Animation::Animation(const char* filePath, vector<RECT> source, float timePerFrame, D3DCOLOR colorKey )
 {
-	this->InitWithSprite(filePath,source.at(0),30,30,colorKey);
+	
+	this->InitWithSprite(filePath,source.at(0),0,0,colorKey);
 	mTimePerFrame = timePerFrame;
 	mTotalFrame = source.size();
 	mSourceRect = source;
 
 	mRect = source.at(0);
-	SetSourceRect(mRect);
+	//SetSourceRect(mRect);
 }
 
 

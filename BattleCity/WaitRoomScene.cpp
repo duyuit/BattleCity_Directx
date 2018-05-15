@@ -5,7 +5,8 @@
 
 void WaitRoomScene::LoadContent()
 {
-		
+	GameGlobal();
+
 	socket = SocketUtil::CreateTCPSocket();
 
 	SocketAddress address(inet_addr("127.0.0.1"), 8888); //"127.0.0.1"
@@ -38,7 +39,8 @@ void WaitRoomScene::LoadContent()
 	int left = GameGlobal::GetWidth() / 2 - 150;
 	for (int i = 0; i<4; i++)
 	{
-			Sprite* sp = new  Sprite("Resource files/red.png");
+	
+		Sprite* sp = new  Sprite("Resource files/box.png", RECT{ 50,0,100,50 }, 0, 0, 0, GameGlobal::mBoxTexture);
 			sp->SetPosition(left, GameGlobal::GetHeight() / 2);
 			box.push_back(sp);
 			left += 100;
@@ -55,7 +57,8 @@ void WaitRoomScene::LoadContent()
 	myRect.top = GameGlobal::GetHeight() / 2 - 100;
 	myRect.bottom = myRect.top + 200;
 	myRect.right = myRect.left + 400;
-	
+
+
 }
 
 int lastAdd = 0;
@@ -73,7 +76,7 @@ void WaitRoomScene::ReceivePakcet()
 
 	if (receivedByteCount>0)
 	{
-		//GAMELOG("%i\n", receivedByteCount);
+		
 		InputMemoryBitStream is(buff,
 			static_cast<uint32_t> (receivedByteCount));
 		int typeofPacket = 0;
@@ -109,7 +112,7 @@ void WaitRoomScene::UpdateBox(int k)
 		for (int i = 0; i<k; i++)
 		{
 			D3DXVECTOR2 pos = box.at(i)->GetPosition();
-			box.at(i)->InitWithSprite("Resource files/green.png");
+			box.at(i)->InitWithSprite("Resource files/box.png", RECT{ 0,0,50,50 },0,0,0);
 			box.at(i)->SetPosition(pos);
 		}
 }

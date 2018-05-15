@@ -60,6 +60,7 @@ void Entity::Update(float dt)
 
 void Entity::CollisionWith(Entity* en)
 {
+	
 
 }
 

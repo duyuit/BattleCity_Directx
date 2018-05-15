@@ -4,6 +4,13 @@
 	 Tag = bullet;
 }
 
+Bullet::Bullet(int id, int id_pl)
+{
+	Tag = bullet;
+	ID = id;
+	ID_of_player = id_pl;
+}
+
 Bullet::Bullet(int id)
 {
 	Tag = bullet;

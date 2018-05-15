@@ -22,6 +22,9 @@
     <Filter Include="Header Files\MapReader">
       <UniqueIdentifier>{8855df76-ca5f-46a7-8483-a2cfc5354d70}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\Item">
+      <UniqueIdentifier>{107917ec-88e9-4c25-be82-7de5641d6afa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -159,6 +162,15 @@
     <ClInclude Include="QuadTree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>GameObject\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="ProtectPlayer.h">
+      <Filter>GameObject\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="UpgradeItem.h">
+      <Filter>GameObject\Item</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TCPServer.cpp">
@@ -274,6 +286,15 @@
     </ClCompile>
     <ClCompile Include="QuadTree.cpp">
       <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>GameObject\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="ProtectPlayer.cpp">
+      <Filter>GameObject\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="UpgradeItem.cpp">
+      <Filter>GameObject\Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

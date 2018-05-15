@@ -23,7 +23,9 @@ public:
 	{
 		player, bullet, item, block, none, Brick,
 		MetalBrick,
-		Water
+		Water,
+		ProtectPlayerItem,
+		UpgradeItem
 	};
 	int ID = 0;
 	Direction dir = up;

@@ -46,6 +46,9 @@
     <Filter Include="FrameWork\GameObjects\MapObject">
       <UniqueIdentifier>{cf8fb7a9-9ec7-41b9-874d-531d165660a4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FrameWork\GameObjects\Item">
+      <UniqueIdentifier>{5d1c634e-151c-4ec8-84be-601cb5fb4df2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -185,6 +188,15 @@
     </ClCompile>
     <ClCompile Include="QuadTree.cpp">
       <Filter>FrameWork\GameComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>FrameWork\GameObjects\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="ProtectPlayer.cpp">
+      <Filter>FrameWork\GameObjects\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="UpgradeItem.cpp">
+      <Filter>FrameWork\GameObjects\Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -343,6 +355,15 @@
     </ClInclude>
     <ClInclude Include="QuadTree.h">
       <Filter>FrameWork\GameComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>FrameWork\GameObjects\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="ProtectPlayer.h">
+      <Filter>FrameWork\GameObjects\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="UpgradeItem.h">
+      <Filter>FrameWork\GameObjects\Item</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

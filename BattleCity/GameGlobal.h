@@ -33,7 +33,9 @@ public:
 	static TCPSocketPtr socket;
 	static bool isGameRunning; //trang thai xem game co dang chay khong
 	static int RTT;
-
+	static LPDIRECT3DTEXTURE9 mMapTexture;
+	static LPDIRECT3DTEXTURE9 mTankTexture;
+	static LPDIRECT3DTEXTURE9 mBoxTexture;
 private:
 	static HINSTANCE mHInstance; //hInstance của windows hiện tại
 	static HWND mHwnd; // hwnd hiện tại

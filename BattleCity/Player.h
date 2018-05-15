@@ -34,20 +34,26 @@ public:
 	Action mLastAction = Action::GoDown;
 	int lastFire = 0; //Time last Fight
 	int last_move_time = 0;
+	int mLevel = 1;
 
-	void Emplace(Player* pl);
+	bool is_protect = false;
+	
+	
 	RECT GetBound();
 	void onSetID(int ID);
 	void Write(OutputMemoryBitStream& os) override;
+	void OnsetLevel(int m_level);
 	void Read(InputMemoryBitStream& is) override;
 	//xu ly input
 	//gom 256 key tuong ung true = dang dc nhan, false = khong dc nhan
-	void HandleKeyboard(std::map<int, bool> keys,int &check_to_send);
+	void HandleKeyboard(std::map<int, bool> keys);
 	Sprite * mCurrentSprite;
+	int mScore=0;
 protected:
 	
 
 	//Animation   *mCurrentAnimation;
+	Animation* shield;
 
 	Sprite * mLeftSprite;
 	Sprite * mUpSprite;

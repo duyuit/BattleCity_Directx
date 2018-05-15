@@ -73,12 +73,12 @@ void Bullet::Write(OutputMemoryBitStream& os)
 
 void Bullet::MoveLeft() {
 
-	mCurrentSprite = new Sprite("Resource files/Somethings.png", RECT{ 148,12, 156,20 },  0, 0 ,D3DXCOLOR(255, 0, 255, 255));
+	mCurrentSprite = new Sprite("Resource files/Somethings.png", RECT{ 148,12, 148+8,12+6 },  0, 0 ,D3DXCOLOR(255, 0, 255, 255));
 	this->SetVx(-Define::BULLET_SPEED);
 	this->SetVy(0);
 }
 void Bullet::MoveRight() {
-	mCurrentSprite = new  Sprite("Resource files/Somethings.png", RECT{ 180,12, 188,20 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
+	mCurrentSprite = new  Sprite("Resource files/Somethings.png", RECT{ 180,12, 188,18 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
 	this->SetVx(Define::BULLET_SPEED);
 	this->SetVy(0);
 

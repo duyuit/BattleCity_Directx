@@ -1,8 +1,10 @@
 #include "Sprite.h"
 #include "GameDefine.h"
 
-Sprite::Sprite(const char* filePath, RECT sourceRect, int width, int height, D3DCOLOR colorKey)
+Sprite::Sprite(const char* filePath, RECT sourceRect, int width, int height, D3DCOLOR colorKey, LPDIRECT3DTEXTURE9 textureType)
 {
+	if (textureType != NULL)
+		mTexture = textureType;
 	this->InitWithSprite(filePath, sourceRect, width, height, colorKey);
 }
 
@@ -62,21 +64,29 @@ void Sprite::InitWithSprite(const char* filePath, RECT sourceRect, int width, in
 	LPDIRECT3DDEVICE9 device;
 	mSpriteHandler->GetDevice(&device);
 
-	D3DXCreateTextureFromFileExA(
-		device,
-		filePath,
-		mImageInfo.Width,
-		mImageInfo.Height,
-		1,
-		D3DUSAGE_DYNAMIC,
-		D3DFMT_UNKNOWN,
-		D3DPOOL_DEFAULT,
-		D3DX_DEFAULT,
-		D3DX_DEFAULT,
-		colorKey,
-		&mImageInfo,
-		NULL,
-		&mTexture);
+	if (mTexture == NULL)
+	{
+		LPDIRECT3DDEVICE9 device;
+		mSpriteHandler->GetDevice(&device);
+
+		D3DXCreateTextureFromFileExA(
+			device,
+			filePath,
+			mImageInfo.Width,
+			mImageInfo.Height,
+			1,
+			D3DUSAGE_DYNAMIC,
+			D3DFMT_UNKNOWN,
+			D3DPOOL_DEFAULT,
+			D3DX_DEFAULT,
+			D3DX_DEFAULT,
+			colorKey,
+			&mImageInfo,
+			NULL,
+			&mTexture);
+
+	}
+	
 }
 
 LPD3DXSPRITE Sprite::GetSpriteHandle()
@@ -169,8 +179,8 @@ void Sprite::Draw(D3DXVECTOR3 position, RECT sourceRect, D3DXVECTOR2 scale, D3DX
 void Sprite::SetSourceRect(RECT rect)
 {
 	mSourceRect = rect;
-	mWidth = rect.left - rect.right;
-	mHeight = rect.bottom - rect.top;
+	/*mWidth = rect.left - rect.right;
+	mHeight = rect.bottom - rect.top;*/
 }
 
 LPDIRECT3DTEXTURE9 Sprite::GetTexture()

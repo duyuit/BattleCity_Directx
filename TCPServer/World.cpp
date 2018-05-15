@@ -5,22 +5,22 @@
 World::World()
 {
 	{
-		mListBullets.push_back(new Bullet(11));
-		mListBullets.push_back(new Bullet(12));
-		mListBullets.push_back(new Bullet(13));
-		mListBullets.push_back(new Bullet(14));
-		mListBullets.push_back(new Bullet(21));
-		mListBullets.push_back(new Bullet(22));
-		mListBullets.push_back(new Bullet(23));
-		mListBullets.push_back(new Bullet(24));
-		mListBullets.push_back(new Bullet(31));
-		mListBullets.push_back(new Bullet(32));
-		mListBullets.push_back(new Bullet(33));
-		mListBullets.push_back(new Bullet(34));
-		mListBullets.push_back(new Bullet(41));
-		mListBullets.push_back(new Bullet(42));
-		mListBullets.push_back(new Bullet(43));
-		mListBullets.push_back(new Bullet(44));
+		mListBullets.push_back(new Bullet(11,1));
+		mListBullets.push_back(new Bullet(12,1));
+		mListBullets.push_back(new Bullet(13,1));
+		mListBullets.push_back(new Bullet(14, 1));
+		mListBullets.push_back(new Bullet(21, 2));
+		mListBullets.push_back(new Bullet(22, 2));
+		mListBullets.push_back(new Bullet(23, 2));
+		mListBullets.push_back(new Bullet(24, 2));
+		mListBullets.push_back(new Bullet(31, 3));
+		mListBullets.push_back(new Bullet(32, 3));
+		mListBullets.push_back(new Bullet(33, 3));
+		mListBullets.push_back(new Bullet(34, 3));
+		mListBullets.push_back(new Bullet(41, 4));
+		mListBullets.push_back(new Bullet(42, 4));
+		mListBullets.push_back(new Bullet(43, 4));
+		mListBullets.push_back(new Bullet(44, 4));
 	}
 	mMap = new GameMap("Resource files/map.tmx");
 	
@@ -67,8 +67,23 @@ void World::HandleObject(Packet p)
 	}
 }
 
-
-
+Item* World::check_time_and_add_item()
+{
+	if (GetTickCount() - last_time_add_item>10000)
+	{
+		Item* item;
+		int x = rand() % (1000 - 10 + 1) + 10;
+		int y = rand() % (1000 - 10 + 1) + 10;
+		int type = rand() +100;
+		if (type % 2 == 0) item = new ProtectPlayer(D3DXVECTOR3(x, y, 0));
+		else item = new UpgradeItem(D3DXVECTOR3(x, y, 0));
+		mListItems.push_back(item);
+	
+		last_time_add_item = GetTickCount();
+		return item;
+	}
+	return nullptr;
+}
 
 
 void World::find_or_create(int ID,int action,int time_of_packet)
@@ -93,9 +108,18 @@ void World::CheckCollision(float dt)
 				pl->CollideWith_World();
 		}
 
+		for(auto item:mListItems)
+		{
+			if (GameCollision::isCollide(pl, item, dt))
+			{
+				pl->CollisionWith(item);
+				item->BeCollideWith_Player();
+			}
+		}
+
 	}
 
-	
+	//Check bullet colli voi map object
 	for (auto bl : mListBullets)
 	{
 		if (!bl->isActive) continue;
@@ -108,8 +132,10 @@ void World::CheckCollision(float dt)
 			{
 				bl->OnCollision();
 				bl->isChange = true;
+				//Check bullet cua Player nao
+				 mListPlayer.at(bl->ID_of_player-1)->mScore += 1;
+				
 
-			
 				for(auto brick2:mMap->GetListBrick())
 				{
 					if (brick2->ID == brick->ID)
@@ -122,6 +148,17 @@ void World::CheckCollision(float dt)
 				//break;
 				
 				
+			}
+		}
+		for(auto pl:mListPlayer)
+		{
+			if (bl->ID_of_player == pl->ID) continue;
+			if (GameCollision::isCollide(bl, pl, dt))
+			{
+			
+				pl->CollisionWith(bl);
+				bl->OnCollision();
+				bl->isChange = true;
 			}
 		}
 	}
@@ -143,18 +180,26 @@ void World::Update(float dt)
 	{
 		ele->Update(1.0f / 60);
 	}
-
+	for(int i=0;i<mListItems.size();i++)
+	{
+		mListItems[i]->Update(dt);
+		if (mListItems[i]->getDelete())
+		{
+			mListItems.erase(mListItems.begin() + i);
+			i--;
+		}
+	}
+	
 	
 }
-int Packet_id = 0;
+
 void World::SendWorld(std::vector<TCPSocketPtr> listClient)
 {
 	
 	OutputMemoryBitStream os;
-	os.Write(++Packet_id, Define::bitofID);
 	os.Write(Define::WorldStatePacket, Define::bitofTypePacket);
 
-	
+	Item* add=check_time_and_add_item();
 
 	int count_bullet_send = 0;
 	for (auto ele : mListBullets)
@@ -166,9 +211,11 @@ void World::SendWorld(std::vector<TCPSocketPtr> listClient)
 	}
 	
 	int size = mListPlayer.size() + count_brick_send + count_bullet_send;
-	
-	os.Write(size,Define::bitofID);
+	if (add != nullptr) size += 1;
 
+	os.Write(size,Define::bitofID);
+	if (add != nullptr)
+		add->Write(os);
 
 	for (auto ele : mListPlayer)
 	{
