@@ -32,6 +32,8 @@ inline TCPSocket::~TCPSocket()
 inline int TCPSocket::ChangetoDontWait(int flag)
 {
 	u_long arg = flag;
+	/*DWORD timeout = 2 * 1000;
+	setsockopt(mSocket, SOL_SOCKET, SO_RCVTIMEO, (const char*)&timeout, sizeof(timeout));*/
 	return  ioctlsocket(mSocket, FIONBIO, &arg);
 }
 
@@ -91,9 +93,12 @@ inline int TCPSocket::Send(const void* inData, int inLen)
 
 inline int TCPSocket::Receive(void* inData, int inLen) {
 	int bytesReceivedCount = recv(mSocket, static_cast<char*>(inData), inLen, 0);
+	//int recvbuflen = 512;
+	//char recvbuf[512];
+	//int bytesReceivedCount=recv(mSocket, recvbuf, recvbuflen, 0);
+
 	if (bytesReceivedCount < 0)
 	{
-	
 		return -1;
 	}
 	return bytesReceivedCount;

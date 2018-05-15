@@ -34,8 +34,12 @@ public:
 	{
 		player, bullet, item, block,none,Brick,
 		MetalBrick,
-		Water
+		Water,
+		ProtectPlayerItem,
+		UpgradeItem,
+		boundary
 	};
+	bool isDelete = false;
 	int ID = 0;
 	Direction dir = up;
 	EntityTypes Tag=none; //Tag de nhan vien loai Entity
@@ -75,6 +79,7 @@ public:
 	virtual D3DXVECTOR2 GetPosition();
 
 	virtual void Update(float dt);
+	virtual void CollisionWith(Entity* en);
 
 protected:
 

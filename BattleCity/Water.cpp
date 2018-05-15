@@ -8,15 +8,13 @@ Water::Water(D3DXVECTOR3 position)
 	Tag = EntityTypes::Water;
 }
 
-const char* Water::FileName() {
-	return "Resource files/MapObject.png";
-}
+
 
 RECT Water::rect() {
 	reg.left = 0;
 	reg.right = this->GetWidth();
-	reg.top = 64;
-	reg.bottom = 64 + this->GetHeight();
+	reg.top = 160;
+	reg.bottom = 160 + this->GetHeight();
 
 	return reg;
 }

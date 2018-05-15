@@ -6,7 +6,8 @@ public:
 	Water(D3DXVECTOR3 position);
 	~Water();
 
-	const char* FileName();
+	RECT GetBound();
+	void BeCollideWith_Bullet() override;
 	RECT rect();
 };
 

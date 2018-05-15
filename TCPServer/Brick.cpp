@@ -14,32 +14,45 @@ Brick::Brick()
 }
 
 bool Brick::Init(D3DXVECTOR3 position) {
-	Entity::SetWidth(32);
-	Entity::SetHeight(32);
-	this->vx = 0;
-	this->vy = 0;
-	rect();
+	Entity::SetWidth(16);
+	Entity::SetHeight(16);
+	
 	SetPosition(position);
-	setDelete(false);
+
 	return true;
 }
 void Brick::OnSetPosition(D3DXVECTOR3 position) {
-
+	
 }
-void Brick::BeCollideWith_Bullet(D3DXVECTOR2 BulletVelocity)
+
+void Brick::BeCollideWith_Bullet()
 {
+	
 }
 
 void Brick::Write(OutputMemoryBitStream& os)
 {
-
-	os.Write(Tag, Define::bitofID);
+	os.Write((int)Tag, Define::bitofID);
 	os.Write(ID, Define::bitofID);
-	os.Write((int)dir, Define::bitofID);
+	os.Write(isDelete);
 }
+
+
+void Brick::Read(InputMemoryBitStream& is)
+{
+	
+	
+}
+
+
 
 void Brick::Update()
 {
+}
+
+void Brick::Draw(D3DXVECTOR3 position, RECT sourceRect, D3DXVECTOR2 scale, D3DXVECTOR2 transform, float angle, D3DXVECTOR2 rotationCenter, D3DXCOLOR colorKey)
+{
+
 }
 
 Brick::~Brick()

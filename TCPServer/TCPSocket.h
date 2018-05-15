@@ -81,7 +81,9 @@ inline TCPSocketPtr TCPSocket::Accept(SocketAddress& inFromAddress)
 
 inline int TCPSocket::Send(const void* inData, int inLen)
 {
+	//char *sendbuf = "this is a test";
 	int bytesSentCount = send(mSocket, static_cast<const char*>(inData), inLen, 0);
+	//int bytesSentCount = send(mSocket, sendbuf, (int)strlen(sendbuf), 0);
 	if (bytesSentCount < 0)
 	{
 

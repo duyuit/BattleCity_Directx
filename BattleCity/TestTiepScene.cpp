@@ -11,7 +11,7 @@ TestTiepScene::TestTiepScene()
 
 	
 	map= new GameMap("Resource files/map.tmx");
-
+	
 }
 
 
@@ -32,7 +32,7 @@ void TestTiepScene::Update(float dt)
 {
 	CheckCollision(dt);
 	mpl->Update(dt);
-	map->Update(dt);
+	//map->Update(dt);
 }
 
 void TestTiepScene::Draw()

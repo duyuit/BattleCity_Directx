@@ -36,6 +36,12 @@ void PlayerServer::CollideWith_World()
 	this->vy = 0;
 }
 
+void PlayerServer::ActiveShield()
+{
+	is_protect = true;
+	time_start_protect = 0;
+}
+
 void PlayerServer::OnChangeAction(Action action)
 {
 	mAction = action;
@@ -51,7 +57,7 @@ void PlayerServer::OnChangeAction(Action action)
 		break;
 	default: break;
 	}
-	if (mAction != mLastAction) mLastAction = mAction;
+	
 }
 
 RECT PlayerServer::GetBound()
@@ -73,6 +79,23 @@ void PlayerServer::Up_ID_OfBullet()
 		ID_currentBullet = ID * 10 + 1;
 }
 
+void PlayerServer::CollisionWith(Entity* en)
+{
+	if (en->Tag == EntityTypes::UpgradeItem)
+	{
+		if (mLevel < 3) mLevel++;
+	}
+	else if (en->Tag == EntityTypes::ProtectPlayerItem)
+	{
+		ActiveShield();
+	}
+	else if (en->Tag == EntityTypes::bullet)
+	{
+		if(!is_protect)
+		mHeal--;
+	}
+}
+
 void PlayerServer::Emplace(PlayerServer* pl)
 {
 	Entity::Emplace(pl);
@@ -86,7 +109,10 @@ void PlayerServer::Write(OutputMemoryBitStream& os)
 	Entity::Write(os);
 	int a = (int)mAction;
 	os.Write(a, Define::bitofID);
+	os.Write(mLevel, Define::bitofTypePacket);
+	os.Write(is_protect);
 	os.Write(last_move_time);
+	os.Write(mScore, Define::bitofID);
 }
 
 
@@ -111,7 +137,10 @@ void PlayerServer::onHandleKeyboard(int action)
 {
 	
 	Entity::Update(dt);
-	
+	if (is_protect)
+		time_start_protect += dt;
+	if (time_start_protect > 3) 
+		is_protect = false;
 
 }
 
@@ -120,14 +149,21 @@ void PlayerServer::onHandleKeyboard(int action)
 void PlayerServer::MoveLeft()
 {
 	dir = left;
-	this->SetVx(-200.0f);
+	if(mLevel>1)
+		this->SetVx(-250.0f);
+	else
+		this->SetVx(-200.0f);
+
 	this->SetVy(0);
 }
 
 void PlayerServer::MoveRight()
 {
 	dir = right;
-	this->SetVx(200.0f);
+	if (mLevel>1)
+		this->SetVx(250.0f);
+	else
+		this->SetVx(200.0f);
 	this->SetVy(0);
 }
 
@@ -135,14 +171,21 @@ void PlayerServer::MoveUp()
 {
 	dir = up;
 	this->SetVx(0);
-	this->SetVy(200.0f);
+	if (mLevel>1)
+		this->SetVy(250.0f);
+	else
+		this->SetVy(200.0f);
+	
 }
 
 void PlayerServer::MoveDown()
 {
 	dir = down;
 	this->SetVx(0);
-	this->SetVy(-200.0f);
+	if (mLevel>1)
+		this->SetVy(-250.0f);
+	else
+		this->SetVy(-200.0f);
 }
 
 void PlayerServer::IDLE()

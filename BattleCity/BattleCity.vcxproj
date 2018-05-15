@@ -139,6 +139,7 @@
     <ClCompile Include="GameLog.cpp" />
     <ClCompile Include="GameMap.cpp" />
     <ClCompile Include="GameTime.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MapReader\base64.cpp" />
     <ClCompile Include="MapReader\miniz.c" />
@@ -163,11 +164,14 @@
     <ClCompile Include="MemoryBitStream.cpp" />
     <ClCompile Include="MetalBrick.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="ProtectPlayer.cpp" />
+    <ClCompile Include="QuadTree.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="TestScene.cpp" />
     <ClCompile Include="TestTiepScene.cpp" />
+    <ClCompile Include="UpgradeItem.cpp" />
     <ClCompile Include="WaitRoomScene.cpp" />
     <ClCompile Include="Water.cpp" />
   </ItemGroup>
@@ -187,6 +191,7 @@
     <ClInclude Include="GameLog.h" />
     <ClInclude Include="GameMap.h" />
     <ClInclude Include="GameTime.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="MapReader\base64.h" />
     <ClInclude Include="MapReader\tinyxml2.h" />
     <ClInclude Include="MapReader\TmxEllipse.h" />
@@ -213,6 +218,8 @@
     <ClInclude Include="MemoryBitStream.h" />
     <ClInclude Include="MetalBrick.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="ProtectPlayer.h" />
+    <ClInclude Include="QuadTree.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SocketAddress.h" />
@@ -221,6 +228,7 @@
     <ClInclude Include="TCPSocket.h" />
     <ClInclude Include="TestScene.h" />
     <ClInclude Include="TestTiepScene.h" />
+    <ClInclude Include="UpgradeItem.h" />
     <ClInclude Include="WaitRoomScene.h" />
     <ClInclude Include="Water.h" />
   </ItemGroup>

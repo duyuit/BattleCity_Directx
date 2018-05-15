@@ -5,20 +5,32 @@
 Boundary::Boundary(D3DXVECTOR3 position)
 {
 	Init(position);
+	Tag = EntityTypes::boundary;
+	bound = Entity::GetBound();
 }
 
-const char* Boundary::FileName() {
-	return "Resource files/MapObject.png";
-}
+
 RECT Boundary::rect() {
-	reg.left = 64;
-	reg.right = 64 + this->GetWidth();
-	reg.top = 64;
-	reg.bottom = 64+this->GetHeight();
+	reg.left = 32;
+	reg.right = 32 + this->GetWidth();
+	reg.top = 144;
+	reg.bottom = 144 +this->GetHeight();
 
 	return reg;
+}
+
+RECT Boundary::GetBound()
+{
+	return bound;
+}
+
+void Boundary::BeCollideWith_Bullet()
+{
+
 }
 
 Boundary::~Boundary()
 {
 }
+
+

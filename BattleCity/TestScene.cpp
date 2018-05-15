@@ -1,10 +1,18 @@
 #include "TestScene.h"
 #include "SocketAddress.h"
 #include "SocketUtil.h"
+#include "GameLog.h"
 
+vector<RECT> source_of_explotion()
+{
+	vector<RECT> temp;
+	RECT rect;
 
-
-
+	rect.left = 5; rect.top = 67; rect.right = rect.left + 26; rect.bottom = rect.top + 27; 	temp.push_back(rect);
+	rect.left = 32; rect.top = 64; rect.right = rect.left + 32; rect.bottom = rect.top + 32;	temp.push_back(rect);
+	rect.left =64; rect.top = 63; rect.right = rect.left + 33; rect.bottom = rect.top + 33;	    temp.push_back(rect);
+	return temp;
+};
 
 void TestScene::LoadContent()
 {
@@ -16,19 +24,18 @@ TestScene::TestScene(TCPSocketPtr socket,Player* m_player)
 	mBackColor = D3DCOLOR_XRGB(0, 0, 0);
 
 	mMap = new GameMap("Resource files/map.tmx");
-	mMap->GetListBrick().at(209)->BeCollideWith_Bullet(Direction::down);
 	this->socket = socket;
 
 
 	mPlayer = m_player;
 	mPlayer->onSetID(m_player->ID);
 
-	mListPlayer.push_back(mPlayer);
+	//mListPlayer.push_back(mPlayer);
 
 	//Add 4 player
 	for(int i=1;i<5;i++)
 	{
-		if (i == mPlayer->ID) continue;
+		if (i == mPlayer->ID) mListPlayer.push_back(mPlayer);
 		Player* temp = new Player();
 		temp->onSetID(i);;
 		temp->SetPosition(300, 300);
@@ -57,19 +64,28 @@ TestScene::TestScene(TCPSocketPtr socket,Player* m_player)
 
 	
 	RTT_String = " .";
-	RTT_Font = NULL;
+
+	
 	HRESULT rs = D3DXCreateFont(GameGlobal::GetCurrentDevice()
 		, 30, 10
 		, FW_NORMAL, 1
 		, false, DEFAULT_CHARSET
 		, OUT_DEFAULT_PRECIS, ANTIALIASED_QUALITY, FF_DONTCARE, (LPCWSTR) "Arial", &RTT_Font);
 
-	Ready_Font = NULL;
-	HRESULT rs1 = D3DXCreateFont(GameGlobal::GetCurrentDevice()
+
+	D3DXCreateFont(GameGlobal::GetCurrentDevice()
 		, 80, 50
 		, FW_NORMAL, 1
 		, false, DEFAULT_CHARSET
 		, OUT_DEFAULT_PRECIS, ANTIALIASED_QUALITY, FF_DONTCARE, (LPCWSTR) "Arial", &Ready_Font);
+
+	D3DXCreateFont(GameGlobal::GetCurrentDevice()
+		, 30, 10
+		, FW_NORMAL, 1
+		, false, DEFAULT_CHARSET
+		, OUT_DEFAULT_PRECIS, ANTIALIASED_QUALITY, FF_DONTCARE, (LPCWSTR) "Arial", &Score_font);
+
+
 
 
 	RTT_RECT.left = 50;
@@ -82,28 +98,39 @@ TestScene::TestScene(TCPSocketPtr socket,Player* m_player)
 	Ready_RECT.bottom = Ready_RECT.top + 100;
 	Ready_RECT.right = Ready_RECT.left +1000;
 
+	Pl1_RECT.left = GameGlobal::GetWidth() - 450;
+	Pl1_RECT.right = Pl1_RECT.left + 200;
+	Pl1_RECT.top = 0;
+	Pl1_RECT.bottom = Pl1_RECT.top+ 200;
+
+	Pl2_RECT.left = GameGlobal::GetWidth() - 450;
+	Pl2_RECT.right = Pl1_RECT.left + 200;
+	Pl2_RECT.top = 100;
+	Pl2_RECT.bottom = Pl1_RECT.top + 300;
+
+	Pl3_RECT.left = GameGlobal::GetWidth() - 450;
+	Pl3_RECT.right = Pl1_RECT.left + 200;
+	Pl3_RECT.top = 200;
+	Pl3_RECT.bottom = Pl1_RECT.top + 400;
+
+	Pl4_RECT.left = GameGlobal::GetWidth() - 450;
+	Pl4_RECT.right = Pl1_RECT.left + 200;
+	Pl4_RECT.top = 300;
+	Pl4_RECT.bottom = Pl1_RECT.top + 500;
+
+
 }
-int check_to_send = 0;
-int lastTime_Ready = 0;
+
 void TestScene::Update(float dt)
 {
-	//
-	//check_to_send++;
-	/*if(!isReady)
-	{
-		if(GetTickCount()-lastTime_Ready>=1000)
-		{
-			lastTime_Ready = GetTickCount();
-			Ready_count--;
-			if (Ready_count == 0) isReady=true;
-			
-		}
-		return;
-	}*/
-	mPlayer->HandleKeyboard(keys, check_to_send);
-	CheckCollision(dt);
 
+	
+	mPlayer->HandleKeyboard(keys);
+	CheckCollision(dt);
 	mMap->Update(dt);
+
+
+
 	for (auto ele : mListPlayer)
 	{
 		ele->Update(dt);
@@ -112,12 +139,24 @@ void TestScene::Update(float dt)
 	{
 		ele->Update(dt);
 	}
-
-
+	for (auto ele : mListAnimate)
+	{
+		ele->Update(dt);
+	}
+	for (int i = 0; i<mListItems.size(); i++)
+	{
+		mListItems[i]->Update(dt);
+		if (mListItems[i]->getDelete())
+		{
+			mListItems.erase(mListItems.begin() + i);
+			i--;
+		}
+	}
 }
 
 void TestScene::Draw()
 {
+	
 	
 	for (auto ele:mListPlayer)
 	{
@@ -128,6 +167,19 @@ void TestScene::Draw()
 		ele->Draw();
 	}
 	mMap->Draw();
+	for (auto item : mListItems)
+		item->Draw();
+	for (int i=0;i<mListAnimate.size();i++)
+	{
+		mListAnimate[i]->Draw();
+		if (mListAnimate[i]->GetCurrentFrame() == mListAnimate[i]->mSourceRect.size() - 1)
+		{
+			delete mListAnimate[i];
+			mListAnimate.erase(mListAnimate.begin() + i);
+			i--;
+		}
+
+	}
 	if (RTT_Font)
 	{
 		int delta = GameGlobal::RTT;
@@ -138,21 +190,25 @@ void TestScene::Draw()
 		}
 		
 	}
-	/*if(Ready_Font)
-	if (!isReady)
-	{
-		Ready_String = "Ready!!!   " + to_string(Ready_count);
-		Ready_Font->DrawTextA(mPlayer->mCurrentSprite->GetSpriteHandle(), Ready_String.c_str(), -1, &Ready_RECT, DT_LEFT, D3DCOLOR_XRGB(240, 255, 255));
-	}*/
 
+	Pl1_String = "Player 1: " + std::to_string(mListPlayer.at(0)->mScore);
+	Score_font->DrawTextA(mPlayer->mCurrentSprite->GetSpriteHandle(), Pl1_String.c_str(), -1, &Pl1_RECT, DT_LEFT, D3DCOLOR_XRGB(255, 242, 0));
+	Pl2_String = "Player 2: " + std::to_string(mListPlayer.at(1)->mScore);
+	Score_font->DrawTextA(mPlayer->mCurrentSprite->GetSpriteHandle(), Pl2_String.c_str(), -1, &Pl2_RECT, DT_LEFT, D3DCOLOR_XRGB(195, 195, 195));
+	Pl3_String = "Player 3: " + std::to_string(mListPlayer.at(2)->mScore);
+	Score_font->DrawTextA(mPlayer->mCurrentSprite->GetSpriteHandle(), Pl3_String.c_str(), -1, &Pl3_RECT, DT_LEFT, D3DCOLOR_XRGB(34, 177, 76));
+	Pl4_String = "Player 4: " + std::to_string(mListPlayer.at(3)->mScore);
+	Score_font->DrawTextA(mPlayer->mCurrentSprite->GetSpriteHandle(), Pl4_String.c_str(), -1, &Pl4_RECT, DT_LEFT, D3DCOLOR_XRGB(237, 28, 36));
 }
 
 void TestScene::ReceivePakcet()
 {
 	char* buff = static_cast<char*>(std::malloc(1024));
 	size_t receivedByteCount = socket->Receive(buff, 1024);
+
 	if (receivedByteCount>0)
 	{
+		
 		InputMemoryBitStream is(buff,
 			static_cast<uint32_t> (receivedByteCount));
 		int typeofPacket = 0;
@@ -160,7 +216,8 @@ void TestScene::ReceivePakcet()
 		if (typeofPacket == Define::WorldStatePacket)
 		{
 			int ObjectCount = 0;
-			is.Read(ObjectCount);
+			is.Read(ObjectCount,Define::bitofID);
+		
 			for (int i = 0; i<ObjectCount; i++)
 			{
 				int tag = 0;
@@ -169,26 +226,68 @@ void TestScene::ReceivePakcet()
 			}
 
 		}
+		
 	}
-	delete buff;
+	free(buff);
 }
 
 void TestScene::CheckCollision(float dt)
 {
 	
-
-
-	for (size_t i = 0; i < mMap->GetListBrick().size(); i++)
+	
+	for (auto pl : mListPlayer)
 	{
-		for (auto pl : mListPlayer)
-			if (GameCollision::isCollide(pl, mMap->GetListBrick()[i], dt))
+		vector<Entity*> listCollision;
+		mMap->GetQuadTree()->getEntitiesCollideAble(listCollision, pl);
+		for(auto brick: listCollision)
+		{
+			if (brick->isDelete) continue;
+			if (GameCollision::isCollide(pl,brick, dt))
 				pl->CollideWith_World();
-		/*if (mMap->GetListBrick()[i]->getDelete()) {
-			mMap->eraseBrick(i);
-			mMap->GetListBrick().erase(mMap->GetListBrick().begin() + i);
-			i--;
-		}*/
+		}
+
+		for (auto item : mListItems)
+		{
+			if (GameCollision::isCollide(pl, item, dt))
+			{
+				pl->CollisionWith(item);
+				item->BeCollideWith_Player();
+			}
+		}
+		
 	}
+	/*for (auto bl : mListBullets)
+	{
+		if (!bl->isActive) continue;
+		vector<Entity*> listCollision;
+		mMap->GetQuadTree()->getEntitiesCollideAble(listCollision, bl);
+		for (auto brick : listCollision)
+		{
+			if (brick->isDelete) continue;
+			if (GameCollision::isCollide(bl, brick, dt))
+			{
+				
+				
+				bl->isActive = false;
+			}
+
+		}
+
+	}*/
+
+
+
+}
+
+void TestScene::SendData()
+{
+	OutputMemoryBitStream os;
+	os.Write(Define::InputPacket, Define::bitofTypePacket);
+	os.Write(mPlayer->ID, Define::bitofID);
+	os.Write((int)mPlayer->mAction, Define::bitofID);
+	int time_of_packet = GetTickCount();
+	os.Write(time_of_packet);
+	GameGlobal::socket->Send(os.GetBufferPtr(), os.GetByteLength());
 
 }
 
@@ -201,7 +300,7 @@ void TestScene::OnKeyUp(int keyCode)
 {
 	keys[keyCode] = false;
 }
-
+int count_brick = 0;
 void TestScene::find_and_handle(int tag, InputMemoryBitStream &is)
 {
 	Entity::EntityTypes new_tag = (Entity::EntityTypes)tag;
@@ -216,6 +315,7 @@ void TestScene::find_and_handle(int tag, InputMemoryBitStream &is)
 			if(ele->ID== id)
 			{
 				ele->Read(is);
+				if(id==mPlayer->ID)
 				GameGlobal::RTT = GetTickCount() - ele->last_move_time;
 				return;
 
@@ -231,6 +331,12 @@ void TestScene::find_and_handle(int tag, InputMemoryBitStream &is)
 			if (ele->ID == id)
 			{
 				ele->Read(is);
+				if(ele->isActive == false)
+				{
+					Animation *explore = new Animation("Resource files/Somethings.png", source_of_explotion(), 0.05f, D3DXCOLOR(255, 0, 255, 255));
+					explore->SetPosition(ele->GetPosition());
+					mListAnimate.push_back(explore);
+				}
 				return;
 
 			}
@@ -238,16 +344,31 @@ void TestScene::find_and_handle(int tag, InputMemoryBitStream &is)
 		}
 		break;
 	case Entity::Brick:
-		for (auto ele : mMap->GetListBrick())
+		for (int i = 0; i < mMap->GetListBrick().size(); i++)
 		{
-			if (ele->ID == id)
+			Brick* br = mMap->GetListBrick().at(i);
+			if (br->ID == id)
 			{
-				ele->Read(is);
-				ele->BeCollideWith_Bullet(ele->dir);
-				return;
+				
 
+				is.Read(br->isDelete);
+
+				break;
 			}
-
+		}
+		break;
+	case Entity::ProtectPlayerItem:
+		{
+			Item *add = new ProtectPlayer();
+			add->Read(is);
+			mListItems.push_back(add);
+		}
+		break;
+	case Entity::UpgradeItem:
+		{
+			Item * add = new UpgradeItem();
+			add->Read(is);
+			mListItems.push_back(add);
 		}
 		break;
 			/*case Entity::item: break;

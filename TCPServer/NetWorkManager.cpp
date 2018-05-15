@@ -2,6 +2,30 @@
 
 #include "SocketUtil.h"
 
+void NetWorkManager::CreatePlayerAndSend()
+{
+	mWorld->mListPlayer.clear();
+	for (auto ele : readBlockSockets)
+	{
+		if (ele->ID == 0) continue;
+		int x = 200; //RandomNumber(150, 400);
+		int y = 150;//RandomNumber(300, 400);
+					/*	int x = RandomNumber(150, 400);
+					int y = RandomNumber(300, 400);*/
+
+		OutputMemoryBitStream os1;
+		PlayerServer* pl = new PlayerServer(ele->ID);
+		pl->SetPosition(x, y);
+		pl->mAction = Action::GoRight;
+		mWorld->mListPlayer.push_back(pl);
+
+		os1.Write(Define::LetStart, Define::bitofTypePacket);
+		pl->Write(os1);
+		ele->Send(os1.GetBufferPtr(), os1.GetByteLength());
+
+	}
+}
+
 void NetWorkManager::Handle_Packet()
 {
 	if (!queue_packet.empty())
@@ -39,13 +63,19 @@ NetWorkManager::NetWorkManager()
 NetWorkManager::~NetWorkManager()
 {
 }
-
+int count_to_send = 0;
 void NetWorkManager::Update(float dt)
 {
 	
 	mWorld->CheckCollision(dt);
 	mWorld->Update(dt);
-	mWorld->SendWorld(readBlockSockets);
+	count_to_send++;
+	if(count_to_send ==6)
+	{
+		
+		mWorld->SendWorld(readBlockSockets);
+		count_to_send = 0;
+	}
 	
 	
 }
@@ -67,12 +97,14 @@ void NetWorkManager::ProcessNewClient()
 
 void NetWorkManager::UpdatePlayerCount()
 {
+
 	for (auto ele : readBlockSockets)
 	{
 		OutputMemoryBitStream os1;
 		os1.Write(Define::UpdateCountPlayer, Define::bitofTypePacket);
 		os1.Write(ID - 1, Define::bitofID);
 		ele->Send(os1.GetBufferPtr(), os1.GetByteLength());
+		
 	}
 
 }
@@ -91,31 +123,13 @@ void NetWorkManager::ReceivePacket()
 
 				ProcessNewClient();
 				printf("\nCo ket noi moi");
-
-				if (ID ==5) //if enought player, Provide them first position by ID
+			
+				if (ID ==3) //if enought player, Provide them first position by ID
 				{
-
-					for (auto ele : readBlockSockets)
-					{
-						if (ele->ID == 0) continue;
-						int x = 200; //RandomNumber(150, 400);
-						int y = 200;//RandomNumber(300, 400);
-									/*	int x = RandomNumber(150, 400);
-									int y = RandomNumber(300, 400);*/
-
-						OutputMemoryBitStream os1;
-						PlayerServer* pl = new PlayerServer(ele->ID);
-						pl->SetPosition(x, y);
-						pl->mAction = Action::GoRight;
-						mWorld->mListPlayer.push_back(pl);
-
-						os1.Write(Define::LetStart, Define::bitofTypePacket);
-						pl->Write(os1);
-						ele->Send(os1.GetBufferPtr(), os1.GetByteLength());
-					}
+					CreatePlayerAndSend();
+					isStart = true;
 					break;
 				}
-
 				UpdatePlayerCount();
 
 			}
@@ -128,6 +142,23 @@ void NetWorkManager::ReceivePacket()
 				{
 					InputMemoryBitStream is(buff,
 						static_cast<uint32_t> (receivedByteCount));
+					if(!isStart)
+					{
+						int type_of_packet = 0;
+						is.Read(type_of_packet, Define::bitofTypePacket);
+						if (type_of_packet == Define::UpdateCountPlayer)
+							UpdatePlayerCount();
+					} else
+					{
+						InputMemoryBitStream is2 = is;
+						int type_of_packet = 0;
+						is2.Read(type_of_packet, Define::bitofTypePacket);
+						if (type_of_packet == Define::UpdateCountPlayer)
+						{
+							CreatePlayerAndSend();
+							continue;
+						}
+					}
 					Packet p(is);
 					queue_packet.push_back(p);
 
@@ -135,6 +166,7 @@ void NetWorkManager::ReceivePacket()
 
 			}
 		}
+		readableSockets.clear();
 	}
 
 }

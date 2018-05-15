@@ -21,12 +21,21 @@ public:
 	void CollideWith_World();
 	int ID_currentBullet = 0;
 	Action mAction=Idle;
-	Action mLastAction = Idle;
+	int mScore = 0;
+	int mLevel = 1;
+	int mHeal = 10;
+
+	bool is_protect = false;
+	float time_start_protect = 0;
+
 	int id_of_bullet = 10;
-	int last_move_time = 0;
+	float last_move_time = 0;
+
+	void ActiveShield();
 	void OnChangeAction(Action action);
 	RECT GetBound() override;
 	void Up_ID_OfBullet();
+	void CollisionWith(Entity* en) override;
 	void Emplace(PlayerServer* pl);
 	void Write(OutputMemoryBitStream& os) override;
 	void Read(InputMemoryBitStream& is) override;

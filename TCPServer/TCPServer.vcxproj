@@ -94,6 +94,7 @@
     <ClInclude Include="GameLog.h" />
     <ClInclude Include="GameMap.h" />
     <ClInclude Include="GameTime.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="MapReader\base64.h" />
     <ClInclude Include="MapReader\tinyxml2.h" />
     <ClInclude Include="MapReader\TmxEllipse.h" />
@@ -122,10 +123,13 @@
     <ClInclude Include="NetWorkManager.h" />
     <ClInclude Include="Packet.h" />
     <ClInclude Include="PlayerServer.h" />
+    <ClInclude Include="ProtectPlayer.h" />
+    <ClInclude Include="QuadTree.h" />
     <ClInclude Include="SocketAddress.h" />
     <ClInclude Include="SocketUtil.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TCPSocket.h" />
+    <ClInclude Include="UpgradeItem.h" />
     <ClInclude Include="Water.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
@@ -139,6 +143,7 @@
     <ClCompile Include="GameLog.cpp" />
     <ClCompile Include="GameMap.cpp" />
     <ClCompile Include="GameTime.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="MapReader\base64.cpp" />
     <ClCompile Include="MapReader\miniz.c" />
     <ClCompile Include="MapReader\tinyxml2.cpp" />
@@ -164,7 +169,10 @@
     <ClCompile Include="NetWorkManager.cpp" />
     <ClCompile Include="Packet.cpp" />
     <ClCompile Include="PlayerServer.cpp" />
+    <ClCompile Include="ProtectPlayer.cpp" />
+    <ClCompile Include="QuadTree.cpp" />
     <ClCompile Include="TCPServer.cpp" />
+    <ClCompile Include="UpgradeItem.cpp" />
     <ClCompile Include="Water.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>

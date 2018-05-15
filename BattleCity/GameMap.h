@@ -13,6 +13,7 @@
 #include "Boundary.h"
 #include "GameCollision.h"
 #include "GameDebugDraw.h"
+#include "QuadTree.h"
 
 class GameMap
 {
@@ -26,7 +27,7 @@ public:
 	int GetHeight();
 	int GetTileWidth();
 	int GetTileHeight();
-
+	QuadTree* GetQuadTree();
 	std::vector<Brick*> GetListBrick();
 	void eraseBrick(int i);
 	~GameMap();
@@ -34,6 +35,7 @@ private:
 	void LoadMap(char* filePath);
 	bool isContain(RECT rect1, RECT rect2);
 	GameDebugDraw *mDebugDraw;
+	QuadTree                        *mQuadTree;
 	Tmx::Map                *mMap;
 	std::map<int, Sprite*>  mListTileset;
 	std::vector<Brick*> mListBrick;

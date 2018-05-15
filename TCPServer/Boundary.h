@@ -5,8 +5,9 @@ class Boundary : public Brick
 public:
 	Boundary(D3DXVECTOR3 position);
 	~Boundary();
-
-	const char* FileName();
 	RECT rect();
+
+	RECT GetBound();
+	void BeCollideWith_Bullet() override;
 };
 

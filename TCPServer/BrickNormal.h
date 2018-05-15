@@ -6,14 +6,10 @@ public:
 	BrickNormal(D3DXVECTOR3 position);
 	~BrickNormal();
 
-	const char* FileName();
 	RECT rect();
 	void Update();
-	void BeCollideWith_Bullet(D3DXVECTOR2 BulletVelocity);
-	//void Write(OutputMemoryBitStream& os) override;
-	
+	void CollisionWith(Entity* en) override;
 	RECT GetBound();
-private:
-	RECT oldReg;
-	RECT bound;
+
 };
+

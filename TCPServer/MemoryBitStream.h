@@ -9,7 +9,7 @@
 namespace Define
 {
 	const int bitofTypePacket = 4;
-	const int bitofID = 10;
+	const int bitofID = 11;
 	const int bitofLocation = 12;
 
 	const int WelcomePacket = 1;
@@ -18,6 +18,7 @@ namespace Define
 	const int TankPacket = 4;
 	const int WorldStatePacket = 5;
 	const int InputPacket = 6;
+	const int RequestOldPacket = 7;
 
 }
 
@@ -43,7 +44,12 @@ public:
 	{
 		ReallocBuffer( 1500 * 8 );
 	}
-
+	void ReSet()
+	{
+		mBitHead = 0;
+		mBuffer = nullptr;
+		ReallocBuffer(1500 * 8);
+	}
 	~OutputMemoryBitStream()	{ free( mBuffer ); }
 
 	void		WriteBits( uint8_t inData, uint32_t inBitCount );
@@ -60,30 +66,7 @@ public:
 	void Write( int inData, uint32_t inBitCount = 32 )		{ WriteBits( &inData, inBitCount ); }
 	void Write( float inData )								{ WriteBits( &inData, 32 ); }
 	
-	/*void Write(Entity* pl)
-	{
-		Write(pl->Tag, Define::bitofID);
-		Write(pl->ID, Define::bitofID);
-		Write(pl->dir, Define::bitofID);
-		Write((int)pl->GetPosition().x, Define::bitofLocation);
-		Write((int)pl->GetPosition().y, Define::bitofLocation);
-	}
-	void Write(Bullet* bl)
-	{
-		Write(bl->ID, Define::bitofID);
-		Write((int)bl->mDirect, Define::bitofID);
-		Write((int)bl->GetPosition().x, Define::bitofLocation);
-		Write((int)bl->GetPosition().y, Define::bitofLocation);
-	}
-	void Write(PlayerServer* pl)
-	{
-		Write(pl->ID, Define::bitofID);
-		Write((int)pl->mAction, Define::bitofID);
-		Write(pl->isFight);
-		Write((int)pl->GetPosition().x, Define::bitofLocation);
-		Write((int)pl->GetPosition().y, Define::bitofLocation);
-	}*/
-	
+		
 	template< typename T >
 	void Write( T inData, uint32_t inBitCount = sizeof( T ) * 8 )
 	{
@@ -169,40 +152,7 @@ public:
 	void		Read( uint8_t& outData, uint32_t inBitCount = 8 )		{ ReadBits( &outData, inBitCount ); }
 	void		Read( bool& outData )									{ ReadBits( &outData, 1 ); }
 	
-	/*void		Read(Entity* pl)
-				{
-					Read(pl->Tag, Define::bitofID);
-					Read(pl->ID, Define::bitofID);
-					Read(pl->dir, Define::bitofID);
-					int x = 0; int y = 0; 
-					Read(x, Define::bitofLocation);
-					Read(y, Define::bitofLocation);
-					pl->SetPosition(x, y);
-				}
-	void		Read(Bullet* bl)
-	{
-		Read(bl->ID, Define::bitofID);
-		int dir = 0;
-		Read(dir, Define::bitofID);
-		bl->dir = (Direction)dir;
-		int x = 0; int y = 0;
-		Read(x, Define::bitofLocation);
-		Read(y, Define::bitofLocation);
-		bl->SetPosition(x, y);
-	}
-	void Read(PlayerServer* pl)
-	{
-		Read(pl->ID, Define::bitofID);
-		int action = 0;
-		Read(action, Define::bitofID);
-		pl->mAction = (Action)action;
-		Read(pl->isFight);
-		int x = 0; int y = 0;
-		Read(x, Define::bitofLocation);
-		Read(y, Define::bitofLocation);
-		pl->SetPosition(x, y);
-	}*/
-
+	
 	void		ResetToCapacity( uint32_t inByteCapacity )				{ mBitCapacity = inByteCapacity << 3; mBitHead = 0; }
 
 

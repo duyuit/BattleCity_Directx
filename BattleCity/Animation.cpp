@@ -5,78 +5,60 @@ Animation::Animation()
 
 }
 
-Animation::Animation(const char* filePath, int totalFrame,int rows,int columns, int startRow, int startColumn, int endRow, int endColumn, float timePerFrame, D3DCOLOR colorKey)
+Animation::Animation(const char* filePath, vector<RECT> source, float timePerFrame, D3DCOLOR colorKey )
 {
-	InitWithAnimation(filePath, totalFrame,rows,columns, startRow, startColumn, endRow, endColumn, timePerFrame, colorKey);
-}
-
-void Animation::InitWithAnimation(const char* filePath, int totalFrame, int rows, int columns, int startRow, int startColumn, int endRow, int endColumn, float timePerFrame, D3DCOLOR colorKey)
-{
-	//GAMELOG("animation: frame: %d, row: %d, column: %d, time: %f", totalFrame, rows, columns, timePerFrame);
-	this->InitWithSprite(filePath);
+	
+	this->InitWithSprite(filePath,source.at(0),0,0,colorKey);
 	mTimePerFrame = timePerFrame;
-	mTotalFrame = totalFrame;
-	mRows = rows;
-	mColumns = columns;
-	mStartRow = startRow;
-	mStartColumn = startColumn;
-	mEndRow = endRow;
-	mEndColumn = endColumn;
-	mCurrentColumn = mStartColumn;
-	mCurrentRow = mStartRow;
-	//width - height luc nay la cua spritesheet
-	mFrameWidth = GetWidth() / mColumns;
-	mFrameHeight = GetHeight() / mRows;
+	mTotalFrame = source.size();
+	mSourceRect = source;
 
-	SetWidth(mFrameWidth);
-	SetHeight(mFrameHeight);
-
-	mRect.top = 0;
-	mRect.left = 0;
-	mRect.right = mFrameWidth;
-	mRect.bottom = mFrameHeight;
-	SetSourceRect(mRect);
+	mRect = source.at(0);
+	//SetSourceRect(mRect);
 }
+
 
 Animation::~Animation(){}
+
+int Animation::GetCurrentFrame()
+{
+	return mCurrentIndex;
+}
 
 void Animation::Update(float dt)
 {
 	if (mTotalFrame <= 1)
 		return;
-	if (mCurrentTotalTime >= mTimePerFrame)
+	if (mCurrentIndex <= mTotalFrame)
 	{
-		mCurrentTotalTime = 0;
-		mCurrentIndex++;
-		mCurrentColumn++;
-
-		if (mCurrentIndex >= mTotalFrame)
+		
+		if (mTotalFrame <= 1)
+			return;
+		if (mCurrentIndex <= mTotalFrame)
 		{
-			mCurrentIndex = 0;
-			mCurrentColumn = mStartColumn;
-			mCurrentRow = mStartRow;
-		}
 
-		if (mCurrentColumn >= mEndColumn)
+			mRect =mSourceRect.at(mCurrentIndex) ;
+		}
+		if (mCurrentTotalTime >= mTimePerFrame)
 		{
-			mCurrentColumn = mStartColumn;
-			mCurrentRow++;
+			mCurrentTotalTime = 0;
+			mCurrentIndex++;
 
-			if (mCurrentRow >= mEndRow)
-				mCurrentRow = mStartRow;
+
+			if (mCurrentIndex >= mTotalFrame)
+				mCurrentIndex = 0;
+
 		}
-
-		mRect.left = mCurrentColumn * mFrameWidth;
-		mRect.right = mRect.left + mFrameWidth;
-		mRect.top = mCurrentRow * mFrameHeight;
-		mRect.bottom = mRect.top + mFrameHeight;
+		else
+		{
+			mCurrentTotalTime += dt;
+		}
+	
 
 		SetSourceRect(mRect);
+		
 	}
-	else
-	{
-		mCurrentTotalTime += dt;
-	}
+
 }
 void Animation::SetCurrentTotalTime(float time) {
 	mCurrentTotalTime = time;

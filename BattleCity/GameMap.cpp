@@ -6,29 +6,50 @@ GameMap::GameMap(char* filePath)
 	LoadMap(filePath);
 	mDebugDraw = new GameDebugDraw();
 }
+int last_size = 993;
 void GameMap::Update(float dt)
 {
 	for (int i = 0; i < mListBrick.size(); ++i)
-		mListBrick[i]->Update();
+	{
+		if (mListBrick[i]->isDelete)
+		{
+			
+			vector<Entity*> list_of_brick_quad;
+			GetQuadTree()->getAllEntities(list_of_brick_quad);
+			for (auto brick2 : list_of_brick_quad)
+			{
+				if (mListBrick[i]->ID == brick2->ID)
+				{
+					brick2->isDelete = true;
+					break;
+				}
+			}
+			eraseBrick(i);
+			i--;
+		}
+	}
 }
 void GameMap::LoadMap(char* filePath)
 {
 	mMap = new Tmx::Map();
 	mMap->ParseFile(filePath);
+
+
 	int cur_ID = 100;
+
 	RECT r;
 	r.left = 0;
 	r.top = 0;
 	r.right = this->GetWidth();
 	r.bottom = this->GetHeight();
+	mQuadTree = new QuadTree(1, r);
 
 	for (size_t i = 0; i < mMap->GetNumTilesets(); i++)
 	{
 		const Tmx::Tileset *tileset = mMap->GetTileset(i);
 
 		if (tileset->GetName() != "Brick") {
-			Sprite *sprite = new Sprite(tileset->GetImage()->GetSource().c_str());
-
+			Sprite *sprite = new Sprite(tileset->GetImage()->GetSource().c_str(),RECT(),0,0,0,GameGlobal::mMapTexture);
 			mListTileset.insert(std::pair<int, Sprite*>(i, sprite));
 		}
 	}
@@ -76,6 +97,7 @@ void GameMap::LoadMap(char* filePath)
 							{
 								brick = new BrickNormal(position);
 								brick->ID = cur_ID++;
+								
 							}
 							else if (layer->GetName() == "Metal Brick")
 							{
@@ -93,14 +115,17 @@ void GameMap::LoadMap(char* filePath)
 								brick->ID = cur_ID++;
 							}
 						
+						
 							mListBrick.push_back(brick);
-							GAMELOG("Position  %f, %f", position.x, position.y);
+							mQuadTree->insertEntity(brick);
+							//GAMELOG("Position  %f, %f", position.x, position.y);
 						}
 					}
 				}
 			}
 		}
 	}
+
 }
 bool GameMap::isContain(RECT rect1, RECT rect2)
 {
@@ -133,6 +158,12 @@ int GameMap::GetTileHeight()
 {
 	return mMap->GetTileHeight();
 }
+
+QuadTree* GameMap::GetQuadTree()
+{
+	return mQuadTree;
+}
+
 std::vector<Brick*> GameMap::GetListBrick()
 {
 	return mListBrick;
