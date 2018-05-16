@@ -23,7 +23,40 @@ World::World()
 		mListBullets.push_back(new Bullet(44, 4));
 	}
 	mMap = new GameMap("Resource files/map.tmx");
-	
+	int temp = 0;
+	for (int i = 0; i < 50; i++)
+	{
+		int x = 0; RandomNumber(235, 335);
+		int y = 0; RandomNumber(37, 187);
+		if (temp == 0)
+		{
+			x = RandomNumber(235, 335);
+			y = RandomNumber(37, 187);
+		}
+		else if (temp == 1)
+		{
+			x = RandomNumber(439, 527);
+			y = RandomNumber(179, 287);
+		}
+		else if (temp == 2)
+		{
+			x = RandomNumber(215, 573);
+			y = RandomNumber(626, 737);
+		}
+		else if (temp == 3)
+		{
+			x = RandomNumber(52, 77);
+			y = RandomNumber(395, 687);
+		}
+		else if (temp == 4)
+		{
+			x = RandomNumber(514, 635);
+			y = RandomNumber(37, 91);
+			temp = 0;
+		}
+		temp++;
+		mListPosition_Random.push_back(D3DXVECTOR2(x, y));
+	}
 	
 }
 
@@ -72,11 +105,10 @@ Item* World::check_time_and_add_item()
 	if (GetTickCount() - last_time_add_item>10000)
 	{
 		Item* item;
-		int x = rand() % (1000 - 10 + 1) + 10;
-		int y = rand() % (1000 - 10 + 1) + 10;
 		int type = rand() +100;
-		if (type % 2 == 0) item = new ProtectPlayer(D3DXVECTOR3(x, y, 0));
-		else item = new UpgradeItem(D3DXVECTOR3(x, y, 0));
+		D3DXVECTOR2 ran = GetRandomPosition();
+		if (type % 2 == 0) item = new ProtectPlayer(D3DXVECTOR3(ran));
+		else item = new UpgradeItem(D3DXVECTOR3(ran));
 		mListItems.push_back(item);
 	
 		last_time_add_item = GetTickCount();
@@ -130,7 +162,7 @@ void World::CheckCollision(float dt)
 			if (brick->isDelete) continue;
 			if (GameCollision::isCollide(bl, brick, dt))
 			{
-				bl->OnCollision();
+				bl->CollisionWith(brick);
 				bl->isChange = true;
 				//Check bullet cua Player nao
 				 mListPlayer.at(bl->ID_of_player-1)->mScore += 1;
@@ -157,7 +189,7 @@ void World::CheckCollision(float dt)
 			{
 			
 				pl->CollisionWith(bl);
-				bl->OnCollision();
+				bl->CollisionWith(pl);
 				bl->isChange = true;
 			}
 		}
@@ -268,4 +300,15 @@ void World::SendWorld(std::vector<TCPSocketPtr> listClient)
 	}
 }
 
+
+D3DXVECTOR2 World::GetRandomPosition()
+{
+	int i = RandomNumber(1, 49);
+	return mListPosition_Random[i];
+}
+
+int World::RandomNumber(int x, int y)
+{
+	return rand() % (y - x + 1) + x;
+}
 

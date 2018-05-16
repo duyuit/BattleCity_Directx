@@ -12,10 +12,10 @@ public:
 	bool isChange = false;
 	RECT GetBound();
 	int ID_of_player=0;
-	void OnCollision();
+
 	/*void Emplace(Bullet *newBullet);
 	bool Compare(Bullet* newBullet);*/
-
+	void CollisionWith(Entity* en) override;
 	void Update(float dt) override;
 	void SetActive(bool flag);
 	void setMoveDirection(Direction direction);

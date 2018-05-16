@@ -8,6 +8,7 @@ class TCPSocket {
 public:
 	~TCPSocket();
 	SOCKET mSocket;
+	std::string name="";
 	int ChangetoDontWait(int flag);
 	int Connect(const SocketAddress& inAddress);
 	int Bind(const SocketAddress& inToAddress);

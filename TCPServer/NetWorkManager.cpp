@@ -1,29 +1,29 @@
 #include "NetWorkManager.h"
 
 #include "SocketUtil.h"
+#include "GameLog.h"
 
 void NetWorkManager::CreatePlayerAndSend()
 {
 	mWorld->mListPlayer.clear();
+	OutputMemoryBitStream os1;
+	os1.Write(Define::LetStart, Define::bitofTypePacket);
+	os1.Write(readBlockSockets.size() - 1,Define::bitofTypePacket);
 	for (auto ele : readBlockSockets)
 	{
 		if (ele->ID == 0) continue;
-		int x = 200; //RandomNumber(150, 400);
-		int y = 150;//RandomNumber(300, 400);
-					/*	int x = RandomNumber(150, 400);
-					int y = RandomNumber(300, 400);*/
-
-		OutputMemoryBitStream os1;
 		PlayerServer* pl = new PlayerServer(ele->ID);
-		pl->SetPosition(x, y);
+		pl->SetPosition(mWorld->GetRandomPosition());
 		pl->mAction = Action::GoRight;
+		pl->mName = ele->name;
 		mWorld->mListPlayer.push_back(pl);
-
-		os1.Write(Define::LetStart, Define::bitofTypePacket);
 		pl->Write(os1);
-		ele->Send(os1.GetBufferPtr(), os1.GetByteLength());
+		os1.Write(pl->mName);
+		
 
 	}
+	for (auto ele : readBlockSockets)
+	ele->Send(os1.GetBufferPtr(), os1.GetByteLength());
 }
 
 void NetWorkManager::Handle_Packet()
@@ -56,6 +56,8 @@ NetWorkManager::NetWorkManager()
 	readBlockSockets.push_back(socket_sever);
 
 	mWorld = new World();
+	//Random position to use
+	
 	
 }
 
@@ -77,6 +79,12 @@ void NetWorkManager::Update(float dt)
 		count_to_send = 0;
 	}
 	
+	if(GetTickCount()-time_to_start>500 && time_to_start!=-1)
+	{
+		isStart = true;
+		CreatePlayerAndSend();
+		time_to_start = -1;
+	}
 	
 }
 
@@ -126,8 +134,7 @@ void NetWorkManager::ReceivePacket()
 			
 				if (ID ==3) //if enought player, Provide them first position by ID
 				{
-					CreatePlayerAndSend();
-					isStart = true;
+					time_to_start = GetTickCount(); //Wait last player
 					break;
 				}
 				UpdatePlayerCount();
@@ -147,7 +154,16 @@ void NetWorkManager::ReceivePacket()
 						int type_of_packet = 0;
 						is.Read(type_of_packet, Define::bitofTypePacket);
 						if (type_of_packet == Define::UpdateCountPlayer)
+						{
 							UpdatePlayerCount();
+						}else if(type_of_packet == Define::RequestName)
+						{
+							string name = "";
+							is.Read(name);
+							socket->name = name;
+							GAMELOG(socket->name.c_str());
+						}
+
 					} else
 					{
 						InputMemoryBitStream is2 = is;
@@ -169,11 +185,6 @@ void NetWorkManager::ReceivePacket()
 		readableSockets.clear();
 	}
 
-}
-
-int NetWorkManager::RandomNumber(int x, int y)
-{
-	return rand() % (y - x + 1) + x;
 }
 
 

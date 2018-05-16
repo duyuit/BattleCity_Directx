@@ -22,6 +22,10 @@ public:
 	std::vector<PlayerServer*>  mListPlayer;
 	std::vector<Entity* > mListObject;
 
+	vector<D3DXVECTOR2> mListPosition_Random;
+	D3DXVECTOR2 GetRandomPosition();
+	int RandomNumber(int x, int y);
+
 
 	int count_brick_send = 0;
 	void HandleObject(Packet p);

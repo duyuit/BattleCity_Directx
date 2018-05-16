@@ -116,13 +116,15 @@ void Player::Read(InputMemoryBitStream& is)
 	}
 	mAction = (Action)action;
 	is.Read(is_protect);
+	is.Read(mHeal, Define::bitofTypePacket);
 	is.Read(last_move_time);
 	is.Read(mScore, Define::bitofID);
 
 }
 void Player::Update(float dt)
 {
-
+	if (isDelete) return;
+	if (mHeal == 0) isDelete = true;
 
 	Entity::Update(dt);
 	switch (dir) {
@@ -150,6 +152,7 @@ void Player::Update(float dt)
 }
 void Player::HandleKeyboard(std::map<int, bool> keys)
 {
+	if (isDelete) return;
 	
 	if (keys[VK_LEFT]) {
 		if (mAction != GoLeft)
@@ -204,6 +207,7 @@ void Player::HandleKeyboard(std::map<int, bool> keys)
 }
 void Player::Draw(D3DXVECTOR3 position, RECT sourceRect, D3DXVECTOR2 scale, D3DXVECTOR2 transform, float angle, D3DXVECTOR2 rotationCenter, D3DXCOLOR colorKey)
 {
+	if (isDelete) return;
 	mCurrentSprite->SetPosition(this->GetPosition());
 	
 	mCurrentSprite->Draw(D3DXVECTOR3(posX, posY, 0));
@@ -277,28 +281,43 @@ void Player::onSetID(int ID)
 void Player::MoveLeft() {
 
 	mCurrentSprite = mLeftSprite;
+
+	if(mLevel>1)
 	this->SetVx(-Define::PLAYER_SPEED);
+	else 	this->SetVx(-250);
+
 	this->SetVy(0);
 	this->mAction = GoLeft;
 }
 void Player::MoveRight() {
 
 	mCurrentSprite = mRightSprite;
+
+	if (mLevel>1)
 	this->SetVx(Define::PLAYER_SPEED);
+	else 	this->SetVx(250);
+
+
 	this->SetVy(0);
 	this->mAction = GoRight;
 }
 void Player::MoveUp() {
 	
 	mCurrentSprite = mUpSprite;
+	if (mLevel>1)
+		this->SetVy(250);          
+	else
 	this->SetVy(Define::PLAYER_SPEED);
+
 	this->SetVx(0);
 	this->mAction = GoUp;
 }
 void Player::MoveDown() {
 	
 	mCurrentSprite = mDownSprite;
-	this->SetVy(-Define::PLAYER_SPEED);
+	if (mLevel>1)
+		this->SetVy(-250);
+	else this->SetVy(-200);
 	this->SetVx(0);
 	this->mAction = GoDown;
 }

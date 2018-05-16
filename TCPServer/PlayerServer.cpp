@@ -111,6 +111,7 @@ void PlayerServer::Write(OutputMemoryBitStream& os)
 	os.Write(a, Define::bitofID);
 	os.Write(mLevel, Define::bitofTypePacket);
 	os.Write(is_protect);
+	os.Write(mHeal, Define::bitofTypePacket);
 	os.Write(last_move_time);
 	os.Write(mScore, Define::bitofID);
 }

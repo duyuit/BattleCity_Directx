@@ -23,8 +23,8 @@ public:
 	Action mAction=Idle;
 	int mScore = 0;
 	int mLevel = 1;
-	int mHeal = 10;
-
+	int mHeal = 2;
+	std::string mName = "";
 	bool is_protect = false;
 	float time_start_protect = 0;
 
