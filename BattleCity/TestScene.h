@@ -17,7 +17,7 @@
 class TestScene : public Scene
 {
 public:
-	TestScene(TCPSocketPtr socket, Player* m_player);
+	TestScene(TCPSocketPtr socket, vector<Player*> list);
 	void Update(float dt);
 	void LoadContent();
 	void Draw();
@@ -45,10 +45,10 @@ protected:
 	RECT RTT_RECT; //RECT chua myFont
 	std::string RTT_String; //Support Font
 
-	ID3DXFont				*Ready_Font = NULL;
-	RECT Ready_RECT; //RECT chua myFont
-	std::string Ready_String; //Support Font
-	int Ready_count = 6;
+	ID3DXFont				*GameOver_Font = NULL;
+	RECT GameOver_RECT; //RECT chua myFont
+	
+
 
 	ID3DXFont				*Score_font =NULL;
 	RECT Pl1_RECT; //RECT chua myFont

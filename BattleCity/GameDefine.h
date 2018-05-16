@@ -13,7 +13,7 @@ namespace Define {
 	const int TankPacket = 4;
 	const int WorldStatePacket = 5;
 	const int InputPacket = 6;
-	const int RequestOldPacket = 7;
+	const int RequestName = 7;
 
 	const int bitofTypePacket = 4;
 	const int bitofID = 11;

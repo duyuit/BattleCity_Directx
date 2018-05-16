@@ -8,8 +8,14 @@ void WaitRoomScene::LoadContent()
 	GameGlobal();
 
 	socket = SocketUtil::CreateTCPSocket();
-
-	SocketAddress address(inet_addr("127.0.0.1"), 8888); //"127.0.0.1"
+	string ip = "127.0.0.1";
+	
+	if (__argv[1] != NULL && __argv[2] != NULL)
+	{
+		ip = string(__argv[1]);
+		m_name = string(__argv[2]);
+	}
+	SocketAddress address(inet_addr(ip.c_str()), 8888); //"127.0.0.1"
 	// B4 - Ket noi
 	if (socket->Connect(address) == SOCKET_ERROR)
 	{
@@ -17,11 +23,10 @@ void WaitRoomScene::LoadContent()
 	}
 	else     OutputDebugStringA("successfull");
 
-	
-	
+
+	//Receive ID from Server
 	char* buff = static_cast<char*>(std::malloc(1024));
 	size_t receivedByteCount = socket->Receive(buff, 1024);
-
 	if (receivedByteCount>0)
 	{
 		InputMemoryBitStream is(buff,
@@ -32,10 +37,18 @@ void WaitRoomScene::LoadContent()
 		{
 			is.Read(ID,Define::bitofID);
 			socket->ChangetoDontWait(1);
+			socket->ID = ID;
 			GameGlobal::socket = socket;
 		}
 	}
 
+	OutputMemoryBitStream os;
+	os.Write(Define::RequestName, Define::bitofTypePacket);
+	os.Write(m_name);
+	socket->Send(os.GetBufferPtr(), os.GetByteLength());
+	
+
+	//Define position for the box
 	int left = GameGlobal::GetWidth() / 2 - 150;
 	for (int i = 0; i<4; i++)
 	{
@@ -46,8 +59,8 @@ void WaitRoomScene::LoadContent()
 			left += 100;
 	}
 
-	m_player = new Player();
-	m_player->isMe = true;
+	/*m_player = new Player();
+	m_player->isMe = true;*/
 
 	my_string = " .";
 	myFont = NULL;
@@ -71,8 +84,8 @@ void WaitRoomScene::ReceivePakcet()
 	size_t receivedByteCount = socket->Receive(buff, 1024);
 
 
-	if (GetTickCount() - timetoStart >= 0 && timetoStart != 0)
-		SceneManager::GetInstance()->ReplaceScene(new TestScene(socket, m_player));
+	if (GetTickCount() - timetoStart >0 && timetoStart != 0)
+		SceneManager::GetInstance()->ReplaceScene(new TestScene(socket, m_list_players));
 
 	if (receivedByteCount>0)
 	{
@@ -86,10 +99,20 @@ void WaitRoomScene::ReceivePakcet()
 			//Sau khi nhan duoc goi tin start thi nhan thong tin Position de start game
 			UpdateBox(4);
 			timetoStart = GetTickCount();
-			int tag = 0; is.Read(tag, Define::bitofID);
-			int id = 0; is.Read(id, Define::bitofID);
-			m_player->ID = id;
-			m_player->Read(is);
+			int size = 0;
+			is.Read(size, Define::bitofTypePacket);
+			for(int i=0;i<size;i++)
+			{
+				int tag = 0; is.Read(tag, Define::bitofID);
+				int id = 0; is.Read(id, Define::bitofID);
+				Player* new_pl = new Player();
+				new_pl->ID = id;
+				new_pl->Read(is);
+				string name = ""; is.Read(name);
+				new_pl->mName = name;
+				m_list_players.push_back(new_pl);
+
+			}
 
 		}
 		else if (typeofPacket == Define::UpdateCountPlayer)
@@ -119,6 +142,9 @@ void WaitRoomScene::UpdateBox(int k)
 void WaitRoomScene::Update(float dt)
 {
 
+
+	
+
 	if(GetTickCount()-lastAdd>=500)
 	{
 		my_string += " .";
@@ -127,8 +153,12 @@ void WaitRoomScene::Update(float dt)
 	}
 	OutputMemoryBitStream os;
 	os.Write(Define::UpdateCountPlayer, Define::bitofTypePacket);
-	socket->Send(os.GetBufferPtr(),os.GetByteLength());
+	socket->Send(os.GetBufferPtr(), os.GetByteLength());
 
+
+
+
+	
 }
 
 void WaitRoomScene::Draw()

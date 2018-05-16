@@ -1,9 +1,7 @@
-﻿  World.cpp
-d:\git\battlecity_directx\tcpserver\world.cpp(48): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-d:\git\battlecity_directx\tcpserver\world.cpp(78): warning C4244: 'argument': conversion from 'int' to 'FLOAT', possible loss of data
-d:\git\battlecity_directx\tcpserver\world.cpp(79): warning C4244: 'argument': conversion from 'int' to 'FLOAT', possible loss of data
-d:\git\battlecity_directx\tcpserver\world.cpp(183): warning C4018: '<': signed/unsigned mismatch
-  NetWorkManager.cpp
-d:\git\battlecity_directx\tcpserver\networkmanager.cpp(18): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+﻿  NetWorkManager.cpp
   Generating Code...
+  Skipping... (no relevant changes detected)
+  World.cpp
+  TCPServer.cpp
+  PlayerServer.cpp
   TCPServer.vcxproj -> D:\Git\BattleCity_Directx\TCPServer\Debug\TCPServer.exe

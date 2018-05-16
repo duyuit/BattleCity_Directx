@@ -19,29 +19,29 @@ void TestScene::LoadContent()
 	//set mau backcolor cho scene o day la mau xanh
 }
 
-TestScene::TestScene(TCPSocketPtr socket,Player* m_player)
+
+
+TestScene::TestScene(TCPSocketPtr socket, vector<Player*> list)
 {
 	mBackColor = D3DCOLOR_XRGB(0, 0, 0);
 
 	mMap = new GameMap("Resource files/map.tmx");
 	this->socket = socket;
 
-
-	mPlayer = m_player;
-	mPlayer->onSetID(m_player->ID);
+	mListPlayer = list;
+	mPlayer = mListPlayer[socket->ID - 1];
+	mPlayer->isMe = true;
+	//mPlayer->onSetID(mPlayer->ID);
 
 	//mListPlayer.push_back(mPlayer);
 
 	//Add 4 player
-	for(int i=1;i<5;i++)
+	for(auto pl:mListPlayer)
 	{
-		if (i == mPlayer->ID) mListPlayer.push_back(mPlayer);
-		Player* temp = new Player();
-		temp->onSetID(i);;
-		temp->SetPosition(300, 300);
-		mListPlayer.push_back(temp);
+		pl->onSetID(pl->ID);
 	}
-	
+
+
 	//Add 16 bullet
 	{
 		mListBullets.push_back(new Bullet(11));
@@ -62,69 +62,69 @@ TestScene::TestScene(TCPSocketPtr socket,Player* m_player)
 		mListBullets.push_back(new Bullet(44));
 	}
 
-	
-	RTT_String = " .";
 
-	
-	HRESULT rs = D3DXCreateFont(GameGlobal::GetCurrentDevice()
-		, 30, 10
-		, FW_NORMAL, 1
-		, false, DEFAULT_CHARSET
-		, OUT_DEFAULT_PRECIS, ANTIALIASED_QUALITY, FF_DONTCARE, (LPCWSTR) "Arial", &RTT_Font);
+	{
+		RTT_String = " .";
 
 
-	D3DXCreateFont(GameGlobal::GetCurrentDevice()
-		, 80, 50
-		, FW_NORMAL, 1
-		, false, DEFAULT_CHARSET
-		, OUT_DEFAULT_PRECIS, ANTIALIASED_QUALITY, FF_DONTCARE, (LPCWSTR) "Arial", &Ready_Font);
-
-	D3DXCreateFont(GameGlobal::GetCurrentDevice()
-		, 30, 10
-		, FW_NORMAL, 1
-		, false, DEFAULT_CHARSET
-		, OUT_DEFAULT_PRECIS, ANTIALIASED_QUALITY, FF_DONTCARE, (LPCWSTR) "Arial", &Score_font);
+		HRESULT rs = D3DXCreateFont(GameGlobal::GetCurrentDevice()
+			, 30, 10
+			, FW_NORMAL, 1
+			, false, DEFAULT_CHARSET
+			, OUT_DEFAULT_PRECIS, ANTIALIASED_QUALITY, FF_DONTCARE, (LPCWSTR) "Arial", &RTT_Font);
 
 
+		D3DXCreateFont(GameGlobal::GetCurrentDevice()
+			, 80, 50
+			, FW_NORMAL, 1
+			, false, DEFAULT_CHARSET
+			, OUT_DEFAULT_PRECIS, ANTIALIASED_QUALITY, FF_DONTCARE, (LPCWSTR) "Arial", &GameOver_Font);
+
+		D3DXCreateFont(GameGlobal::GetCurrentDevice()
+			, 30, 10
+			, FW_NORMAL, 1
+			, false, DEFAULT_CHARSET
+			, OUT_DEFAULT_PRECIS, ANTIALIASED_QUALITY, FF_DONTCARE, (LPCWSTR) "Arial", &Score_font);
 
 
-	RTT_RECT.left = 50;
-	RTT_RECT.top = GameGlobal::GetHeight() - 100;
-	RTT_RECT.bottom = RTT_RECT.top + 200;
-	RTT_RECT.right = RTT_RECT.left + 400;
 
-	Ready_RECT.left =GameGlobal::GetWidth()/2 - 300;
-	Ready_RECT.top = GameGlobal::GetHeight()/2;
-	Ready_RECT.bottom = Ready_RECT.top + 100;
-	Ready_RECT.right = Ready_RECT.left +1000;
+		RTT_RECT.left = 50;
+		RTT_RECT.top = GameGlobal::GetHeight() - 100;
+		RTT_RECT.bottom = RTT_RECT.top + 200;
+		RTT_RECT.right = RTT_RECT.left + 400;
 
-	Pl1_RECT.left = GameGlobal::GetWidth() - 450;
-	Pl1_RECT.right = Pl1_RECT.left + 200;
-	Pl1_RECT.top = 0;
-	Pl1_RECT.bottom = Pl1_RECT.top+ 200;
+		GameOver_RECT.left = GameGlobal::GetWidth() / 2 - 300;
+		GameOver_RECT.top = GameGlobal::GetHeight() / 2;
+		GameOver_RECT.bottom = GameOver_RECT.top + 100;
+		GameOver_RECT.right = GameOver_RECT.left + 1000;
 
-	Pl2_RECT.left = GameGlobal::GetWidth() - 450;
-	Pl2_RECT.right = Pl1_RECT.left + 200;
-	Pl2_RECT.top = 100;
-	Pl2_RECT.bottom = Pl1_RECT.top + 300;
+		Pl1_RECT.left = GameGlobal::GetWidth() - 450;
+		Pl1_RECT.right = Pl1_RECT.left + 200;
+		Pl1_RECT.top = 0;
+		Pl1_RECT.bottom = Pl1_RECT.top + 200;
 
-	Pl3_RECT.left = GameGlobal::GetWidth() - 450;
-	Pl3_RECT.right = Pl1_RECT.left + 200;
-	Pl3_RECT.top = 200;
-	Pl3_RECT.bottom = Pl1_RECT.top + 400;
+		Pl2_RECT.left = GameGlobal::GetWidth() - 450;
+		Pl2_RECT.right = Pl1_RECT.left + 200;
+		Pl2_RECT.top = 100;
+		Pl2_RECT.bottom = Pl1_RECT.top + 300;
 
-	Pl4_RECT.left = GameGlobal::GetWidth() - 450;
-	Pl4_RECT.right = Pl1_RECT.left + 200;
-	Pl4_RECT.top = 300;
-	Pl4_RECT.bottom = Pl1_RECT.top + 500;
+		Pl3_RECT.left = GameGlobal::GetWidth() - 450;
+		Pl3_RECT.right = Pl1_RECT.left + 200;
+		Pl3_RECT.top = 200;
+		Pl3_RECT.bottom = Pl1_RECT.top + 400;
 
+		Pl4_RECT.left = GameGlobal::GetWidth() - 450;
+		Pl4_RECT.right = Pl1_RECT.left + 200;
+		Pl4_RECT.top = 300;
+		Pl4_RECT.bottom = Pl1_RECT.top + 500;
 
+	}
 }
 
 void TestScene::Update(float dt)
 {
 
-	
+
 	mPlayer->HandleKeyboard(keys);
 	CheckCollision(dt);
 	mMap->Update(dt);
@@ -162,11 +162,13 @@ void TestScene::Draw()
 	{
 		ele->Draw();
 	}
-	for(auto ele:mListBullets)
+	
+	mMap->Draw();
+	for (auto ele : mListBullets)
 	{
 		ele->Draw();
 	}
-	mMap->Draw();
+
 	for (auto item : mListItems)
 		item->Draw();
 	for (int i=0;i<mListAnimate.size();i++)
@@ -182,23 +184,28 @@ void TestScene::Draw()
 	}
 	if (RTT_Font)
 	{
-		int delta = GameGlobal::RTT;
-		if (delta != 16)
+		//int delta = GameGlobal::RTT;
+		//if (delta != 16)
 		{
-			RTT_String = "RTT: " + to_string(delta);
+			RTT_String = "x: "+std::to_string(mPlayer->GetPosition().x) + " y: "+std::to_string(mPlayer->GetPosition().y);
 			RTT_Font->DrawTextA(mPlayer->mCurrentSprite->GetSpriteHandle(), RTT_String.c_str(), -1, &RTT_RECT, DT_LEFT, D3DCOLOR_XRGB(240, 255, 255));
 		}
 		
 	}
 
-	Pl1_String = "Player 1: " + std::to_string(mListPlayer.at(0)->mScore);
+	if(mPlayer->isDelete)
+	{
+		GameOver_Font->DrawTextA(mPlayer->mCurrentSprite->GetSpriteHandle(),"GAME OVER", -1, &GameOver_RECT, DT_LEFT, D3DCOLOR_XRGB(240, 255, 255));
+	}
+
+	Pl1_String =mListPlayer[0]->mName + ": " + std::to_string(mListPlayer.at(0)->mScore);
 	Score_font->DrawTextA(mPlayer->mCurrentSprite->GetSpriteHandle(), Pl1_String.c_str(), -1, &Pl1_RECT, DT_LEFT, D3DCOLOR_XRGB(255, 242, 0));
-	Pl2_String = "Player 2: " + std::to_string(mListPlayer.at(1)->mScore);
-	Score_font->DrawTextA(mPlayer->mCurrentSprite->GetSpriteHandle(), Pl2_String.c_str(), -1, &Pl2_RECT, DT_LEFT, D3DCOLOR_XRGB(195, 195, 195));
-	Pl3_String = "Player 3: " + std::to_string(mListPlayer.at(2)->mScore);
-	Score_font->DrawTextA(mPlayer->mCurrentSprite->GetSpriteHandle(), Pl3_String.c_str(), -1, &Pl3_RECT, DT_LEFT, D3DCOLOR_XRGB(34, 177, 76));
-	Pl4_String = "Player 4: " + std::to_string(mListPlayer.at(3)->mScore);
-	Score_font->DrawTextA(mPlayer->mCurrentSprite->GetSpriteHandle(), Pl4_String.c_str(), -1, &Pl4_RECT, DT_LEFT, D3DCOLOR_XRGB(237, 28, 36));
+	/*Pl2_String = mListPlayer[1]->mName + ": " + std::to_string(mListPlayer.at(1)->mScore);
+	Score_font->DrawTextA(mPlayer->mCurrentSprite->GetSpriteHandle(), Pl2_String.c_str(), -1, &Pl2_RECT, DT_LEFT, D3DCOLOR_XRGB(195, 195, 195));*/
+	//Pl3_String = mListPlayer[2]->mName + ": " + std::to_string(mListPlayer.at(2)->mScore);
+	//Score_font->DrawTextA(mPlayer->mCurrentSprite->GetSpriteHandle(), Pl3_String.c_str(), -1, &Pl3_RECT, DT_LEFT, D3DCOLOR_XRGB(34, 177, 76));
+	//Pl4_String = mListPlayer[3]->mName + ": " + std::to_string(mListPlayer.at(3)->mScore);
+	//Score_font->DrawTextA(mPlayer->mCurrentSprite->GetSpriteHandle(), Pl4_String.c_str(), -1, &Pl4_RECT, DT_LEFT, D3DCOLOR_XRGB(237, 28, 36));
 }
 
 void TestScene::ReceivePakcet()
@@ -206,9 +213,9 @@ void TestScene::ReceivePakcet()
 	char* buff = static_cast<char*>(std::malloc(1024));
 	size_t receivedByteCount = socket->Receive(buff, 1024);
 
-	if (receivedByteCount>0)
+	if (receivedByteCount > 0)
 	{
-		
+
 		InputMemoryBitStream is(buff,
 			static_cast<uint32_t> (receivedByteCount));
 		int typeofPacket = 0;
@@ -216,9 +223,9 @@ void TestScene::ReceivePakcet()
 		if (typeofPacket == Define::WorldStatePacket)
 		{
 			int ObjectCount = 0;
-			is.Read(ObjectCount,Define::bitofID);
-		
-			for (int i = 0; i<ObjectCount; i++)
+			is.Read(ObjectCount, Define::bitofID);
+
+			for (int i = 0; i < ObjectCount; i++)
 			{
 				int tag = 0;
 				is.Read(tag, Define::bitofID);
@@ -226,6 +233,7 @@ void TestScene::ReceivePakcet()
 			}
 
 		}
+		
 		
 	}
 	free(buff);

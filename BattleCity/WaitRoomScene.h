@@ -8,7 +8,7 @@
 #include <string>
 #include "SocketUtil.h"
 
-
+#include "stdlib.h"
 class WaitRoomScene:public Scene
 {
 public:
@@ -18,8 +18,8 @@ public:
 
 	int ID = 0; //Current ID
 	int playerCount = 0; //Curren player
-
-	Player* m_player;
+	string m_name = "guest";
+	vector<Player*> m_list_players;
 
 
 	std::vector<Sprite*> box; //box chua cac o Xanh,Do the hien so nguoi choi

@@ -47,9 +47,12 @@ RECT Bullet::GetBound()
 	
 }
 
-void Bullet::OnCollision()
+
+
+void Bullet::CollisionWith(Entity* en)
 {
-	SetActive(false);
+	if (en->Tag == Water) return;
+	else SetActive(false);
 }
 
 void Bullet::Update(float dt)

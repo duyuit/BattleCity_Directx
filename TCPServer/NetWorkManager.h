@@ -6,6 +6,9 @@ class NetWorkManager
 public:
 	vector<TCPSocketPtr> readBlockSockets;
 	vector<TCPSocketPtr> readableSockets;
+
+	int time_to_start = -1;
+
 	TCPSocketPtr socket_sever;
 	bool isStart = false;
 	void CreatePlayerAndSend();
@@ -19,6 +22,6 @@ public:
 	void ProcessNewClient();
 	void UpdatePlayerCount();
 	void ReceivePacket();
-	int RandomNumber(int x, int y);
+
 };
 
