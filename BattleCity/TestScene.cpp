@@ -38,9 +38,14 @@ TestScene::TestScene(TCPSocketPtr socket, vector<Player*> list)
 	//Add 4 player
 	for(auto pl:mListPlayer)
 	{
+		pl->SetSpawn();
 		pl->onSetID(pl->ID);
 	}
-
+	for (int i = 1; i<5; i++)
+	{
+		NPC *npc = new NPC(i);
+		mListNPC.push_back(npc);
+	}
 
 	//Add 16 bullet
 	{
@@ -135,6 +140,10 @@ void TestScene::Update(float dt)
 	{
 		ele->Update(dt);
 	}
+	for (auto ele : mListNPC)
+	{
+		ele->Update(dt);
+	}
 	for (auto ele : mListBullets)
 	{
 		ele->Update(dt);
@@ -159,6 +168,10 @@ void TestScene::Draw()
 	
 	
 	for (auto ele:mListPlayer)
+	{
+		ele->Draw();
+	}
+	for (auto ele : mListNPC)
 	{
 		ele->Draw();
 	}
@@ -195,13 +208,15 @@ void TestScene::Draw()
 
 	if(mPlayer->isDelete)
 	{
-		GameOver_Font->DrawTextA(mPlayer->mCurrentSprite->GetSpriteHandle(),"GAME OVER", -1, &GameOver_RECT, DT_LEFT, D3DCOLOR_XRGB(240, 255, 255));
+		int delta = 4 - (GetTickCount() - mPlayer->last_time_die)/1000;
+		string s = "Respawn in " + std::to_string(delta);
+		GameOver_Font->DrawTextA(mPlayer->mCurrentSprite->GetSpriteHandle(),s.c_str(), -1, &GameOver_RECT, DT_LEFT, D3DCOLOR_XRGB(240, 255, 255));
 	}
 
 	Pl1_String =mListPlayer[0]->mName + ": " + std::to_string(mListPlayer.at(0)->mScore);
 	Score_font->DrawTextA(mPlayer->mCurrentSprite->GetSpriteHandle(), Pl1_String.c_str(), -1, &Pl1_RECT, DT_LEFT, D3DCOLOR_XRGB(255, 242, 0));
-	/*Pl2_String = mListPlayer[1]->mName + ": " + std::to_string(mListPlayer.at(1)->mScore);
-	Score_font->DrawTextA(mPlayer->mCurrentSprite->GetSpriteHandle(), Pl2_String.c_str(), -1, &Pl2_RECT, DT_LEFT, D3DCOLOR_XRGB(195, 195, 195));*/
+	Pl2_String = mListPlayer[1]->mName + ": " + std::to_string(mListPlayer.at(1)->mScore);
+	Score_font->DrawTextA(mPlayer->mCurrentSprite->GetSpriteHandle(), Pl2_String.c_str(), -1, &Pl2_RECT, DT_LEFT, D3DCOLOR_XRGB(195, 195, 195));
 	//Pl3_String = mListPlayer[2]->mName + ": " + std::to_string(mListPlayer.at(2)->mScore);
 	//Score_font->DrawTextA(mPlayer->mCurrentSprite->GetSpriteHandle(), Pl3_String.c_str(), -1, &Pl3_RECT, DT_LEFT, D3DCOLOR_XRGB(34, 177, 76));
 	//Pl4_String = mListPlayer[3]->mName + ": " + std::to_string(mListPlayer.at(3)->mScore);
@@ -264,24 +279,18 @@ void TestScene::CheckCollision(float dt)
 		}
 		
 	}
-	/*for (auto bl : mListBullets)
+	for (auto npc : mListNPC)
 	{
-		if (!bl->isActive) continue;
 		vector<Entity*> listCollision;
-		mMap->GetQuadTree()->getEntitiesCollideAble(listCollision, bl);
+		mMap->GetQuadTree()->getEntitiesCollideAble(listCollision, npc);
 		for (auto brick : listCollision)
 		{
 			if (brick->isDelete) continue;
-			if (GameCollision::isCollide(bl, brick, dt))
-			{
-				
-				
-				bl->isActive = false;
-			}
-
+			if (GameCollision::isCollide(npc, brick, dt))
+				npc->CollideWith_World();
 		}
 
-	}*/
+	}
 
 
 
@@ -377,6 +386,18 @@ void TestScene::find_and_handle(int tag, InputMemoryBitStream &is)
 			Item * add = new UpgradeItem();
 			add->Read(is);
 			mListItems.push_back(add);
+		}
+		break;
+	case Entity::npc:
+		{
+			for(auto npc:mListNPC)
+			{
+				if (npc->ID == id)
+				{
+					npc->Read(is);
+					break;
+				}
+			}
 		}
 		break;
 			/*case Entity::item: break;

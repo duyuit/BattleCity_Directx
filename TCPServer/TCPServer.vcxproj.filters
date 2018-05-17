@@ -171,6 +171,9 @@
     <ClInclude Include="UpgradeItem.h">
       <Filter>GameObject\Item</Filter>
     </ClInclude>
+    <ClInclude Include="NPC.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TCPServer.cpp">
@@ -295,6 +298,9 @@
     </ClCompile>
     <ClCompile Include="UpgradeItem.cpp">
       <Filter>GameObject\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="NPC.cpp">
+      <Filter>GameObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

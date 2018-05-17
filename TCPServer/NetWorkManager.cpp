@@ -16,6 +16,7 @@ void NetWorkManager::CreatePlayerAndSend()
 		pl->SetPosition(mWorld->GetRandomPosition());
 		pl->mAction = Action::GoRight;
 		pl->mName = ele->name;
+		pl->ActiveShield();
 		mWorld->mListPlayer.push_back(pl);
 		pl->Write(os1);
 		os1.Write(pl->mName);
@@ -72,7 +73,7 @@ void NetWorkManager::Update(float dt)
 	mWorld->CheckCollision(dt);
 	mWorld->Update(dt);
 	count_to_send++;
-	if(count_to_send ==6)
+	if(count_to_send ==3)
 	{
 		
 		mWorld->SendWorld(readBlockSockets);

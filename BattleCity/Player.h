@@ -28,20 +28,28 @@ public:
 
 	void Draw(D3DXVECTOR3 position = D3DXVECTOR3(), RECT sourceRect = RECT(), D3DXVECTOR2 scale = D3DXVECTOR2(), D3DXVECTOR2 transform = D3DXVECTOR2(), float angle = 0, D3DXVECTOR2 rotationCenter = D3DXVECTOR2(), D3DXCOLOR colorKey = D3DCOLOR_XRGB(255, 255, 255));
 	void CollideWith_World();
+
 	bool isMe = false;
 	string mName = "";
 	Action mAction = Idle;
 	Action mLastAction = Action::GoDown;
 	int mHeal = 10;
+	int last_mHeal = 0;
+
 	bool isDelete = false;
+	int last_time_die = 0;
+
+
 	int lastFire = 0; //Time last Fight
 	int last_move_time = 0;
 	int mLevel = 1;
 
+	
 	bool is_protect = false;
-	
-	
+	void ActiveShield();
+	void SetSpawn();
 	RECT GetBound();
+	void CollisionWith(Entity* en) override;
 	void onSetID(int ID);
 	void Write(OutputMemoryBitStream& os) override;
 	void OnsetLevel(int m_level);
@@ -56,6 +64,7 @@ protected:
 
 	//Animation   *mCurrentAnimation;
 	Animation* shield;
+	Animation* spawn;
 
 	Sprite * mLeftSprite;
 	Sprite * mUpSprite;
@@ -63,7 +72,10 @@ protected:
 	Sprite * mDownSprite;
 	Sprite *m_top_sprite;
 
-	
+	bool is_respaw = false;
+	int last_time_spawn = 0;
+
+
 	void MoveLeft();
 	void MoveRight();
 	void MoveUp();

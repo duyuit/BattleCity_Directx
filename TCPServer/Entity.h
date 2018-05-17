@@ -37,7 +37,8 @@ public:
 		Water,
 		ProtectPlayerItem,
 		UpgradeItem,
-		boundary
+		boundary,
+		npc
 	};
 	bool isDelete = false;
 	int ID = 0;

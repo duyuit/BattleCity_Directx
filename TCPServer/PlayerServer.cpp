@@ -8,7 +8,6 @@ PlayerServer::PlayerServer()
 	this->height = 32;
 	this->vx = 0;
 	this->vy = 0;
-	this->Tag = Entity::player;
 	ID_currentBullet = ID * 10 + 1;
 
 }
@@ -92,17 +91,13 @@ void PlayerServer::CollisionWith(Entity* en)
 	else if (en->Tag == EntityTypes::bullet)
 	{
 		if(!is_protect)
+		if(mHeal>0)
 		mHeal--;
+		
 	}
 }
 
-void PlayerServer::Emplace(PlayerServer* pl)
-{
-	Entity::Emplace(pl);
-	this->mAction = pl->mAction;
-	
 
-}
 
 void PlayerServer::Write(OutputMemoryBitStream& os)
 {
@@ -136,7 +131,32 @@ void PlayerServer::onHandleKeyboard(int action)
 
  void PlayerServer::Update(float dt)
 {
-	
+	if (mHeal == 0)
+	{
+		if (!isWaiting)
+		{
+			last_time_wait = GetTickCount();
+			isWaiting = true;
+			SetPosition(0, 0);
+		}
+	}
+	 if (isWaiting && GetTickCount() - last_time_wait > 4000)
+	 {
+		 int x = 0;
+		 int y = 0;
+		 switch (ID)
+		 {
+		 case 1: x = 177; y = 713; break;
+		 case 2:x = 637; y = 593; break;
+		 case 3:x = 597; y = 73; break;
+		 case 4:x = 204; y = 113; break;
+		 }
+		 SetPosition(x,y);
+		 ActiveShield();
+		 mHeal =2;
+		 last_time_wait = 0;
+		 isWaiting = false;
+	 }
 	Entity::Update(dt);
 	if (is_protect)
 		time_start_protect += dt;

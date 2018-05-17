@@ -121,6 +121,7 @@
     <ClInclude Include="MemoryBitStream.h" />
     <ClInclude Include="MetalBrick.h" />
     <ClInclude Include="NetWorkManager.h" />
+    <ClInclude Include="NPC.h" />
     <ClInclude Include="Packet.h" />
     <ClInclude Include="PlayerServer.h" />
     <ClInclude Include="ProtectPlayer.h" />
@@ -167,6 +168,7 @@
     <ClCompile Include="MemoryBitStream.cpp" />
     <ClCompile Include="MetalBrick.cpp" />
     <ClCompile Include="NetWorkManager.cpp" />
+    <ClCompile Include="NPC.cpp" />
     <ClCompile Include="Packet.cpp" />
     <ClCompile Include="PlayerServer.cpp" />
     <ClCompile Include="ProtectPlayer.cpp" />

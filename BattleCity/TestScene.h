@@ -13,6 +13,7 @@
 #include "GameMap.h"
 #include "ProtectPlayer.h"
 #include "UpgradeItem.h"
+#include "NPC.h"
 
 class TestScene : public Scene
 {
@@ -27,10 +28,13 @@ public:
 	void SendData() override;
 	bool isReady = false;
 	GameMap *mMap;
+
 	vector<Entity*> mListObjects;
 	vector<Bullet*> mListBullets;
 	vector<Player* > mListPlayer;
 	vector<Item* > mListItems;
+	std::vector<NPC*>  mListNPC;
+
 	void OnKeyDown(int keyCode);
 	void OnKeyUp(int keyCode);
 	void find_and_handle(int tag, InputMemoryBitStream &is);

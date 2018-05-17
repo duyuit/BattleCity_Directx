@@ -198,6 +198,9 @@
     <ClCompile Include="UpgradeItem.cpp">
       <Filter>FrameWork\GameObjects\Item</Filter>
     </ClCompile>
+    <ClCompile Include="NPC.cpp">
+      <Filter>FrameWork\GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameTime.h">
@@ -364,6 +367,9 @@
     </ClInclude>
     <ClInclude Include="UpgradeItem.h">
       <Filter>FrameWork\GameObjects\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="NPC.h">
+      <Filter>FrameWork\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

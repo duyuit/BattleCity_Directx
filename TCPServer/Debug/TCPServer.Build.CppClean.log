@@ -1,7 +1,5 @@
 d:\git\battlecity_directx\tcpserver\debug\vc141.pdb
 d:\git\battlecity_directx\tcpserver\debug\vc141.idb
-d:\git\battlecity_directx\tcpserver\debug\tmxobjectgroup.obj
-d:\git\battlecity_directx\tcpserver\debug\tmxpolygon.obj
 d:\git\battlecity_directx\tcpserver\debug\tmxpolyline.obj
 d:\git\battlecity_directx\tcpserver\debug\tmxpropertyset.obj
 d:\git\battlecity_directx\tcpserver\debug\tmxterrain.obj
@@ -16,8 +14,10 @@ d:\git\battlecity_directx\tcpserver\debug\metalbrick.obj
 d:\git\battlecity_directx\tcpserver\debug\networkmanager.obj
 d:\git\battlecity_directx\tcpserver\debug\packet.obj
 d:\git\battlecity_directx\tcpserver\debug\playerserver.obj
+d:\git\battlecity_directx\tcpserver\debug\protectplayer.obj
 d:\git\battlecity_directx\tcpserver\debug\quadtree.obj
 d:\git\battlecity_directx\tcpserver\debug\tcpserver.obj
+d:\git\battlecity_directx\tcpserver\debug\upgradeitem.obj
 d:\git\battlecity_directx\tcpserver\debug\water.obj
 d:\git\battlecity_directx\tcpserver\debug\world.obj
 d:\git\battlecity_directx\tcpserver\debug\boundary.obj
@@ -29,6 +29,7 @@ d:\git\battlecity_directx\tcpserver\debug\gamecollision.obj
 d:\git\battlecity_directx\tcpserver\debug\gamelog.obj
 d:\git\battlecity_directx\tcpserver\debug\gamemap.obj
 d:\git\battlecity_directx\tcpserver\debug\gametime.obj
+d:\git\battlecity_directx\tcpserver\debug\item.obj
 d:\git\battlecity_directx\tcpserver\debug\base64.obj
 d:\git\battlecity_directx\tcpserver\debug\tinyxml2.obj
 d:\git\battlecity_directx\tcpserver\debug\tmxellipse.obj
@@ -37,10 +38,9 @@ d:\git\battlecity_directx\tcpserver\debug\tmximagelayer.obj
 d:\git\battlecity_directx\tcpserver\debug\tmxlayer.obj
 d:\git\battlecity_directx\tcpserver\debug\tmxmap.obj
 d:\git\battlecity_directx\tcpserver\debug\tmxobject.obj
+d:\git\battlecity_directx\tcpserver\debug\tmxobjectgroup.obj
+d:\git\battlecity_directx\tcpserver\debug\tmxpolygon.obj
 d:\git\battlecity_directx\tcpserver\debug\miniz.obj
-d:\git\battlecity_directx\tcpserver\debug\item.obj
-d:\git\battlecity_directx\tcpserver\debug\protectplayer.obj
-d:\git\battlecity_directx\tcpserver\debug\upgradeitem.obj
 d:\git\battlecity_directx\tcpserver\debug\tcpserver.exe
 d:\git\battlecity_directx\tcpserver\debug\tcpserver.ilk
 d:\git\battlecity_directx\tcpserver\debug\tcpserver.pdb

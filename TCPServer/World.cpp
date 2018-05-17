@@ -58,6 +58,14 @@ World::World()
 		mListPosition_Random.push_back(D3DXVECTOR2(x, y));
 	}
 	
+	for(int i=1;i<5;i++)
+	{
+		NPC *npc=new NPC();
+		npc->ID = i;
+		npc->SetPosition(GetRandomPosition());
+		mListNPC.push_back(npc);
+	}
+	
 }
 
 
@@ -193,8 +201,31 @@ void World::CheckCollision(float dt)
 				bl->isChange = true;
 			}
 		}
+		for (auto npc : mListNPC)
+		{
+		
+			if (GameCollision::isCollide(bl, npc, dt))
+			{
+
+				npc->CollisionWith(bl);
+				bl->CollisionWith(npc);
+				bl->isChange = true;
+			}
+		}
 	}
 	
+	for(auto npc:mListNPC)
+	{
+		vector<Entity*> listCollision;
+		mMap->GetQuadTree()->getEntitiesCollideAble(listCollision, npc);
+		for (auto brick : listCollision)
+		{
+			if (brick->isDelete) continue;
+			if (GameCollision::isCollide(npc, brick, dt))
+				npc->CollideWith_World();
+		}
+	}
+
 	
 			
 	
@@ -207,6 +238,10 @@ void World::Update(float dt)
 	for (auto ele : mListPlayer)
 	{
 		ele->Update(1.0f/60);
+	}
+	for (auto ele : mListNPC)
+	{
+		ele->Update(1.0f / 60);
 	}
 	for (auto ele : mListBullets)
 	{
@@ -242,7 +277,7 @@ void World::SendWorld(std::vector<TCPSocketPtr> listClient)
 		}
 	}
 	
-	int size = mListPlayer.size() + count_brick_send + count_bullet_send;
+	int size = mListPlayer.size() + count_brick_send + count_bullet_send+mListNPC.size();
 	if (add != nullptr) size += 1;
 
 	os.Write(size,Define::bitofID);
@@ -253,7 +288,10 @@ void World::SendWorld(std::vector<TCPSocketPtr> listClient)
 	{
 		ele->Write(os);
 	}
-
+	for (auto ele : mListNPC)
+	{
+		ele->Write(os);
+	}
 	
 	for (auto ele : mListBullets)
 	{
