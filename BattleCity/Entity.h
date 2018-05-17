@@ -25,7 +25,9 @@ public:
 		MetalBrick,
 		Water,
 		ProtectPlayerItem,
-		UpgradeItem
+		UpgradeItem,
+		boundary,
+		npc
 	};
 	int ID = 0;
 	Direction dir = up;

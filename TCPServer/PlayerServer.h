@@ -36,13 +36,13 @@ public:
 	RECT GetBound() override;
 	void Up_ID_OfBullet();
 	void CollisionWith(Entity* en) override;
-	void Emplace(PlayerServer* pl);
 	void Write(OutputMemoryBitStream& os) override;
 	void Read(InputMemoryBitStream& is) override;
 	void onHandleKeyboard(int Action);
 	void Update(float dt) override;
 private:
-
+	bool isWaiting = false;
+	int last_time_wait = 0;
 	void MoveLeft();
 	void MoveRight();
 	void MoveUp();

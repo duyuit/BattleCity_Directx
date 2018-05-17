@@ -25,6 +25,12 @@ Player::Player()
 	a.left = 0; a.right = a.left + 39; a.top = 111; a.bottom = a.top + 42; list.push_back(a);
 	a.left = 39; a.right = a.left + 40; a.top = 111; a.bottom = a.top + 40; list.push_back(a);
 	shield = new Animation("Resource files/Somethings.png", list, 0.05f, D3DXCOLOR(255, 0, 255, 255));
+	vector<RECT> list1;
+	a.left = 0; a.right = a.left + 30; a.top = 0; a.bottom = a.top + 30; list1.push_back(a);
+	a.left = 30; a.right = a.left + 30; a.top = 0; a.bottom = a.top + 30; list1.push_back(a);
+	a.left = 60; a.right = a.left + 34; a.top = 0; a.bottom = a.top + 31; list1.push_back(a);
+	a.left = 93; a.right = a.left + 35; a.top = 0; a.bottom = a.top + 32; list1.push_back(a);
+	spawn = new Animation("Resource files/Somethings.png", list1, 0.05f, D3DXCOLOR(255, 0, 255, 255));
 }
 
 Player::~Player(){}
@@ -116,16 +122,36 @@ void Player::Read(InputMemoryBitStream& is)
 	}
 	mAction = (Action)action;
 	is.Read(is_protect);
+	last_mHeal = mHeal;
 	is.Read(mHeal, Define::bitofTypePacket);
+	
 	is.Read(last_move_time);
 	is.Read(mScore, Define::bitofID);
 
 }
 void Player::Update(float dt)
 {
-	if (isDelete) return;
-	if (mHeal == 0) isDelete = true;
+	if(mHeal!=0 && last_mHeal==0)
+	{
+		SetSpawn();
+	}
+	if (mHeal == 0 && !isDelete)
+	{
+		last_time_die = GetTickCount();
+		isDelete = true;
+	}
 
+	if (isDelete) {
+		if (GetTickCount() - last_time_die > 4000) isDelete = false;
+		return;
+	}
+
+	if (is_respaw)
+	{
+		spawn->Update(dt);
+		if (GetTickCount() - last_time_spawn > 2000) is_respaw = false;
+		return;
+	}
 	Entity::Update(dt);
 	switch (dir) {
 	case Direction::left:mCurrentSprite = mLeftSprite; break;
@@ -153,6 +179,7 @@ void Player::Update(float dt)
 void Player::HandleKeyboard(std::map<int, bool> keys)
 {
 	if (isDelete) return;
+	if (is_respaw) return;
 	
 	if (keys[VK_LEFT]) {
 		if (mAction != GoLeft)
@@ -208,6 +235,13 @@ void Player::HandleKeyboard(std::map<int, bool> keys)
 void Player::Draw(D3DXVECTOR3 position, RECT sourceRect, D3DXVECTOR2 scale, D3DXVECTOR2 transform, float angle, D3DXVECTOR2 rotationCenter, D3DXCOLOR colorKey)
 {
 	if (isDelete) return;
+	if (is_respaw)
+	{
+		spawn->SetPosition(GetPosition());
+		spawn->Draw();
+		return;
+	}
+
 	mCurrentSprite->SetPosition(this->GetPosition());
 	
 	mCurrentSprite->Draw(D3DXVECTOR3(posX, posY, 0));
@@ -231,7 +265,16 @@ void Player::CollideWith_World()
 }
 
 
+void Player::ActiveShield()
+{
 
+}
+
+void Player::SetSpawn()
+{
+	is_respaw = true;
+	last_time_spawn = GetTickCount();
+}
 
 RECT Player::GetBound()
 {
@@ -241,6 +284,11 @@ RECT Player::GetBound()
 	rect.top = this->posY - mCurrentSprite->GetHeight() / 2;
 	rect.bottom = rect.top + mCurrentSprite->GetHeight();
 	return rect;
+}
+
+void Player::CollisionWith(Entity* en)
+{
+
 }
 
 void Player::onSetID(int ID)
@@ -271,13 +319,7 @@ void Player::onSetID(int ID)
 	mCurrentSprite = mUpSprite;
 }
 
-//Entity::MoveDirection Player::getMoveDirection()
-//{
-//	return Dir;
-//}
-//void Player::setMoveDirection(MoveDirection direction) {
-//	Dir = direction;
-//}
+
 void Player::MoveLeft() {
 
 	mCurrentSprite = mLeftSprite;

@@ -3,8 +3,12 @@
 #include <cstdlib>
 //#include "Entity.h"
 #include <string>
+#include <d3dx9.h>
+#include <vector>
 //#include "PlayerServer.h";
 //#include "Bullet.h"
+
+
 
 namespace Define
 {

@@ -163,6 +163,7 @@
     <ClCompile Include="MapReader\TmxUtil.cpp" />
     <ClCompile Include="MemoryBitStream.cpp" />
     <ClCompile Include="MetalBrick.cpp" />
+    <ClCompile Include="NPC.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="ProtectPlayer.cpp" />
     <ClCompile Include="QuadTree.cpp" />
@@ -217,6 +218,7 @@
     <ClInclude Include="MapReader\zlib.h" />
     <ClInclude Include="MemoryBitStream.h" />
     <ClInclude Include="MetalBrick.h" />
+    <ClInclude Include="NPC.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="ProtectPlayer.h" />
     <ClInclude Include="QuadTree.h" />

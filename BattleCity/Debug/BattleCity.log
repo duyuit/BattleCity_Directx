@@ -1,12 +1,14 @@
-﻿  TestScene.cpp
-d:\git\battlecity_directx\battlecity\testscene.cpp(146): warning C4018: '<': signed/unsigned mismatch
-d:\git\battlecity_directx\battlecity\testscene.cpp(174): warning C4018: '<': signed/unsigned mismatch
-d:\git\battlecity_directx\battlecity\testscene.cpp(355): warning C4018: '<': signed/unsigned mismatch
+﻿  NPC.cpp
+d:\git\battlecity_directx\battlecity\npc.cpp(64): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
+d:\git\battlecity_directx\battlecity\npc.cpp(66): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
   Generating Code...
   Compiling...
-  WaitRoomScene.cpp
-d:\git\battlecity_directx\battlecity\waitroomscene.cpp(57): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  TestScene.cpp
+d:\git\battlecity_directx\battlecity\testscene.cpp(155): warning C4018: '<': signed/unsigned mismatch
+d:\git\battlecity_directx\battlecity\testscene.cpp(187): warning C4018: '<': signed/unsigned mismatch
+d:\git\battlecity_directx\battlecity\testscene.cpp(364): warning C4018: '<': signed/unsigned mismatch
   Generating Code...
   Skipping... (no relevant changes detected)
+  WaitRoomScene.cpp
   Game.cpp
   BattleCity.vcxproj -> D:\Git\BattleCity_Directx\Debug\BattleCity.exe

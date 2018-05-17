@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "PlayerServer.h"
+#include "NPC.h"
 
 #include "TCPSocket.h"
 #include "GameMap.h"
@@ -19,6 +19,7 @@ public:
 	int last_time_add_item = 0;
 	GameMap *mMap;
 
+	std::vector<NPC*>  mListNPC;
 	std::vector<PlayerServer*>  mListPlayer;
 	std::vector<Entity* > mListObject;
 
