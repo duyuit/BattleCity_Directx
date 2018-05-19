@@ -49,6 +49,12 @@
     <Filter Include="FrameWork\GameObjects\Item">
       <UniqueIdentifier>{5d1c634e-151c-4ec8-84be-601cb5fb4df2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FrameWork\GameObjects\Point">
+      <UniqueIdentifier>{a1fb2021-d1c9-436c-928a-af1100ee0dba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\GameObjects\Explosion">
+      <UniqueIdentifier>{694dd15e-8119-4233-9d22-bf76323bca80}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -200,6 +206,12 @@
     </ClCompile>
     <ClCompile Include="NPC.cpp">
       <Filter>FrameWork\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Pointed.cpp">
+      <Filter>FrameWork\GameObjects\Point</Filter>
+    </ClCompile>
+    <ClCompile Include="Explosion.cpp">
+      <Filter>FrameWork\GameObjects\Explosion</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -370,6 +382,12 @@
     </ClInclude>
     <ClInclude Include="NPC.h">
       <Filter>FrameWork\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Pointed.h">
+      <Filter>FrameWork\GameObjects\Point</Filter>
+    </ClInclude>
+    <ClInclude Include="Explosion.h">
+      <Filter>FrameWork\GameObjects\Explosion</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

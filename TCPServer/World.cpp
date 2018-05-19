@@ -172,8 +172,6 @@ void World::CheckCollision(float dt)
 			{
 				bl->CollisionWith(brick);
 				bl->isChange = true;
-				//Check bullet cua Player nao
-				 mListPlayer.at(bl->ID_of_player-1)->mScore += 1;
 				
 
 				for(auto brick2:mMap->GetListBrick())
@@ -198,6 +196,13 @@ void World::CheckCollision(float dt)
 			
 				pl->CollisionWith(bl);
 				bl->CollisionWith(pl);
+
+				if (pl->mHeal == 0)
+				{//Check bullet cua Player nao
+					mListPlayer.at(bl->ID_of_player - 1)->mScore += 500;
+					mListPlayer.at(bl->ID_of_player - 1)->mScore_send = 500;
+				}
+
 				bl->isChange = true;
 			}
 		}
@@ -209,6 +214,14 @@ void World::CheckCollision(float dt)
 
 				npc->CollisionWith(bl);
 				bl->CollisionWith(npc);
+
+				if (npc->mHeal == 0)
+				{//Check bullet cua Player nao
+					mListPlayer.at(bl->ID_of_player - 1)->mScore += 300;
+					mListPlayer.at(bl->ID_of_player - 1)->mScore_send = 300;
+					mListPlayer.at(bl->ID_of_player - 1)->position_add = npc->GetPosition();
+				}
+
 				bl->isChange = true;
 			}
 		}

@@ -14,6 +14,8 @@
 #include "ProtectPlayer.h"
 #include "UpgradeItem.h"
 #include "NPC.h"
+#include "Explosion.h"
+#include "Pointed.h"
 
 class TestScene : public Scene
 {
@@ -28,7 +30,8 @@ public:
 	void SendData() override;
 	bool isReady = false;
 	GameMap *mMap;
-
+	vector<Pointed*> mListPoint;
+	vector<Explosion*> mListAnimate;
 	vector<Entity*> mListObjects;
 	vector<Bullet*> mListBullets;
 	vector<Player* > mListPlayer;
@@ -39,7 +42,7 @@ public:
 	void OnKeyUp(int keyCode);
 	void find_and_handle(int tag, InputMemoryBitStream &is);
 protected:
-	vector<Animation*> mListAnimate;
+
 	Camera *mCamera;
 	Player *mPlayer;
 	TCPSocketPtr socket;

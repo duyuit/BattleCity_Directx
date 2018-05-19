@@ -109,6 +109,8 @@ void Player::OnsetLevel(int m_level)
 
 void Player::Read(InputMemoryBitStream& is)
 {
+	last_position = GetPosition();
+
 	Entity::Read(is);
 	int action = 0;
 	is.Read(action, Define::bitofID);
@@ -126,7 +128,17 @@ void Player::Read(InputMemoryBitStream& is)
 	is.Read(mHeal, Define::bitofTypePacket);
 	
 	is.Read(last_move_time);
-	is.Read(mScore, Define::bitofID);
+	//is.Read(mScore, Define::bitofID);
+
+	mScore_send = 0;
+	is.Read(mScore_send, Define::bitofID);
+	mScore += mScore_send;
+	int x = 0; int y = 0;
+	is.Read(x, Define::bitofLocation);
+	is.Read(y, Define::bitofLocation);
+	position_score.x = x; position_score.y = y;
+	
+
 
 }
 void Player::Update(float dt)
@@ -264,6 +276,13 @@ void Player::CollideWith_World()
 	this->vy = 0;
 }
 
+
+bool Player::Check_to_create_anim()
+{
+	if (mHeal == 0 && last_mHeal != 0)
+		return true;
+	return false;
+}
 
 void Player::ActiveShield()
 {

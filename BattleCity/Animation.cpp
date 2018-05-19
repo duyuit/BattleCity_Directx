@@ -14,7 +14,7 @@ Animation::Animation(const char* filePath, vector<RECT> source, float timePerFra
 	mSourceRect = source;
 
 	mRect = source.at(0);
-	//SetSourceRect(mRect);
+	SetSourceRect(mRect);
 }
 
 

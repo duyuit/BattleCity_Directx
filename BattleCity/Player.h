@@ -44,7 +44,13 @@ public:
 	int last_move_time = 0;
 	int mLevel = 1;
 
-	
+	D3DXVECTOR2 last_position=D3DXVECTOR2(0,0);
+
+	D3DXVECTOR2 position_score = D3DXVECTOR2(0, 0);
+	int mScore_send = 0;
+
+
+	bool Check_to_create_anim();
 	bool is_protect = false;
 	void ActiveShield();
 	void SetSpawn();

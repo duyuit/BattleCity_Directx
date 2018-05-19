@@ -11,11 +11,12 @@ public:
 	//Action mAction = Idle;
 	int mLevel = 1;
 	int mHeal = 2;
+	int last_mHeal = 2;
 	float last_random = 0;
 	bool isDelete = false;
 
-
-
+	D3DXVECTOR2 last_position = D3DXVECTOR2(0, 0);
+	bool Check_to_create_anim();
 	void Read(InputMemoryBitStream& is) override;
 	void Update(float dt) override;
 	RECT GetBound() override;

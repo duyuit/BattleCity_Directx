@@ -1,14 +1,6 @@
-﻿  NPC.cpp
-d:\git\battlecity_directx\battlecity\npc.cpp(64): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
-d:\git\battlecity_directx\battlecity\npc.cpp(66): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
-  Generating Code...
-  Compiling...
-  TestScene.cpp
-d:\git\battlecity_directx\battlecity\testscene.cpp(155): warning C4018: '<': signed/unsigned mismatch
-d:\git\battlecity_directx\battlecity\testscene.cpp(187): warning C4018: '<': signed/unsigned mismatch
-d:\git\battlecity_directx\battlecity\testscene.cpp(364): warning C4018: '<': signed/unsigned mismatch
-  Generating Code...
-  Skipping... (no relevant changes detected)
-  WaitRoomScene.cpp
-  Game.cpp
+﻿  Player.cpp
+d:\git\battlecity_directx\battlecity\player.cpp(139): warning C4244: '=': conversion from 'int' to 'FLOAT', possible loss of data
+d:\git\battlecity_directx\battlecity\player.cpp(222): warning C4018: '>': signed/unsigned mismatch
+d:\git\battlecity_directx\battlecity\player.cpp(301): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
+d:\git\battlecity_directx\battlecity\player.cpp(303): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
   BattleCity.vcxproj -> D:\Git\BattleCity_Directx\Debug\BattleCity.exe

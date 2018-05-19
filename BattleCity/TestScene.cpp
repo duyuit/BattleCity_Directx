@@ -3,14 +3,23 @@
 #include "SocketUtil.h"
 #include "GameLog.h"
 
-vector<RECT> source_of_explotion()
+vector<RECT> source_of_explotion(bool isBig)
 {
 	vector<RECT> temp;
 	RECT rect;
+	if(isBig)
+	{
 
-	rect.left = 5; rect.top = 67; rect.right = rect.left + 26; rect.bottom = rect.top + 27; 	temp.push_back(rect);
-	rect.left = 32; rect.top = 64; rect.right = rect.left + 32; rect.bottom = rect.top + 32;	temp.push_back(rect);
-	rect.left =64; rect.top = 63; rect.right = rect.left + 33; rect.bottom = rect.top + 33;	    temp.push_back(rect);
+		rect.left = 97; rect.top = 66; rect.right = rect.left + 62; rect.bottom = rect.top + 61; 	temp.push_back(rect);
+		rect.left = 157; rect.top = 63; rect.right = rect.left + 67; rect.bottom = rect.top + 70;	temp.push_back(rect);
+	}
+	else
+	{
+		rect.left = 5; rect.top = 67; rect.right = rect.left + 26; rect.bottom = rect.top + 27; 	temp.push_back(rect);
+		rect.left = 32; rect.top = 64; rect.right = rect.left + 32; rect.bottom = rect.top + 32;	temp.push_back(rect);
+		rect.left = 64; rect.top = 63; rect.right = rect.left + 33; rect.bottom = rect.top + 33;	temp.push_back(rect);
+	}
+	
 	return temp;
 };
 
@@ -124,6 +133,9 @@ TestScene::TestScene(TCPSocketPtr socket, vector<Player*> list)
 		Pl4_RECT.bottom = Pl1_RECT.top + 500;
 
 	}
+
+
+
 }
 
 void TestScene::Update(float dt)
@@ -161,6 +173,8 @@ void TestScene::Update(float dt)
 			i--;
 		}
 	}
+	for (auto ele : mListPoint)
+		ele->Update();
 }
 
 void TestScene::Draw()
@@ -187,7 +201,7 @@ void TestScene::Draw()
 	for (int i=0;i<mListAnimate.size();i++)
 	{
 		mListAnimate[i]->Draw();
-		if (mListAnimate[i]->GetCurrentFrame() == mListAnimate[i]->mSourceRect.size() - 1)
+		if (mListAnimate[i]->isFinish)
 		{
 			delete mListAnimate[i];
 			mListAnimate.erase(mListAnimate.begin() + i);
@@ -195,6 +209,18 @@ void TestScene::Draw()
 		}
 
 	}
+	for (int i = 0; i<mListPoint.size(); i++)
+	{
+		mListPoint[i]->Draw();
+		if (mListPoint[i]->getIsDelete())
+		{
+			delete mListPoint[i];
+			mListPoint.erase(mListPoint.begin() + i);
+			i--;
+		}
+
+	}
+
 	if (RTT_Font)
 	{
 		//int delta = GameGlobal::RTT;
@@ -332,8 +358,16 @@ void TestScene::find_and_handle(int tag, InputMemoryBitStream &is)
 			if(ele->ID== id)
 			{
 				ele->Read(is);
-				if(id==mPlayer->ID)
-				GameGlobal::RTT = GetTickCount() - ele->last_move_time;
+				if(ele->Check_to_create_anim())
+				{
+					Explosion* explosion = new Explosion(ele->last_position, true);
+					mListAnimate.push_back(explosion);
+				}
+				if(ele->mScore_send!=0 && ele->ID==mPlayer->ID)
+				{
+					Pointed* pointed = new Pointed(ele->mScore_send, ele->position_score);
+ 					mListPoint.push_back(pointed);
+				}
 				return;
 
 			}
@@ -350,9 +384,8 @@ void TestScene::find_and_handle(int tag, InputMemoryBitStream &is)
 				ele->Read(is);
 				if(ele->isActive == false)
 				{
-					Animation *explore = new Animation("Resource files/Somethings.png", source_of_explotion(), 0.05f, D3DXCOLOR(255, 0, 255, 255));
-					explore->SetPosition(ele->GetPosition());
-					mListAnimate.push_back(explore);
+					Explosion* explosion = new Explosion(ele->GetPosition(), false);
+					mListAnimate.push_back(explosion);
 				}
 				return;
 
@@ -366,10 +399,8 @@ void TestScene::find_and_handle(int tag, InputMemoryBitStream &is)
 			Brick* br = mMap->GetListBrick().at(i);
 			if (br->ID == id)
 			{
-				
 
 				is.Read(br->isDelete);
-
 				break;
 			}
 		}
@@ -390,12 +421,16 @@ void TestScene::find_and_handle(int tag, InputMemoryBitStream &is)
 		break;
 	case Entity::npc:
 		{
-			for(auto npc:mListNPC)
+			for(auto ele:mListNPC)
 			{
-				if (npc->ID == id)
+				if (ele->ID == id)
 				{
-					npc->Read(is);
-					break;
+					ele->Read(is);
+					if (ele->Check_to_create_anim())
+					{
+						Explosion* explosion = new Explosion(ele->last_position,true);
+ 						mListAnimate.push_back(explosion);
+					}
 				}
 			}
 		}

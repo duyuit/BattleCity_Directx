@@ -82,10 +82,16 @@ void PlayerServer::CollisionWith(Entity* en)
 {
 	if (en->Tag == EntityTypes::UpgradeItem)
 	{
+		mScore += 200;
+		mScore_send = 200;
+		position_add.x = GetPosition().x; 	position_add.y = GetPosition().y;
 		if (mLevel < 3) mLevel++;
 	}
 	else if (en->Tag == EntityTypes::ProtectPlayerItem)
 	{
+		mScore += 100;
+		mScore_send = 100;
+		position_add.x = GetPosition().x; 	position_add.y = GetPosition().y;
 		ActiveShield();
 	}
 	else if (en->Tag == EntityTypes::bullet)
@@ -108,7 +114,14 @@ void PlayerServer::Write(OutputMemoryBitStream& os)
 	os.Write(is_protect);
 	os.Write(mHeal, Define::bitofTypePacket);
 	os.Write(last_move_time);
-	os.Write(mScore, Define::bitofID);
+	//os.Write(mScore, Define::bitofID);
+
+	
+	os.Write(mScore_send, Define::bitofID);
+	os.Write((int)position_add.x, Define::bitofLocation);
+	os.Write((int)position_add.y, Define::bitofLocation);
+	mScore_send = 0;
+
 }
 
 

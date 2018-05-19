@@ -132,6 +132,7 @@
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Explosion.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCollision.cpp" />
     <ClCompile Include="GameDebugDraw.cpp" />
@@ -165,6 +166,7 @@
     <ClCompile Include="MetalBrick.cpp" />
     <ClCompile Include="NPC.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Pointed.cpp" />
     <ClCompile Include="ProtectPlayer.cpp" />
     <ClCompile Include="QuadTree.cpp" />
     <ClCompile Include="Scene.cpp" />
@@ -184,6 +186,7 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="Explosion.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCollision.h" />
     <ClInclude Include="GameDebugDraw.h" />
@@ -220,6 +223,7 @@
     <ClInclude Include="MetalBrick.h" />
     <ClInclude Include="NPC.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Pointed.h" />
     <ClInclude Include="ProtectPlayer.h" />
     <ClInclude Include="QuadTree.h" />
     <ClInclude Include="Scene.h" />

@@ -36,13 +36,23 @@ void NPC::CollideWith_World()
 	vy = 0;
 }
 
+bool NPC::Check_to_create_anim()
+{
+	if (mHeal == 0 && last_mHeal != 0)
+		return true;
+	return false;
+}
+
 void NPC::Read(InputMemoryBitStream& is)
 {
+	last_position = GetPosition();
+
 	Entity::Read(is);
 	int a = 0;
 	is.Read(a, Define::bitofID);
 	dir = (Direction)a;
 	OnsetDir();
+	last_mHeal = mHeal;
 	is.Read(mHeal, Define::bitofTypePacket);
 	if (mHeal == 0) isDelete = true;
 	else isDelete = false;
