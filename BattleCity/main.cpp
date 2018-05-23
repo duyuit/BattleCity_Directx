@@ -127,6 +127,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	switch (message)
 	{
 	case WM_DESTROY:
+		GameGlobal::SendExitGame();
 		GameGlobal::isGameRunning = false;
 		PostQuitMessage(0);
 		break;

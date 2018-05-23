@@ -23,6 +23,8 @@ namespace Define
 	const int WorldStatePacket = 5;
 	const int InputPacket = 6;
 	const int RequestName = 7;
+	const int ChooseRoom = 8;
+	const int ExitGame = 9;
 
 }
 

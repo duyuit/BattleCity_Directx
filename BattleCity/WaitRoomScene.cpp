@@ -5,42 +5,15 @@
 
 void WaitRoomScene::LoadContent()
 {
-	GameGlobal();
-
-	socket = SocketUtil::CreateTCPSocket();
-	string ip = "127.0.0.1";
+	socket = GameGlobal::socket;
 	
 	if (__argv[1] != NULL && __argv[2] != NULL)
 	{
-		ip = string(__argv[1]);
 		m_name = string(__argv[2]);
-	}
-	SocketAddress address(inet_addr(ip.c_str()), 8888); //"127.0.0.1"
-	// B4 - Ket noi
-	if (socket->Connect(address) == SOCKET_ERROR)
-	{
-		OutputDebugStringA("failed");
-	}
-	else     OutputDebugStringA("successfull");
 
-
-	//Receive ID from Server
-	char* buff = static_cast<char*>(std::malloc(1024));
-	size_t receivedByteCount = socket->Receive(buff, 1024);
-	if (receivedByteCount>0)
-	{
-		InputMemoryBitStream is(buff,
-			static_cast<uint32_t> (receivedByteCount));
-		int typeofPacket = 0;
-		is.Read(typeofPacket,Define::bitofTypePacket);
-		if (typeofPacket ==Define::WelcomePacket)
-		{
-			is.Read(ID,Define::bitofID);
-			socket->ChangetoDontWait(1);
-			socket->ID = ID;
-			GameGlobal::socket = socket;
-		}
 	}
+	
+
 
 	OutputMemoryBitStream os;
 	os.Write(Define::RequestName, Define::bitofTypePacket);
@@ -120,6 +93,12 @@ void WaitRoomScene::ReceivePakcet()
 			is.Read(playerCount, Define::bitofID);
 			UpdateBox(playerCount);
 
+		}
+		else if(typeofPacket==Define::WelcomePacket)
+		{
+			int id = 0;
+			is.Read(id, Define::bitofID);
+			socket->ID = id;
 		}
 
 

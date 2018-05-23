@@ -141,8 +141,8 @@ TestScene::TestScene(TCPSocketPtr socket, vector<Player*> list)
 void TestScene::Update(float dt)
 {
 
-
 	mPlayer->HandleKeyboard(keys);
+	
 	CheckCollision(dt);
 	mMap->Update(dt);
 
@@ -223,8 +223,7 @@ void TestScene::Draw()
 
 	if (RTT_Font)
 	{
-		//int delta = GameGlobal::RTT;
-		//if (delta != 16)
+		
 		{
 			RTT_String = "x: "+std::to_string(mPlayer->GetPosition().x) + " y: "+std::to_string(mPlayer->GetPosition().y);
 			RTT_Font->DrawTextA(mPlayer->mCurrentSprite->GetSpriteHandle(), RTT_String.c_str(), -1, &RTT_RECT, DT_LEFT, D3DCOLOR_XRGB(240, 255, 255));
@@ -239,10 +238,10 @@ void TestScene::Draw()
 		GameOver_Font->DrawTextA(mPlayer->mCurrentSprite->GetSpriteHandle(),s.c_str(), -1, &GameOver_RECT, DT_LEFT, D3DCOLOR_XRGB(240, 255, 255));
 	}
 
-	Pl1_String =mListPlayer[0]->mName + ": " + std::to_string(mListPlayer.at(0)->mScore);
+	/*Pl1_String =mListPlayer[0]->mName + ": " + std::to_string(mListPlayer.at(0)->mScore);
 	Score_font->DrawTextA(mPlayer->mCurrentSprite->GetSpriteHandle(), Pl1_String.c_str(), -1, &Pl1_RECT, DT_LEFT, D3DCOLOR_XRGB(255, 242, 0));
 	Pl2_String = mListPlayer[1]->mName + ": " + std::to_string(mListPlayer.at(1)->mScore);
-	Score_font->DrawTextA(mPlayer->mCurrentSprite->GetSpriteHandle(), Pl2_String.c_str(), -1, &Pl2_RECT, DT_LEFT, D3DCOLOR_XRGB(195, 195, 195));
+	Score_font->DrawTextA(mPlayer->mCurrentSprite->GetSpriteHandle(), Pl2_String.c_str(), -1, &Pl2_RECT, DT_LEFT, D3DCOLOR_XRGB(195, 195, 195));*/
 	//Pl3_String = mListPlayer[2]->mName + ": " + std::to_string(mListPlayer.at(2)->mScore);
 	//Score_font->DrawTextA(mPlayer->mCurrentSprite->GetSpriteHandle(), Pl3_String.c_str(), -1, &Pl3_RECT, DT_LEFT, D3DCOLOR_XRGB(34, 177, 76));
 	//Pl4_String = mListPlayer[3]->mName + ": " + std::to_string(mListPlayer.at(3)->mScore);
@@ -324,15 +323,8 @@ void TestScene::CheckCollision(float dt)
 
 void TestScene::SendData()
 {
-	OutputMemoryBitStream os;
-	os.Write(Define::InputPacket, Define::bitofTypePacket);
-	os.Write(mPlayer->ID, Define::bitofID);
-	os.Write((int)mPlayer->mAction, Define::bitofID);
-	int time_of_packet = GetTickCount();
-	os.Write(time_of_packet);
-	GameGlobal::socket->Send(os.GetBufferPtr(), os.GetByteLength());
-
 }
+
 
 void TestScene::OnKeyDown(int keyCode)
 {

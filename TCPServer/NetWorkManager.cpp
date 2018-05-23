@@ -5,7 +5,7 @@
 
 void NetWorkManager::CreatePlayerAndSend()
 {
-	mWorld->mListPlayer.clear();
+	/*mWorld->mListPlayer.clear();
 	OutputMemoryBitStream os1;
 	os1.Write(Define::LetStart, Define::bitofTypePacket);
 	os1.Write(readBlockSockets.size() - 1,Define::bitofTypePacket);
@@ -24,17 +24,35 @@ void NetWorkManager::CreatePlayerAndSend()
 
 	}
 	for (auto ele : readBlockSockets)
-	ele->Send(os1.GetBufferPtr(), os1.GetByteLength());
+	ele->Send(os1.GetBufferPtr(), os1.GetByteLength());*/
 }
 
 void NetWorkManager::Handle_Packet()
 {
-	if (!queue_packet.empty())
+	while (!queue_packet.empty())
 	{
 		Packet p = queue_packet.at(queue_packet.size() - 1);
-		mWorld->HandleObject(p);
+		mListWorld_room[p.room_id-1]->HandleObject(p);
 		queue_packet.pop_back();
 	}
+}
+
+void NetWorkManager::Handle_Exit(TCPSocketPtr sock)
+{
+	int id = sock->ID;
+	int id_room = sock->ID_Room;
+	for(int i=0;i < readBlockSockets.size();i++)
+	{
+		if(readBlockSockets[i]==sock)
+		{
+			readBlockSockets.erase(readBlockSockets.begin() + i);
+			break;
+		}
+	}
+	if(id_room>0)
+		mListWorld_room[id_room - 1]->Handle_Exit(id);
+	printf("\nSOMEONE LOGOUT");
+
 }
 
 NetWorkManager::NetWorkManager()
@@ -56,8 +74,9 @@ NetWorkManager::NetWorkManager()
 
 	readBlockSockets.push_back(socket_sever);
 
-	mWorld = new World();
-	//Random position to use
+	World* world = new World(); mListWorld_room.push_back(world);
+	World* world1 = new World(); mListWorld_room.push_back(world1);
+	
 	
 	
 }
@@ -69,23 +88,19 @@ NetWorkManager::~NetWorkManager()
 int count_to_send = 0;
 void NetWorkManager::Update(float dt)
 {
-	
-	mWorld->CheckCollision(dt);
-	mWorld->Update(dt);
 	count_to_send++;
-	if(count_to_send ==3)
+	for(auto ele:mListWorld_room)
 	{
-		
-		mWorld->SendWorld(readBlockSockets);
-		count_to_send = 0;
-	}
+		ele->CheckCollision(dt);
+		ele->Update(dt);
 	
-	if(GetTickCount()-time_to_start>500 && time_to_start!=-1)
-	{
-		isStart = true;
-		CreatePlayerAndSend();
-		time_to_start = -1;
+		if (count_to_send == 3)
+			ele->SendWorld();
 	}
+	if (count_to_send == 3)
+		count_to_send=0;
+	
+	
 	
 }
 
@@ -94,27 +109,12 @@ void NetWorkManager::ProcessNewClient()
 	SocketAddress newClientAddress;
 	auto newSocket = socket_sever->Accept(newClientAddress);
 	newSocket->ChangetoDontWait(1);
-	newSocket->ID = ID;
 	readBlockSockets.push_back(newSocket);// Add socket to list 
 
-	//Send ID to client
-	OutputMemoryBitStream os;
-	os.Write(Define::WelcomePacket, Define::bitofTypePacket);
-	os.Write(ID++, Define::bitofID);
-	newSocket->Send(os.GetBufferPtr(), os.GetByteLength());
 }
 
 void NetWorkManager::UpdatePlayerCount()
 {
-
-	for (auto ele : readBlockSockets)
-	{
-		OutputMemoryBitStream os1;
-		os1.Write(Define::UpdateCountPlayer, Define::bitofTypePacket);
-		os1.Write(ID - 1, Define::bitofID);
-		ele->Send(os1.GetBufferPtr(), os1.GetByteLength());
-		
-	}
 
 }
 
@@ -132,13 +132,6 @@ void NetWorkManager::ReceivePacket()
 
 				ProcessNewClient();
 				printf("\nCo ket noi moi");
-			
-				if (ID ==3) //if enought player, Provide them first position by ID
-				{
-					time_to_start = GetTickCount(); //Wait last player
-					break;
-				}
-				UpdatePlayerCount();
 
 			}
 			else
@@ -150,37 +143,69 @@ void NetWorkManager::ReceivePacket()
 				{
 					InputMemoryBitStream is(buff,
 						static_cast<uint32_t> (receivedByteCount));
-					if(!isStart)
+					int type_of_packet = 0;
+					is.Read(type_of_packet, Define::bitofTypePacket);
+					if (type_of_packet == Define::ExitGame)
 					{
-						int type_of_packet = 0;
-						is.Read(type_of_packet, Define::bitofTypePacket);
-						if (type_of_packet == Define::UpdateCountPlayer)
+						Handle_Exit(socket);
+						continue;
+					}
+					if(socket->ID_Room==0)
+					{
+						
+						if(type_of_packet== Define::UpdateCountPlayer)
 						{
-							UpdatePlayerCount();
-						}else if(type_of_packet == Define::RequestName)
-						{
-							string name = "";
-							is.Read(name);
-							socket->name = name;
-							GAMELOG(socket->name.c_str());
+							OutputMemoryBitStream os;
+							os.Write(Define::UpdateCountPlayer, Define::bitofTypePacket);
+							os.Write(mListWorld_room[0]->listClient.size(), Define::bitofTypePacket);
+							os.Write(mListWorld_room[1]->listClient.size(), Define::bitofTypePacket);
+							socket->Send(os.GetBufferPtr(), os.GetByteLength());
 						}
-
-					} else
-					{
-						InputMemoryBitStream is2 = is;
-						int type_of_packet = 0;
-						is2.Read(type_of_packet, Define::bitofTypePacket);
-						if (type_of_packet == Define::UpdateCountPlayer)
+						else if(type_of_packet == Define::ChooseRoom)
 						{
-							CreatePlayerAndSend();
-							continue;
+							int room_selected = 0;
+							is.Read(room_selected, Define::bitofTypePacket);
+							socket->ID_Room = room_selected;
+							mListWorld_room[room_selected-1]->AddMember(socket);
+
 						}
 					}
-					Packet p(is);
-					queue_packet.push_back(p);
+					else
+					{
+						
+						if (mListWorld_room[socket->ID_Room-1]->isStart)
+						{
+					
+							
+							if (type_of_packet == Define::UpdateCountPlayer)
+							{
+								mListWorld_room[socket->ID_Room - 1]->CreatePlayerAndSend();
+								continue;
+							}
 
+							Packet p(is, socket->ID_Room, type_of_packet);
+							queue_packet.push_back(p);
+							
+						}
+						else
+						{
+							
+							if (type_of_packet == Define::UpdateCountPlayer)
+							{
+								mListWorld_room[socket->ID_Room - 1]->UpdatePlayerCount();
+							}
+							else if (type_of_packet == Define::RequestName)
+							{
+								string name = "";
+								is.Read(name);
+								socket->name = name;
+							}
+						}
+						
+					}
+				
 				}
-
+				
 			}
 		}
 		readableSockets.clear();

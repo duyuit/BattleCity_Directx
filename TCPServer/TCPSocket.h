@@ -19,6 +19,7 @@ public:
 	int ReceiveBit(void* inBuffer, int inLen);
 	void Close();
 	int ID = 0;
+	int ID_Room = 0;
 private:
 	friend class SocketUtil;
 	TCPSocket(SOCKET inSocket) : mSocket(inSocket) {}

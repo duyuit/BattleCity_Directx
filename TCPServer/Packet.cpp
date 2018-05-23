@@ -2,9 +2,10 @@
 #include "MemoryBitStream.h"
 
 
-Packet::Packet(InputMemoryBitStream &is)
+Packet::Packet(InputMemoryBitStream &is,int room,int type)
 {
-	is.Read(type_of_packet, Define::bitofTypePacket);
+	room_id = room;
+	type_of_packet = type;
 	switch (type_of_packet)
 	{
 	case Define::TankPacket:

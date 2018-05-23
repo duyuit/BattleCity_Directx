@@ -7,15 +7,16 @@ public:
 	vector<TCPSocketPtr> readBlockSockets;
 	vector<TCPSocketPtr> readableSockets;
 
-	int time_to_start = -1;
+	
 
 	TCPSocketPtr socket_sever;
 	bool isStart = false;
 	void CreatePlayerAndSend();
 	vector<Packet> queue_packet;
 	void Handle_Packet();
-	int ID = 1;
-	World* mWorld;
+	void Handle_Exit(TCPSocketPtr sock);
+	vector<World*> mListWorld_room;
+
 	NetWorkManager();
 	~NetWorkManager();
 	void Update(float dt);
