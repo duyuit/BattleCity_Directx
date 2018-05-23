@@ -1,6 +1,4 @@
-﻿  World.cpp
-d:\git\battlecity_directx\tcpserver\world.cpp(58): warning C4244: 'argument': conversion from 'int' to 'FLOAT', possible loss of data
-d:\git\battlecity_directx\tcpserver\world.cpp(113): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-d:\git\battlecity_directx\tcpserver\world.cpp(293): warning C4018: '<': signed/unsigned mismatch
-d:\git\battlecity_directx\tcpserver\world.cpp(417): warning C4018: '<': signed/unsigned mismatch
+﻿  NetWorkManager.cpp
+d:\git\battlecity_directx\tcpserver\networkmanager.cpp(25): warning C4018: '<': signed/unsigned mismatch
+d:\git\battlecity_directx\tcpserver\networkmanager.cpp(99): warning C4018: '<': signed/unsigned mismatch
   TCPServer.vcxproj -> D:\Git\BattleCity_Directx\TCPServer\Debug\TCPServer.exe

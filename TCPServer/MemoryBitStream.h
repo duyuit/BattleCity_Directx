@@ -25,7 +25,7 @@ namespace Define
 	const int RequestName = 7;
 	const int ChooseRoom = 8;
 	const int ExitGame = 9;
-
+	const int CreateRoom = 10;
 }
 
 //

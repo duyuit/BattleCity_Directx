@@ -114,7 +114,6 @@ void PlayerServer::Write(OutputMemoryBitStream& os)
 	os.Write(is_protect);
 	os.Write(mHeal, Define::bitofTypePacket);
 	os.Write(last_move_time);
-	//os.Write(mScore, Define::bitofID);
 
 	
 	os.Write(mScore_send, Define::bitofID);
@@ -150,6 +149,7 @@ void PlayerServer::onHandleKeyboard(int action)
 		{
 			last_time_wait = GetTickCount();
 			isWaiting = true;
+		
 			SetPosition(0, 0);
 		}
 	}
@@ -167,6 +167,7 @@ void PlayerServer::onHandleKeyboard(int action)
 		 SetPosition(x,y);
 		 ActiveShield();
 		 mHeal =2;
+		 mLevel = 1;
 		 last_time_wait = 0;
 		 isWaiting = false;
 	 }

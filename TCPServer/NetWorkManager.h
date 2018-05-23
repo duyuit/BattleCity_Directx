@@ -16,7 +16,7 @@ public:
 	void Handle_Packet();
 	void Handle_Exit(TCPSocketPtr sock);
 	vector<World*> mListWorld_room;
-
+	void CreateRoomAndAdd(TCPSocketPtr soc);
 	NetWorkManager();
 	~NetWorkManager();
 	void Update(float dt);

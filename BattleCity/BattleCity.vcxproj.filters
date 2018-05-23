@@ -219,6 +219,9 @@
     <ClCompile Include="RoomScene.cpp">
       <Filter>FrameWork\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="Label.cpp">
+      <Filter>FrameWork\GameComponents</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameTime.h">
@@ -400,6 +403,9 @@
     </ClInclude>
     <ClInclude Include="RoomScene.h">
       <Filter>FrameWork\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Label.h">
+      <Filter>FrameWork\GameComponents</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

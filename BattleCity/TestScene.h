@@ -16,6 +16,7 @@
 #include "NPC.h"
 #include "Explosion.h"
 #include "Pointed.h"
+#include "Label.h"
 
 class TestScene : public Scene
 {
@@ -48,28 +49,13 @@ protected:
 	TCPSocketPtr socket;
 	std::map<int, bool> keys;
 
-	ID3DXFont				*RTT_Font = NULL; //Font dung de ve chu
-	RECT RTT_RECT; //RECT chua myFont
-	std::string RTT_String; //Support Font
-
-	ID3DXFont				*GameOver_Font = NULL;
-	RECT GameOver_RECT; //RECT chua myFont
-	
-
-
-	ID3DXFont				*Score_font =NULL;
-	RECT Pl1_RECT; //RECT chua myFont
-	std::string Pl1_String; //Support Font
-
-	
-	RECT Pl2_RECT; //RECT chua myFont
-	std::string Pl2_String; //Support Font
+	Label label_RTT;
+	Label label_GameOver;
+	Label label_Score1;
+	Label label_Score2;
+	Label label_Score3;
+	Label label_Score4;
 
 
-	RECT Pl3_RECT; //RECT chua myFont
-	std::string Pl3_String; //Support Font
-	
-	RECT Pl4_RECT; //RECT chua myFont
-	std::string Pl4_String; //Support Font
 };
 

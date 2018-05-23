@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "GameLog.h"
 
 
 Player::Player()
@@ -100,6 +101,37 @@ void Player::OnsetLevel(int m_level)
 			mLeftSprite = new Sprite("Resource files/tank.png", RECT{ 384,387,384 + 37,387 + 31 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
 			mDownSprite = new Sprite("Resource files/tank.png", RECT{ 464,387,464 + 31,387 + 37 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
 			mRightSprite = new Sprite("Resource files/tank.png", RECT{ 540,387,540 + 36,387 + 31 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			break;
+
+		}
+	}
+	else
+	{
+		switch (ID)
+		{
+		case 1:
+			mUpSprite = new Sprite("Resource files/tank.png", RECT{ 2,4,2 + 32,4 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
+			mLeftSprite = new Sprite("Resource files/tank.png", RECT{ 82,2,82 + 32,2 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
+			mDownSprite = new Sprite("Resource files/tank.png", RECT{ 156,2,156 + 32,2 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
+			mRightSprite = new Sprite("Resource files/tank.png", RECT{ 233,2,233 + 32,2 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
+			break;
+		case 2:
+			mUpSprite = new Sprite("Resource files/tank.png", RECT{ 310,4,310 + 32,4 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			mLeftSprite = new Sprite("Resource files/tank.png", RECT{ 389,2,389 + 32,2 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			mDownSprite = new Sprite("Resource files/tank.png", RECT{ 464,2,464 + 32,2 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			mRightSprite = new Sprite("Resource files/tank.png", RECT{ 540,2,540 + 32,2 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			break;
+		case 3:
+			mUpSprite = new Sprite("Resource files/tank.png", RECT{ 2,312,2 + 32,312 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			mLeftSprite = new Sprite("Resource files/tank.png", RECT{ 82,310,82 + 32,310 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			mDownSprite = new Sprite("Resource files/tank.png", RECT{ 156,310,156 + 32,310 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			mRightSprite = new Sprite("Resource files/tank.png", RECT{ 233,310,233 + 32,310 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			break;
+		case 4:
+			mUpSprite = new Sprite("Resource files/tank.png", RECT{ 310,312,310 + 32,312 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			mLeftSprite = new Sprite("Resource files/tank.png", RECT{ 389,310,389 + 32,310 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			mDownSprite = new Sprite("Resource files/tank.png", RECT{ 464,310,464 + 32,310 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
+			mRightSprite = new Sprite("Resource files/tank.png", RECT{ 540,310,540 + 32,310 + 32 }, 0, 0, D3DXCOLOR(255, 0, 255, 255), GameGlobal::mTankTexture);
 			break;
 
 		}

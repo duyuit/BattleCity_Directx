@@ -5,26 +5,7 @@
 
 void NetWorkManager::CreatePlayerAndSend()
 {
-	/*mWorld->mListPlayer.clear();
-	OutputMemoryBitStream os1;
-	os1.Write(Define::LetStart, Define::bitofTypePacket);
-	os1.Write(readBlockSockets.size() - 1,Define::bitofTypePacket);
-	for (auto ele : readBlockSockets)
-	{
-		if (ele->ID == 0) continue;
-		PlayerServer* pl = new PlayerServer(ele->ID);
-		pl->SetPosition(mWorld->GetRandomPosition());
-		pl->mAction = Action::GoRight;
-		pl->mName = ele->name;
-		pl->ActiveShield();
-		mWorld->mListPlayer.push_back(pl);
-		pl->Write(os1);
-		os1.Write(pl->mName);
-		
-
-	}
-	for (auto ele : readBlockSockets)
-	ele->Send(os1.GetBufferPtr(), os1.GetByteLength());*/
+	
 }
 
 void NetWorkManager::Handle_Packet()
@@ -50,9 +31,35 @@ void NetWorkManager::Handle_Exit(TCPSocketPtr sock)
 		}
 	}
 	if(id_room>0)
-		mListWorld_room[id_room - 1]->Handle_Exit(id);
+	for(auto ele: mListWorld_room)
+		{
+			if (ele->ID == id_room) 
+				ele->Handle_Exit(id);
+		}
+		
 	printf("\nSOMEONE LOGOUT");
 
+}
+
+void NetWorkManager::CreateRoomAndAdd(TCPSocketPtr soc)
+{
+	World* world = new World();
+	mListWorld_room.push_back(world);
+	int i = 2;
+	while(1)
+	{
+		i++;
+		bool flag = false;
+		for (auto ele : mListWorld_room)
+			if (ele->ID == i) flag = true;
+		if(!flag) break;
+		
+	}
+	world->ID = i;
+	world->name ="Room "+ std::to_string(i);
+	soc->ID_Room =i;
+	world->AddMember(soc);
+	
 }
 
 NetWorkManager::NetWorkManager()
@@ -74,8 +81,8 @@ NetWorkManager::NetWorkManager()
 
 	readBlockSockets.push_back(socket_sever);
 
-	World* world = new World(); mListWorld_room.push_back(world);
-	World* world1 = new World(); mListWorld_room.push_back(world1);
+	World* world = new World(); world->ID = 1; world->name = "Room 1"; mListWorld_room.push_back(world);
+	World* world1 = new World(); world1->ID = 2;  world1->name = "Room 2"; mListWorld_room.push_back(world1);
 	
 	
 	
@@ -89,13 +96,20 @@ int count_to_send = 0;
 void NetWorkManager::Update(float dt)
 {
 	count_to_send++;
-	for(auto ele:mListWorld_room)
+	for(int i=0;i<mListWorld_room.size();i++)
 	{
-		ele->CheckCollision(dt);
-		ele->Update(dt);
+		if (mListWorld_room[i]->isDelete)
+		{
+			mListWorld_room.erase(mListWorld_room.begin() + i);
+			i--;
+		}else
+		{
+			mListWorld_room[i]->CheckCollision(dt);
+			mListWorld_room[i]->Update(dt);
+			if (count_to_send == 3)
+				mListWorld_room[i]->SendWorld();
+		}
 	
-		if (count_to_send == 3)
-			ele->SendWorld();
 	}
 	if (count_to_send == 3)
 		count_to_send=0;
@@ -157,8 +171,13 @@ void NetWorkManager::ReceivePacket()
 						{
 							OutputMemoryBitStream os;
 							os.Write(Define::UpdateCountPlayer, Define::bitofTypePacket);
-							os.Write(mListWorld_room[0]->listClient.size(), Define::bitofTypePacket);
-							os.Write(mListWorld_room[1]->listClient.size(), Define::bitofTypePacket);
+							os.Write(mListWorld_room.size(), Define::bitofTypePacket);
+							for(auto ele: mListWorld_room)
+							{
+								os.Write(ele->listClient.size(), Define::bitofTypePacket);
+								os.Write(ele->name);
+								os.Write(ele->isStart);
+							}
 							socket->Send(os.GetBufferPtr(), os.GetByteLength());
 						}
 						else if(type_of_packet == Define::ChooseRoom)
@@ -167,40 +186,50 @@ void NetWorkManager::ReceivePacket()
 							is.Read(room_selected, Define::bitofTypePacket);
 							socket->ID_Room = room_selected;
 							mListWorld_room[room_selected-1]->AddMember(socket);
-
+						}
+						else if(type_of_packet==Define::CreateRoom)
+						{
+							CreateRoomAndAdd(socket);
 						}
 					}
 					else
 					{
-						
-						if (mListWorld_room[socket->ID_Room-1]->isStart)
+						for(auto room: mListWorld_room)
 						{
-					
-							
-							if (type_of_packet == Define::UpdateCountPlayer)
+							if(room->ID == socket->ID_Room)
 							{
-								mListWorld_room[socket->ID_Room - 1]->CreatePlayerAndSend();
-								continue;
-							}
+								if (room->isStart)
+								{
 
-							Packet p(is, socket->ID_Room, type_of_packet);
-							queue_packet.push_back(p);
+
+									if (type_of_packet == Define::UpdateCountPlayer)
+									{
+										room->CreatePlayerAndSend();
+																}
+
+									Packet p(is, socket->ID_Room, type_of_packet);
+									queue_packet.push_back(p);
+
+								}
+								else
+								{
+
+									if (type_of_packet == Define::UpdateCountPlayer)
+									{
+										room->UpdatePlayerCount();
+									}
+									else if (type_of_packet == Define::RequestName)
+									{
+										string name = "";
+										is.Read(name);
+										socket->name = name;
+									}
+								}
+								//break;
+							}
 							
 						}
-						else
-						{
-							
-							if (type_of_packet == Define::UpdateCountPlayer)
-							{
-								mListWorld_room[socket->ID_Room - 1]->UpdatePlayerCount();
-							}
-							else if (type_of_packet == Define::RequestName)
-							{
-								string name = "";
-								is.Read(name);
-								socket->name = name;
-							}
-						}
+						
 						
 					}
 				

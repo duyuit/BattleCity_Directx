@@ -17,6 +17,7 @@ public:
 	void CreatePlayerAndSend();
 	std::vector<Bullet*>  mListBullets;
 	std::vector<Item*>  mListItems;
+	std::string name="";
 	int last_time_add_item = 0;
 	GameMap *mMap;
 
@@ -29,7 +30,9 @@ public:
 	D3DXVECTOR2 GetRandomPosition();
 	int RandomNumber(int x, int y);
 	int time_to_start = -1;
+	int ID = 0;
 
+	bool isDelete = false;
 	bool isStart = false;
 	int mCurrent_ID = 0;
 	int count_brick_send = 0;

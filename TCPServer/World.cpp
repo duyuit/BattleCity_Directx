@@ -407,6 +407,7 @@ void World::UpdatePlayerCount()
 		OutputMemoryBitStream os1;
 		os1.Write(Define::UpdateCountPlayer, Define::bitofTypePacket);
 		os1.Write(listClient.size(), Define::bitofID);
+		os1.Write(name);
 		ele->Send(os1.GetBufferPtr(), os1.GetByteLength());
 	}
 
@@ -424,6 +425,14 @@ void World::Handle_Exit(int id)
 	}
 	if (listClient.size() == 0)
 	{
+		if(name._Equal("Room 1") || name._Equal("Room 2"))
+		{
+			isDelete = false;
+		}
+		else
+		{
+			isDelete = true;
+		}
 		isStart = false;
 		mCurrent_ID = 0;
 	}

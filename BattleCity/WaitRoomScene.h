@@ -26,6 +26,8 @@ public:
 	RECT myRect; //RECT chua myFont
 	std::string my_string; //Support Font
 
+	string room_name;
+	Label label_name;
 	void Update(float dt);
 	void LoadContent();
 	void ReceivePakcet() override;

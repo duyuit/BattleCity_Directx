@@ -44,6 +44,7 @@ void WaitRoomScene::LoadContent()
 	myRect.bottom = myRect.top + 200;
 	myRect.right = myRect.left + 400;
 
+	label_name = Label("",30,20,D3DXVECTOR2(GameGlobal::GetWidth() / 2 - 150, GameGlobal::GetHeight() / 2 - 150));
 
 }
 
@@ -91,6 +92,7 @@ void WaitRoomScene::ReceivePakcet()
 		else if (typeofPacket == Define::UpdateCountPlayer)
 		{
 			is.Read(playerCount, Define::bitofID);
+			is.Read(room_name);
 			UpdateBox(playerCount);
 
 		}
@@ -151,7 +153,7 @@ void WaitRoomScene::Draw()
 	if(timetoStart == 0)
 		m_string = "WAITING FOR PLAYER" + my_string;
 	else
-	{
+	{ 
 		m_string = "Game start in ..." + std::to_string( 5 - ((GetTickCount() - timetoStart) / 1000));
 	}
 
@@ -159,6 +161,8 @@ void WaitRoomScene::Draw()
 	{
 		myFont->DrawTextA(box.at(0)->GetSpriteHandle(),m_string.c_str(), -1, &myRect, DT_LEFT, D3DCOLOR_XRGB(240, 255, 255));
 	}
+
+	label_name.Draw(room_name);
 
 	
 }
