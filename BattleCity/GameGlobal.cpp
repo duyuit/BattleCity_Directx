@@ -1,4 +1,6 @@
 #include "GameGlobal.h"
+#include "MemoryBitStream.h"
+
 
 HINSTANCE GameGlobal::mHInstance = NULL;
 HWND GameGlobal::mHwnd = NULL;
@@ -71,6 +73,13 @@ GameGlobal::GameGlobal()
 
 GameGlobal::~GameGlobal()
 {
+}
+
+void GameGlobal::SendExitGame()
+{
+	OutputMemoryBitStream os;
+	os.Write(Define::ExitGame, Define::bitofTypePacket);
+	socket->Send(os.GetBufferPtr(), os.GetByteLength());
 }
 
 void GameGlobal::SetCurrentDevice(LPDIRECT3DDEVICE9 device)

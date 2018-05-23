@@ -8,14 +8,13 @@
 #include <string>
 #include "SocketUtil.h"
 
-#include "stdlib.h"
+
 class WaitRoomScene:public Scene
 {
 public:
 
-	TCPSocketPtr socket;
 	D3DXVECTOR2 newPosition; //position of current Player to create new Game
-
+	TCPSocketPtr socket;
 	int ID = 0; //Current ID
 	int playerCount = 0; //Curren player
 	string m_name = "guest";
@@ -27,6 +26,8 @@ public:
 	RECT myRect; //RECT chua myFont
 	std::string my_string; //Support Font
 
+	string room_name;
+	Label label_name;
 	void Update(float dt);
 	void LoadContent();
 	void ReceivePakcet() override;

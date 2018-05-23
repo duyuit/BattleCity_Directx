@@ -5,13 +5,14 @@
 #include "WaitRoomScene.h"
 #include "TestTiepScene.h"
 #include <thread>
+#include "RoomScene.h"
 
 
 Game::Game(int fps)
 {
 	mFPS = fps;
 
-	SceneManager::GetInstance()->ReplaceScene(new WaitRoomScene());
+	SceneManager::GetInstance()->ReplaceScene(new RoomScene());
 
 	InitLoop();
 }

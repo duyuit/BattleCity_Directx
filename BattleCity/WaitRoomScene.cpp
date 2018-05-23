@@ -5,42 +5,15 @@
 
 void WaitRoomScene::LoadContent()
 {
-	GameGlobal();
-
-	socket = SocketUtil::CreateTCPSocket();
-	string ip = "127.0.0.1";
+	socket = GameGlobal::socket;
 	
 	if (__argv[1] != NULL && __argv[2] != NULL)
 	{
-		ip = string(__argv[1]);
 		m_name = string(__argv[2]);
-	}
-	SocketAddress address(inet_addr(ip.c_str()), 8888); //"127.0.0.1"
-	// B4 - Ket noi
-	if (socket->Connect(address) == SOCKET_ERROR)
-	{
-		OutputDebugStringA("failed");
-	}
-	else     OutputDebugStringA("successfull");
 
-
-	//Receive ID from Server
-	char* buff = static_cast<char*>(std::malloc(1024));
-	size_t receivedByteCount = socket->Receive(buff, 1024);
-	if (receivedByteCount>0)
-	{
-		InputMemoryBitStream is(buff,
-			static_cast<uint32_t> (receivedByteCount));
-		int typeofPacket = 0;
-		is.Read(typeofPacket,Define::bitofTypePacket);
-		if (typeofPacket ==Define::WelcomePacket)
-		{
-			is.Read(ID,Define::bitofID);
-			socket->ChangetoDontWait(1);
-			socket->ID = ID;
-			GameGlobal::socket = socket;
-		}
 	}
+	
+
 
 	OutputMemoryBitStream os;
 	os.Write(Define::RequestName, Define::bitofTypePacket);
@@ -71,6 +44,7 @@ void WaitRoomScene::LoadContent()
 	myRect.bottom = myRect.top + 200;
 	myRect.right = myRect.left + 400;
 
+	label_name = Label("",30,20,D3DXVECTOR2(GameGlobal::GetWidth() / 2 - 150, GameGlobal::GetHeight() / 2 - 150));
 
 }
 
@@ -118,8 +92,15 @@ void WaitRoomScene::ReceivePakcet()
 		else if (typeofPacket == Define::UpdateCountPlayer)
 		{
 			is.Read(playerCount, Define::bitofID);
+			is.Read(room_name);
 			UpdateBox(playerCount);
 
+		}
+		else if(typeofPacket==Define::WelcomePacket)
+		{
+			int id = 0;
+			is.Read(id, Define::bitofID);
+			socket->ID = id;
 		}
 
 
@@ -172,7 +153,7 @@ void WaitRoomScene::Draw()
 	if(timetoStart == 0)
 		m_string = "WAITING FOR PLAYER" + my_string;
 	else
-	{
+	{ 
 		m_string = "Game start in ..." + std::to_string( 5 - ((GetTickCount() - timetoStart) / 1000));
 	}
 
@@ -180,6 +161,8 @@ void WaitRoomScene::Draw()
 	{
 		myFont->DrawTextA(box.at(0)->GetSpriteHandle(),m_string.c_str(), -1, &myRect, DT_LEFT, D3DCOLOR_XRGB(240, 255, 255));
 	}
+
+	label_name.Draw(room_name);
 
 	
 }

@@ -1,14 +1,17 @@
-﻿  NPC.cpp
-d:\git\battlecity_directx\battlecity\npc.cpp(64): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
-d:\git\battlecity_directx\battlecity\npc.cpp(66): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
+﻿  RoomScene.cpp
+d:\git\battlecity_directx\battlecity\roomscene.cpp(11): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\git\battlecity_directx\battlecity\roomscene.cpp(12): warning C4244: 'argument': conversion from 'int' to 'FLOAT', possible loss of data
+d:\git\battlecity_directx\battlecity\roomscene.cpp(43): warning C4244: 'argument': conversion from 'int' to 'FLOAT', possible loss of data
+d:\git\battlecity_directx\battlecity\roomscene.cpp(60): warning C4018: '<': signed/unsigned mismatch
+d:\git\battlecity_directx\battlecity\roomscene.cpp(113): warning C4018: '<': signed/unsigned mismatch
+d:\git\battlecity_directx\battlecity\roomscene.cpp(128): warning C4018: '<': signed/unsigned mismatch
+d:\git\battlecity_directx\battlecity\roomscene.cpp(151): warning C4018: '<': signed/unsigned mismatch
+d:\git\battlecity_directx\battlecity\roomscene.cpp(156): warning C4018: '>': signed/unsigned mismatch
   Generating Code...
   Compiling...
-  TestScene.cpp
-d:\git\battlecity_directx\battlecity\testscene.cpp(155): warning C4018: '<': signed/unsigned mismatch
-d:\git\battlecity_directx\battlecity\testscene.cpp(187): warning C4018: '<': signed/unsigned mismatch
-d:\git\battlecity_directx\battlecity\testscene.cpp(364): warning C4018: '<': signed/unsigned mismatch
-  Generating Code...
-  Skipping... (no relevant changes detected)
-  WaitRoomScene.cpp
   Game.cpp
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+d:\git\battlecity_directx\battlecity\game.cpp(13): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\git\battlecity_directx\battlecity\game.cpp(87): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+  Generating Code...
   BattleCity.vcxproj -> D:\Git\BattleCity_Directx\Debug\BattleCity.exe

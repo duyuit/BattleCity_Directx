@@ -73,6 +73,30 @@ World::~World()
 {
 }
 
+void World::CreatePlayerAndSend()
+{
+	mListPlayer.clear();
+	OutputMemoryBitStream os1;
+	os1.Write(Define::LetStart, Define::bitofTypePacket);
+	os1.Write(listClient.size(),Define::bitofTypePacket);
+	for (auto ele : listClient)
+	{
+	
+		PlayerServer* pl = new PlayerServer(ele->ID);
+		pl->SetPosition(GetRandomPosition());
+		pl->mAction = Action::GoRight;
+		pl->mName = ele->name;
+		pl->ActiveShield();
+		mListPlayer.push_back(pl);
+		pl->Write(os1);
+		os1.Write(pl->mName);
+
+	}
+	for (auto ele : listClient)
+	ele->Send(os1.GetBufferPtr(), os1.GetByteLength());
+	
+}
+
 void World::HandleObject(Packet p)
 {
 	int ID = p.id;
@@ -98,7 +122,6 @@ void World::HandleObject(Packet p)
 						bullet->SetPosition(ele->GetPosition());
 						bullet->SetActive(true);
 						bullet->setMoveDirection(ele->dir);
-						printf("co thang ban kia\n");
 						break;
 					}
 				}
@@ -172,8 +195,6 @@ void World::CheckCollision(float dt)
 			{
 				bl->CollisionWith(brick);
 				bl->isChange = true;
-				//Check bullet cua Player nao
-				 mListPlayer.at(bl->ID_of_player-1)->mScore += 1;
 				
 
 				for(auto brick2:mMap->GetListBrick())
@@ -198,6 +219,13 @@ void World::CheckCollision(float dt)
 			
 				pl->CollisionWith(bl);
 				bl->CollisionWith(pl);
+
+				if (pl->mHeal == 0)
+				{//Check bullet cua Player nao
+					mListPlayer.at(bl->ID_of_player - 1)->mScore += 500;
+					mListPlayer.at(bl->ID_of_player - 1)->mScore_send = 500;
+				}
+
 				bl->isChange = true;
 			}
 		}
@@ -209,6 +237,14 @@ void World::CheckCollision(float dt)
 
 				npc->CollisionWith(bl);
 				bl->CollisionWith(npc);
+
+				if (npc->mHeal == 0)
+				{//Check bullet cua Player nao
+					mListPlayer.at(bl->ID_of_player - 1)->mScore += 300;
+					mListPlayer.at(bl->ID_of_player - 1)->mScore_send = 300;
+					mListPlayer.at(bl->ID_of_player - 1)->position_add = npc->GetPosition();
+				}
+
 				bl->isChange = true;
 			}
 		}
@@ -234,6 +270,13 @@ void World::CheckCollision(float dt)
 }
 void World::Update(float dt)
 {
+	if (GetTickCount() - time_to_start>500 && time_to_start != -1)
+	{
+		isStart = true;
+		CreatePlayerAndSend();
+		time_to_start = -1;
+	}
+
 
 	for (auto ele : mListPlayer)
 	{
@@ -260,7 +303,7 @@ void World::Update(float dt)
 	
 }
 
-void World::SendWorld(std::vector<TCPSocketPtr> listClient)
+void World::SendWorld()
 {
 	
 	OutputMemoryBitStream os;
@@ -335,6 +378,63 @@ void World::SendWorld(std::vector<TCPSocketPtr> listClient)
 	for (auto ele : mListBullets)
 	{
 			ele->isChange = false;
+	}
+}
+
+void World::AddMember(TCPSocketPtr socket)
+{
+	mCurrent_ID++;
+	socket->ID = mCurrent_ID;
+	listClient.push_back(socket);
+
+	OutputMemoryBitStream os;
+	os.Write(Define::WelcomePacket, Define::bitofTypePacket);
+	os.Write(socket->ID, Define::bitofID);
+	socket->Send(os.GetBufferPtr(), os.GetByteLength());
+
+
+	if (mCurrent_ID ==2) //if enought player, Provide them first position by ID
+			time_to_start = GetTickCount(); //Wait last player
+	
+
+}
+
+void World::UpdatePlayerCount()
+{
+
+	for (auto ele : listClient)
+	{
+		OutputMemoryBitStream os1;
+		os1.Write(Define::UpdateCountPlayer, Define::bitofTypePacket);
+		os1.Write(listClient.size(), Define::bitofID);
+		os1.Write(name);
+		ele->Send(os1.GetBufferPtr(), os1.GetByteLength());
+	}
+
+}
+
+void World::Handle_Exit(int id)
+{
+	for (int i = 0; i<listClient.size(); i++)
+	{
+		if (listClient[i]->ID == id)
+		{
+			listClient.erase(listClient.begin() + i);
+			break;
+		}
+	}
+	if (listClient.size() == 0)
+	{
+		if(name._Equal("Room 1") || name._Equal("Room 2"))
+		{
+			isDelete = false;
+		}
+		else
+		{
+			isDelete = true;
+		}
+		isStart = false;
+		mCurrent_ID = 0;
 	}
 }
 

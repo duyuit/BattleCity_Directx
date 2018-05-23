@@ -14,7 +14,7 @@ public:
 	virtual void SendData();
 	D3DCOLOR GetBackcolor();
 
-	~Scene();
+	virtual ~Scene();
 
 protected:
 	Scene();

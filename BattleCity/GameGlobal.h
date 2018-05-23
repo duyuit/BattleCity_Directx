@@ -9,6 +9,7 @@ class GameGlobal
 public:
 	GameGlobal();
 	~GameGlobal();
+	static void SendExitGame();
 
 	static HINSTANCE GetCurrentHINSTACE();
 	static HWND getCurrentHWND();

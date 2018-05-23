@@ -3,14 +3,23 @@
 #include "SocketUtil.h"
 #include "GameLog.h"
 
-vector<RECT> source_of_explotion()
+vector<RECT> source_of_explotion(bool isBig)
 {
 	vector<RECT> temp;
 	RECT rect;
+	if(isBig)
+	{
 
-	rect.left = 5; rect.top = 67; rect.right = rect.left + 26; rect.bottom = rect.top + 27; 	temp.push_back(rect);
-	rect.left = 32; rect.top = 64; rect.right = rect.left + 32; rect.bottom = rect.top + 32;	temp.push_back(rect);
-	rect.left =64; rect.top = 63; rect.right = rect.left + 33; rect.bottom = rect.top + 33;	    temp.push_back(rect);
+		rect.left = 97; rect.top = 66; rect.right = rect.left + 62; rect.bottom = rect.top + 61; 	temp.push_back(rect);
+		rect.left = 157; rect.top = 63; rect.right = rect.left + 67; rect.bottom = rect.top + 70;	temp.push_back(rect);
+	}
+	else
+	{
+		rect.left = 5; rect.top = 67; rect.right = rect.left + 26; rect.bottom = rect.top + 27; 	temp.push_back(rect);
+		rect.left = 32; rect.top = 64; rect.right = rect.left + 32; rect.bottom = rect.top + 32;	temp.push_back(rect);
+		rect.left = 64; rect.top = 63; rect.right = rect.left + 33; rect.bottom = rect.top + 33;	temp.push_back(rect);
+	}
+	
 	return temp;
 };
 
@@ -69,68 +78,26 @@ TestScene::TestScene(TCPSocketPtr socket, vector<Player*> list)
 
 
 	{
-		RTT_String = " .";
+	
 
-
-		HRESULT rs = D3DXCreateFont(GameGlobal::GetCurrentDevice()
-			, 30, 10
-			, FW_NORMAL, 1
-			, false, DEFAULT_CHARSET
-			, OUT_DEFAULT_PRECIS, ANTIALIASED_QUALITY, FF_DONTCARE, (LPCWSTR) "Arial", &RTT_Font);
-
-
-		D3DXCreateFont(GameGlobal::GetCurrentDevice()
-			, 80, 50
-			, FW_NORMAL, 1
-			, false, DEFAULT_CHARSET
-			, OUT_DEFAULT_PRECIS, ANTIALIASED_QUALITY, FF_DONTCARE, (LPCWSTR) "Arial", &GameOver_Font);
-
-		D3DXCreateFont(GameGlobal::GetCurrentDevice()
-			, 30, 10
-			, FW_NORMAL, 1
-			, false, DEFAULT_CHARSET
-			, OUT_DEFAULT_PRECIS, ANTIALIASED_QUALITY, FF_DONTCARE, (LPCWSTR) "Arial", &Score_font);
-
-
-
-		RTT_RECT.left = 50;
-		RTT_RECT.top = GameGlobal::GetHeight() - 100;
-		RTT_RECT.bottom = RTT_RECT.top + 200;
-		RTT_RECT.right = RTT_RECT.left + 400;
-
-		GameOver_RECT.left = GameGlobal::GetWidth() / 2 - 300;
-		GameOver_RECT.top = GameGlobal::GetHeight() / 2;
-		GameOver_RECT.bottom = GameOver_RECT.top + 100;
-		GameOver_RECT.right = GameOver_RECT.left + 1000;
-
-		Pl1_RECT.left = GameGlobal::GetWidth() - 450;
-		Pl1_RECT.right = Pl1_RECT.left + 200;
-		Pl1_RECT.top = 0;
-		Pl1_RECT.bottom = Pl1_RECT.top + 200;
-
-		Pl2_RECT.left = GameGlobal::GetWidth() - 450;
-		Pl2_RECT.right = Pl1_RECT.left + 200;
-		Pl2_RECT.top = 100;
-		Pl2_RECT.bottom = Pl1_RECT.top + 300;
-
-		Pl3_RECT.left = GameGlobal::GetWidth() - 450;
-		Pl3_RECT.right = Pl1_RECT.left + 200;
-		Pl3_RECT.top = 200;
-		Pl3_RECT.bottom = Pl1_RECT.top + 400;
-
-		Pl4_RECT.left = GameGlobal::GetWidth() - 450;
-		Pl4_RECT.right = Pl1_RECT.left + 200;
-		Pl4_RECT.top = 300;
-		Pl4_RECT.bottom = Pl1_RECT.top + 500;
-
+		
+		label_RTT = Label("", 30, 10, D3DXVECTOR2(50, GameGlobal::GetHeight() - 100));
+		label_GameOver= Label("", 50, 30, D3DXVECTOR2(GameGlobal::GetWidth() / 2 - 300, GameGlobal::GetHeight() / 2));
+		label_Score1= Label("", 30, 10, D3DXVECTOR2(GameGlobal::GetWidth() - 450,0), D3DCOLOR_XRGB(255, 242, 0));
+		label_Score2 = Label("", 30, 10, D3DXVECTOR2(GameGlobal::GetWidth() - 450, 100), D3DCOLOR_XRGB(195, 195, 195));
+		label_Score3= Label("", 30, 10, D3DXVECTOR2(GameGlobal::GetWidth() - 450, 200) ,D3DCOLOR_XRGB(34, 177, 76));
+		label_Score4 = Label("", 30, 10, D3DXVECTOR2(GameGlobal::GetWidth() - 450, 300), D3DCOLOR_XRGB(237, 28, 36));
 	}
+
+
+
 }
 
 void TestScene::Update(float dt)
 {
 
-
 	mPlayer->HandleKeyboard(keys);
+	
 	CheckCollision(dt);
 	mMap->Update(dt);
 
@@ -161,6 +128,8 @@ void TestScene::Update(float dt)
 			i--;
 		}
 	}
+	for (auto ele : mListPoint)
+		ele->Update();
 }
 
 void TestScene::Draw()
@@ -187,7 +156,7 @@ void TestScene::Draw()
 	for (int i=0;i<mListAnimate.size();i++)
 	{
 		mListAnimate[i]->Draw();
-		if (mListAnimate[i]->GetCurrentFrame() == mListAnimate[i]->mSourceRect.size() - 1)
+		if (mListAnimate[i]->isFinish)
 		{
 			delete mListAnimate[i];
 			mListAnimate.erase(mListAnimate.begin() + i);
@@ -195,28 +164,37 @@ void TestScene::Draw()
 		}
 
 	}
-	if (RTT_Font)
+	for (int i = 0; i<mListPoint.size(); i++)
 	{
-		//int delta = GameGlobal::RTT;
-		//if (delta != 16)
+		mListPoint[i]->Draw();
+		if (mListPoint[i]->getIsDelete())
+		{
+			delete mListPoint[i];
+			mListPoint.erase(mListPoint.begin() + i);
+			i--;
+		}
+
+	}
+
+	/*if (RTT_Font)
+	{
+		
 		{
 			RTT_String = "x: "+std::to_string(mPlayer->GetPosition().x) + " y: "+std::to_string(mPlayer->GetPosition().y);
 			RTT_Font->DrawTextA(mPlayer->mCurrentSprite->GetSpriteHandle(), RTT_String.c_str(), -1, &RTT_RECT, DT_LEFT, D3DCOLOR_XRGB(240, 255, 255));
 		}
 		
-	}
+	}*/
 
 	if(mPlayer->isDelete)
 	{
 		int delta = 4 - (GetTickCount() - mPlayer->last_time_die)/1000;
 		string s = "Respawn in " + std::to_string(delta);
-		GameOver_Font->DrawTextA(mPlayer->mCurrentSprite->GetSpriteHandle(),s.c_str(), -1, &GameOver_RECT, DT_LEFT, D3DCOLOR_XRGB(240, 255, 255));
+		label_GameOver.Draw(s);
 	}
 
-	Pl1_String =mListPlayer[0]->mName + ": " + std::to_string(mListPlayer.at(0)->mScore);
-	Score_font->DrawTextA(mPlayer->mCurrentSprite->GetSpriteHandle(), Pl1_String.c_str(), -1, &Pl1_RECT, DT_LEFT, D3DCOLOR_XRGB(255, 242, 0));
-	Pl2_String = mListPlayer[1]->mName + ": " + std::to_string(mListPlayer.at(1)->mScore);
-	Score_font->DrawTextA(mPlayer->mCurrentSprite->GetSpriteHandle(), Pl2_String.c_str(), -1, &Pl2_RECT, DT_LEFT, D3DCOLOR_XRGB(195, 195, 195));
+	label_Score1.Draw(mListPlayer[0]->mName + ": " + std::to_string(mListPlayer.at(0)->mScore));
+	label_Score2.Draw(mListPlayer[1]->mName + ": " + std::to_string(mListPlayer.at(1)->mScore));
 	//Pl3_String = mListPlayer[2]->mName + ": " + std::to_string(mListPlayer.at(2)->mScore);
 	//Score_font->DrawTextA(mPlayer->mCurrentSprite->GetSpriteHandle(), Pl3_String.c_str(), -1, &Pl3_RECT, DT_LEFT, D3DCOLOR_XRGB(34, 177, 76));
 	//Pl4_String = mListPlayer[3]->mName + ": " + std::to_string(mListPlayer.at(3)->mScore);
@@ -298,15 +276,8 @@ void TestScene::CheckCollision(float dt)
 
 void TestScene::SendData()
 {
-	OutputMemoryBitStream os;
-	os.Write(Define::InputPacket, Define::bitofTypePacket);
-	os.Write(mPlayer->ID, Define::bitofID);
-	os.Write((int)mPlayer->mAction, Define::bitofID);
-	int time_of_packet = GetTickCount();
-	os.Write(time_of_packet);
-	GameGlobal::socket->Send(os.GetBufferPtr(), os.GetByteLength());
-
 }
+
 
 void TestScene::OnKeyDown(int keyCode)
 {
@@ -332,8 +303,16 @@ void TestScene::find_and_handle(int tag, InputMemoryBitStream &is)
 			if(ele->ID== id)
 			{
 				ele->Read(is);
-				if(id==mPlayer->ID)
-				GameGlobal::RTT = GetTickCount() - ele->last_move_time;
+				if(ele->Check_to_create_anim())
+				{
+					Explosion* explosion = new Explosion(ele->last_position, true);
+					mListAnimate.push_back(explosion);
+				}
+				if(ele->mScore_send!=0 && ele->ID==mPlayer->ID)
+				{
+					Pointed* pointed = new Pointed(ele->mScore_send, ele->position_score);
+ 					mListPoint.push_back(pointed);
+				}
 				return;
 
 			}
@@ -350,9 +329,8 @@ void TestScene::find_and_handle(int tag, InputMemoryBitStream &is)
 				ele->Read(is);
 				if(ele->isActive == false)
 				{
-					Animation *explore = new Animation("Resource files/Somethings.png", source_of_explotion(), 0.05f, D3DXCOLOR(255, 0, 255, 255));
-					explore->SetPosition(ele->GetPosition());
-					mListAnimate.push_back(explore);
+					Explosion* explosion = new Explosion(ele->GetPosition(), false);
+					mListAnimate.push_back(explosion);
 				}
 				return;
 
@@ -366,10 +344,8 @@ void TestScene::find_and_handle(int tag, InputMemoryBitStream &is)
 			Brick* br = mMap->GetListBrick().at(i);
 			if (br->ID == id)
 			{
-				
 
 				is.Read(br->isDelete);
-
 				break;
 			}
 		}
@@ -390,12 +366,16 @@ void TestScene::find_and_handle(int tag, InputMemoryBitStream &is)
 		break;
 	case Entity::npc:
 		{
-			for(auto npc:mListNPC)
+			for(auto ele:mListNPC)
 			{
-				if (npc->ID == id)
+				if (ele->ID == id)
 				{
-					npc->Read(is);
-					break;
+					ele->Read(is);
+					if (ele->Check_to_create_anim())
+					{
+						Explosion* explosion = new Explosion(ele->last_position,true);
+ 						mListAnimate.push_back(explosion);
+					}
 				}
 			}
 		}

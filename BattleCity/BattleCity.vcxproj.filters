@@ -37,9 +37,6 @@
     <Filter Include="FrameWork\GameNetWork">
       <UniqueIdentifier>{209fee21-acef-41e1-a4a1-4b9d15d845cd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FrameWork\MapReader">
-      <UniqueIdentifier>{32d99d3d-91d0-4e94-a1cc-3849575a35fb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="FrameWork\GameObjects\Bullet">
       <UniqueIdentifier>{8020ff32-8e58-44ed-826f-cfbeca04c146}</UniqueIdentifier>
     </Filter>
@@ -48,6 +45,15 @@
     </Filter>
     <Filter Include="FrameWork\GameObjects\Item">
       <UniqueIdentifier>{5d1c634e-151c-4ec8-84be-601cb5fb4df2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\GameObjects\Point">
+      <UniqueIdentifier>{a1fb2021-d1c9-436c-928a-af1100ee0dba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\GameObjects\Explosion">
+      <UniqueIdentifier>{694dd15e-8119-4233-9d22-bf76323bca80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\GameObjects\MapReader">
+      <UniqueIdentifier>{32d99d3d-91d0-4e94-a1cc-3849575a35fb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -97,64 +103,64 @@
       <Filter>FrameWork\GameComponents</Filter>
     </ClCompile>
     <ClCompile Include="MapReader\base64.cpp">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </ClCompile>
     <ClCompile Include="MapReader\miniz.c">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </ClCompile>
     <ClCompile Include="MapReader\tinyxml2.cpp">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </ClCompile>
     <ClCompile Include="MapReader\TmxEllipse.cpp">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </ClCompile>
     <ClCompile Include="MapReader\TmxImage.cpp">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </ClCompile>
     <ClCompile Include="MapReader\TmxImageLayer.cpp">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </ClCompile>
     <ClCompile Include="MapReader\TmxLayer.cpp">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </ClCompile>
     <ClCompile Include="MapReader\TmxMap.cpp">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </ClCompile>
     <ClCompile Include="MapReader\TmxObject.cpp">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </ClCompile>
     <ClCompile Include="MapReader\TmxObjectGroup.cpp">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </ClCompile>
     <ClCompile Include="MapReader\TmxPolygon.cpp">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </ClCompile>
     <ClCompile Include="MapReader\TmxPolyline.cpp">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </ClCompile>
     <ClCompile Include="MapReader\TmxPropertySet.cpp">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </ClCompile>
     <ClCompile Include="MapReader\TmxTerrain.cpp">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </ClCompile>
     <ClCompile Include="MapReader\TmxTerrainArray.cpp">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </ClCompile>
     <ClCompile Include="MapReader\TmxTile.cpp">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </ClCompile>
     <ClCompile Include="MapReader\TmxTileLayer.cpp">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </ClCompile>
     <ClCompile Include="MapReader\TmxTileOffset.cpp">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </ClCompile>
     <ClCompile Include="MapReader\TmxTileset.cpp">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </ClCompile>
     <ClCompile Include="MapReader\TmxUtil.cpp">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </ClCompile>
     <ClCompile Include="Bullet.cpp">
       <Filter>FrameWork\GameObjects\Bullet</Filter>
@@ -200,6 +206,21 @@
     </ClCompile>
     <ClCompile Include="NPC.cpp">
       <Filter>FrameWork\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Pointed.cpp">
+      <Filter>FrameWork\GameObjects\Point</Filter>
+    </ClCompile>
+    <ClCompile Include="Explosion.cpp">
+      <Filter>FrameWork\GameObjects\Explosion</Filter>
+    </ClCompile>
+    <ClCompile Include="Room.cpp">
+      <Filter>FrameWork\GameComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="RoomScene.cpp">
+      <Filter>FrameWork\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Label.cpp">
+      <Filter>FrameWork\GameComponents</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -258,73 +279,73 @@
       <Filter>FrameWork\GameComponents</Filter>
     </ClInclude>
     <ClInclude Include="MapReader\base64.h">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </ClInclude>
     <ClInclude Include="MapReader\tinyxml2.h">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </ClInclude>
     <ClInclude Include="MapReader\TmxEllipse.h">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </ClInclude>
     <ClInclude Include="MapReader\TmxImage.h">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </ClInclude>
     <ClInclude Include="MapReader\TmxImageLayer.h">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </ClInclude>
     <ClInclude Include="MapReader\TmxLayer.h">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </ClInclude>
     <ClInclude Include="MapReader\TmxMap.h">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </ClInclude>
     <ClInclude Include="MapReader\TmxMapTile.h">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </ClInclude>
     <ClInclude Include="MapReader\TmxObject.h">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </ClInclude>
     <ClInclude Include="MapReader\TmxObjectGroup.h">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </ClInclude>
     <ClInclude Include="MapReader\TmxPoint.h">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </ClInclude>
     <ClInclude Include="MapReader\TmxPolygon.h">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </ClInclude>
     <ClInclude Include="MapReader\TmxPolyline.h">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </ClInclude>
     <ClInclude Include="MapReader\TmxPropertySet.h">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </ClInclude>
     <ClInclude Include="MapReader\TmxTerrain.h">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </ClInclude>
     <ClInclude Include="MapReader\TmxTerrainArray.h">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </ClInclude>
     <ClInclude Include="MapReader\TmxTile.h">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </ClInclude>
     <ClInclude Include="MapReader\TmxTileLayer.h">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </ClInclude>
     <ClInclude Include="MapReader\TmxTileOffset.h">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </ClInclude>
     <ClInclude Include="MapReader\TmxTileset.h">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </ClInclude>
     <ClInclude Include="MapReader\TmxUtil.h">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </ClInclude>
     <ClInclude Include="MapReader\zconf.h">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </ClInclude>
     <ClInclude Include="MapReader\zlib.h">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </ClInclude>
     <ClInclude Include="Bullet.h">
       <Filter>FrameWork\GameObjects\Bullet</Filter>
@@ -371,10 +392,25 @@
     <ClInclude Include="NPC.h">
       <Filter>FrameWork\GameObjects</Filter>
     </ClInclude>
+    <ClInclude Include="Pointed.h">
+      <Filter>FrameWork\GameObjects\Point</Filter>
+    </ClInclude>
+    <ClInclude Include="Explosion.h">
+      <Filter>FrameWork\GameObjects\Explosion</Filter>
+    </ClInclude>
+    <ClInclude Include="Room.h">
+      <Filter>FrameWork\GameComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomScene.h">
+      <Filter>FrameWork\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Label.h">
+      <Filter>FrameWork\GameComponents</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="MapReader\Tmx.h.in">
-      <Filter>FrameWork\MapReader</Filter>
+      <Filter>FrameWork\GameObjects\MapReader</Filter>
     </None>
   </ItemGroup>
 </Project>

@@ -1,5 +1,4 @@
-﻿  NPC.cpp
-d:\git\battlecity_directx\tcpserver\npc.cpp(73): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\git\battlecity_directx\tcpserver\npc.cpp(91): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
-d:\git\battlecity_directx\tcpserver\npc.cpp(93): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
+﻿  NetWorkManager.cpp
+d:\git\battlecity_directx\tcpserver\networkmanager.cpp(25): warning C4018: '<': signed/unsigned mismatch
+d:\git\battlecity_directx\tcpserver\networkmanager.cpp(99): warning C4018: '<': signed/unsigned mismatch
   TCPServer.vcxproj -> D:\Git\BattleCity_Directx\TCPServer\Debug\TCPServer.exe

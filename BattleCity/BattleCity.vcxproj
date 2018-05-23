@@ -132,6 +132,7 @@
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Explosion.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCollision.cpp" />
     <ClCompile Include="GameDebugDraw.cpp" />
@@ -140,6 +141,7 @@
     <ClCompile Include="GameMap.cpp" />
     <ClCompile Include="GameTime.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="Label.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MapReader\base64.cpp" />
     <ClCompile Include="MapReader\miniz.c" />
@@ -165,8 +167,11 @@
     <ClCompile Include="MetalBrick.cpp" />
     <ClCompile Include="NPC.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Pointed.cpp" />
     <ClCompile Include="ProtectPlayer.cpp" />
     <ClCompile Include="QuadTree.cpp" />
+    <ClCompile Include="Room.cpp" />
+    <ClCompile Include="RoomScene.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Sprite.cpp" />
@@ -184,6 +189,7 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="Explosion.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCollision.h" />
     <ClInclude Include="GameDebugDraw.h" />
@@ -193,6 +199,7 @@
     <ClInclude Include="GameMap.h" />
     <ClInclude Include="GameTime.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="Label.h" />
     <ClInclude Include="MapReader\base64.h" />
     <ClInclude Include="MapReader\tinyxml2.h" />
     <ClInclude Include="MapReader\TmxEllipse.h" />
@@ -220,8 +227,11 @@
     <ClInclude Include="MetalBrick.h" />
     <ClInclude Include="NPC.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Pointed.h" />
     <ClInclude Include="ProtectPlayer.h" />
     <ClInclude Include="QuadTree.h" />
+    <ClInclude Include="Room.h" />
+    <ClInclude Include="RoomScene.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SocketAddress.h" />

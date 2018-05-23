@@ -28,6 +28,9 @@ public:
 	bool is_protect = false;
 	float time_start_protect = 0;
 
+	int mScore_send = 0;
+	D3DXVECTOR2 position_add = D3DXVECTOR2(0, 0);
+
 	int id_of_bullet = 10;
 	float last_move_time = 0;
 
