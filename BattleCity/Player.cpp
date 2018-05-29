@@ -34,7 +34,17 @@ Player::Player()
 	spawn = new Animation("Resource files/Somethings.png", list1, 0.05f, D3DXCOLOR(255, 0, 255, 255));
 }
 
-Player::~Player(){}
+Player::~Player()
+{
+	delete shield;
+	delete spawn;
+
+	delete mLeftSprite;
+	delete mUpSprite;
+	delete  mRightSprite;
+	delete  mDownSprite;
+	delete m_top_sprite;
+}
 void Player::Write(OutputMemoryBitStream& os)
 {
 	Entity::Write(os);
@@ -267,8 +277,8 @@ void Player::HandleKeyboard(std::map<int, bool> keys)
 		os.Write(Define::InputPacket, Define::bitofTypePacket);
 		os.Write(ID, Define::bitofID);
 		os.Write((int)mAction, Define::bitofID);
-		int time_of_packet = GetTickCount();
-		os.Write(time_of_packet);
+		os.Write(last_id_packet++,Define::bitofID);
+		if (last_id_packet == 1000) last_id_packet = 0;
 		GameGlobal::socket->Send(os.GetBufferPtr(), os.GetByteLength());
 	}
 		

@@ -41,6 +41,32 @@ void NetWorkManager::Handle_Exit(TCPSocketPtr sock)
 
 }
 
+void NetWorkManager::DeleteWorld(int i)
+{
+	if (mListWorld_room[i]->name._Equal("Room 1") || mListWorld_room[i]->name._Equal("Room 2"))
+	{
+
+	}
+	else
+	{
+		mListWorld_room.erase(mListWorld_room.begin() + i);
+		i--;
+	}
+
+	for (int j = 0; j<readBlockSockets.size(); j++)
+	{
+		if (readBlockSockets[j]->ID_Room == mListWorld_room[i]->ID)
+		{
+			readBlockSockets.erase(readBlockSockets.begin() + j);
+			j--;
+		}
+
+	}
+	mListWorld_room[i]->isDelete = false;
+
+
+}
+
 void NetWorkManager::CreateRoomAndAdd(TCPSocketPtr soc)
 {
 	World* world = new World();
@@ -100,19 +126,21 @@ void NetWorkManager::Update(float dt)
 	{
 		if (mListWorld_room[i]->isDelete)
 		{
-			mListWorld_room.erase(mListWorld_room.begin() + i);
-			i--;
+			DeleteWorld(i);
 		}else
 		{
 			mListWorld_room[i]->CheckCollision(dt);
 			mListWorld_room[i]->Update(dt);
 			if (count_to_send == 3)
+			{
 				mListWorld_room[i]->SendWorld();
+				count_to_send = 0;
+			}
 		}
 	
 	}
-	if (count_to_send == 3)
-		count_to_send=0;
+
+
 	
 	
 	
@@ -205,7 +233,11 @@ void NetWorkManager::ReceivePacket()
 									if (type_of_packet == Define::UpdateCountPlayer)
 									{
 										room->CreatePlayerAndSend();
-																}
+									} else if(type_of_packet == Define::OutRoom)
+									{
+										room->Count_player_exit++;
+										continue;;
+									}
 
 									Packet p(is, socket->ID_Room, type_of_packet);
 									queue_packet.push_back(p);

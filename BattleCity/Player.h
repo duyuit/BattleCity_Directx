@@ -48,7 +48,7 @@ public:
 
 	D3DXVECTOR2 position_score = D3DXVECTOR2(0, 0);
 	int mScore_send = 0;
-
+	int last_id_packet = 0;
 
 	bool Check_to_create_anim();
 	bool is_protect = false;

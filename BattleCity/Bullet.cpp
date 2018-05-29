@@ -96,4 +96,5 @@ void Bullet::MoveDown() {
 }
 Bullet::~Bullet()
 {
+	delete mCurrentSprite;
 }

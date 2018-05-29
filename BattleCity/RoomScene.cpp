@@ -18,7 +18,7 @@ RoomScene::RoomScene()
 	pointerX = 0;
 	pointerPosition = D3DXVECTOR3(a->getPosition().x - 20, a->getPosition().y+50, 0);
 
-
+	
 
 	socket = SocketUtil::CreateTCPSocket();
 	string ip = "127.0.0.1";
@@ -41,6 +41,24 @@ RoomScene::RoomScene()
 
 	label_room_select = Label("Room select",30, 20, D3DXVECTOR2(500, 200));
 	label_failed =Label("Can't join this room ",30, 20, D3DXVECTOR2(GameGlobal::GetWidth()/2-100, GameGlobal::GetHeight()/2-50));;
+}
+
+RoomScene::RoomScene(bool again)
+{
+	socket = GameGlobal::socket;
+	pointer = new Sprite("Resource files/topOfplayer.png", RECT(), 0, 0, D3DCOLOR_XRGB(255, 0, 255));
+	add_box = new Sprite("Resource files/plusbox.jpg");
+	add_box->SetPosition(GameGlobal::GetWidth() / 2 - 50, 200);
+	add_room = Label("Create Room", 20, 10, D3DXVECTOR2(GameGlobal::GetWidth() / 2 - 120, 600));
+	Room *a = new Room(D3DXVECTOR3(100, 400, 0));
+	Room *b = new Room(D3DXVECTOR3(300, 400, 0));
+
+	roomVec.push_back(a);
+	roomVec.push_back(b);
+	pointerX = 0;
+	pointerPosition = D3DXVECTOR3(a->getPosition().x - 20, a->getPosition().y + 50, 0);
+	label_room_select = Label("Room select", 30, 20, D3DXVECTOR2(500, 200));
+	label_failed = Label("Can't join this room ", 30, 20, D3DXVECTOR2(GameGlobal::GetWidth() / 2 - 100, GameGlobal::GetHeight() / 2 - 50));;
 }
 
 void RoomScene::Update(float dt)
@@ -183,16 +201,12 @@ void RoomScene::OnKeyUp(int keyCode)
 
 }
 
-void RoomScene::ActiveFailedString()
-{
-
-}
 
 RoomScene::~RoomScene()
 {
-	//Title->Release();
-	//delete pointer;
-	//for (auto ele : roomVec)
-	//	delete ele;
+
+	delete pointer;
+	for (auto ele : roomVec)
+		delete ele;
 }
 

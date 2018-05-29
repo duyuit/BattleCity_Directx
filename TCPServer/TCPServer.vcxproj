@@ -133,6 +133,7 @@
     <ClInclude Include="UpgradeItem.h" />
     <ClInclude Include="Water.h" />
     <ClInclude Include="World.h" />
+    <ClInclude Include="WorldState.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Boundary.cpp" />
@@ -177,6 +178,7 @@
     <ClCompile Include="UpgradeItem.cpp" />
     <ClCompile Include="Water.cpp" />
     <ClCompile Include="World.cpp" />
+    <ClCompile Include="WorldState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MapReader\Tmx.h.in" />

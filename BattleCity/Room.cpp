@@ -25,10 +25,10 @@ void Room::Draw() {
 	member = (curNumMember + 48);
 	if(isPlaying)
 	{
-		member = member + " / 2\n(Playing)";
+		member = member + " / 4\n(Playing)";
 	}
 	else 
-		member = member + " / 2";
+		member = member + " / 4";
 	
 	label_player_count.Draw(member.c_str());
 }
@@ -41,7 +41,7 @@ int Room::GetMember()
 void Room::SetMember(int i)
 {
 	curNumMember = i;
-	if (curNumMember == 2) isFull = true;
+	if (curNumMember == 4) isFull = true;
 	else isFull = false;
 }
 
@@ -102,5 +102,4 @@ Room::~Room()
 {
 	delete greenRoom;
 	delete redRoom;
-	delete stateRoom;
 }

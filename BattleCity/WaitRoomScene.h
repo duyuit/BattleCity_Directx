@@ -20,7 +20,9 @@ public:
 	string m_name = "guest";
 	vector<Player*> m_list_players;
 
+	int lastAdd = 0;
 
+	int timetoStart = 0;
 	std::vector<Sprite*> box; //box chua cac o Xanh,Do the hien so nguoi choi
 	ID3DXFont				*myFont; //Font dung de ve chu
 	RECT myRect; //RECT chua myFont

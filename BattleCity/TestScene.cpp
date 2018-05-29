@@ -2,6 +2,8 @@
 #include "SocketAddress.h"
 #include "SocketUtil.h"
 #include "GameLog.h"
+#include "SceneManager.h"
+#include "RoomScene.h"
 
 vector<RECT> source_of_explotion(bool isBig)
 {
@@ -78,7 +80,7 @@ TestScene::TestScene(TCPSocketPtr socket, vector<Player*> list)
 
 
 	{
-	
+		label_time_remaing = Label("", 30, 10, D3DXVECTOR2(GameGlobal::GetWidth() - 450, 600));
 
 		
 		label_RTT = Label("", 30, 10, D3DXVECTOR2(50, GameGlobal::GetHeight() - 100));
@@ -93,8 +95,38 @@ TestScene::TestScene(TCPSocketPtr socket, vector<Player*> list)
 
 }
 
+TestScene::~TestScene()
+{
+	for (auto pl : mListPoint)
+		delete pl;
+	for (auto pl : mListAnimate)
+		delete pl;
+
+	for (auto pl : mListBullets)
+		delete pl;
+	for (auto pl : mListPlayer)
+		delete pl;
+	delete mMap;
+	for (auto pl : mListItems)
+		delete pl;
+	for (auto pl : mListNPC)
+		delete pl;
+
+}
+
 void TestScene::Update(float dt)
 {
+	if (isOver)
+	{
+		if (GetTickCount() - last_time_over >= 2000)
+		{
+			
+			GameGlobal::SendExitGame();
+			SceneManager::GetInstance()->ReplaceScene(new RoomScene());
+		}
+		return;
+	}
+	time_remain -= dt;
 
 	mPlayer->HandleKeyboard(keys);
 	
@@ -176,16 +208,12 @@ void TestScene::Draw()
 
 	}
 
-	/*if (RTT_Font)
+	
+	if (isOver)
 	{
-		
-		{
-			RTT_String = "x: "+std::to_string(mPlayer->GetPosition().x) + " y: "+std::to_string(mPlayer->GetPosition().y);
-			RTT_Font->DrawTextA(mPlayer->mCurrentSprite->GetSpriteHandle(), RTT_String.c_str(), -1, &RTT_RECT, DT_LEFT, D3DCOLOR_XRGB(240, 255, 255));
-		}
-		
-	}*/
-
+		DrawGameOver();
+	}	
+	label_time_remaing.Draw("Time remaining : " + std::to_string(time_remain) + "s");
 	if(mPlayer->isDelete)
 	{
 		int delta = 4 - (GetTickCount() - mPlayer->last_time_die)/1000;
@@ -195,10 +223,13 @@ void TestScene::Draw()
 
 	label_Score1.Draw(mListPlayer[0]->mName + ": " + std::to_string(mListPlayer.at(0)->mScore));
 	label_Score2.Draw(mListPlayer[1]->mName + ": " + std::to_string(mListPlayer.at(1)->mScore));
-	//Pl3_String = mListPlayer[2]->mName + ": " + std::to_string(mListPlayer.at(2)->mScore);
-	//Score_font->DrawTextA(mPlayer->mCurrentSprite->GetSpriteHandle(), Pl3_String.c_str(), -1, &Pl3_RECT, DT_LEFT, D3DCOLOR_XRGB(34, 177, 76));
-	//Pl4_String = mListPlayer[3]->mName + ": " + std::to_string(mListPlayer.at(3)->mScore);
-	//Score_font->DrawTextA(mPlayer->mCurrentSprite->GetSpriteHandle(), Pl4_String.c_str(), -1, &Pl4_RECT, DT_LEFT, D3DCOLOR_XRGB(237, 28, 36));
+	label_Score3.Draw(mListPlayer[2]->mName + ": " + std::to_string(mListPlayer.at(2)->mScore));
+	label_Score4.Draw(mListPlayer[3]->mName + ": " + std::to_string(mListPlayer.at(3)->mScore));
+
+}
+
+void TestScene::ShowScore()
+{
 }
 
 void TestScene::ReceivePakcet()
@@ -226,7 +257,14 @@ void TestScene::ReceivePakcet()
 			}
 
 		}
-		
+		else if(typeofPacket==Define::GameOver)
+		{
+			isOver = true;
+			last_time_over = GetTickCount();
+			OutputMemoryBitStream os;
+			os.Write(Define::OutRoom, Define::bitofTypePacket);
+			socket->Send(os.GetBufferPtr(), os.GetByteLength());
+		}
 		
 	}
 	free(buff);
@@ -274,10 +312,31 @@ void TestScene::CheckCollision(float dt)
 
 }
 
-void TestScene::SendData()
-{
-}
 
+
+void TestScene::DrawGameOver()
+{
+	time_remain = 0;
+	int max = 0;
+	Player *pl=nullptr;
+	for (auto ele : mListPlayer)
+		if (ele->mScore >= max)
+		{
+			max = ele->mScore;
+			pl = ele;
+		}
+	label_GameOver.Draw("GAME OVER\nPlayer Win: ");
+	D3DCOLOR color;
+	switch (pl->ID)
+	{
+	case 1: color = D3DCOLOR_XRGB(255, 242, 0); break;
+	case 2: color = D3DCOLOR_XRGB(195, 195, 195); break;
+	case 3: color = D3DCOLOR_XRGB(34, 177, 76); break;
+	case 4: color = D3DCOLOR_XRGB(237, 28, 36); break;
+	}
+	Label label = Label(pl->mName, 50, 30, D3DXVECTOR2(GameGlobal::GetWidth() / 2+100 , GameGlobal::GetHeight() / 2 + 50), color);
+	label.Draw();
+}
 
 void TestScene::OnKeyDown(int keyCode)
 {

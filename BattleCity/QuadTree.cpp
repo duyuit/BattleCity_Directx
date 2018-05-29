@@ -3,6 +3,7 @@
 
 QuadTree::~QuadTree()
 {
+	//Clear();
 }
 
 QuadTree::QuadTree(int level, RECT bound)

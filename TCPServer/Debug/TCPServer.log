@@ -1,4 +1,8 @@
-﻿  NetWorkManager.cpp
-d:\git\battlecity_directx\tcpserver\networkmanager.cpp(25): warning C4018: '<': signed/unsigned mismatch
-d:\git\battlecity_directx\tcpserver\networkmanager.cpp(99): warning C4018: '<': signed/unsigned mismatch
+﻿  World.cpp
+d:\git\battlecity_directx\tcpserver\world.cpp(58): warning C4244: 'argument': conversion from 'int' to 'FLOAT', possible loss of data
+d:\git\battlecity_directx\tcpserver\world.cpp(105): warning C4018: '<': signed/unsigned mismatch
+d:\git\battlecity_directx\tcpserver\world.cpp(319): warning C4018: '<': signed/unsigned mismatch
+d:\git\battlecity_directx\tcpserver\world.cpp(447): warning C4018: '<': signed/unsigned mismatch
+d:\git\battlecity_directx\tcpserver\world.cpp(468): warning C4018: '<': signed/unsigned mismatch
+d:\git\battlecity_directx\tcpserver\world.cpp(473): warning C4018: '<': signed/unsigned mismatch
   TCPServer.vcxproj -> D:\Git\BattleCity_Directx\TCPServer\Debug\TCPServer.exe

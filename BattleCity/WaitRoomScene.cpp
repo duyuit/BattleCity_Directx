@@ -15,10 +15,7 @@ void WaitRoomScene::LoadContent()
 	
 
 
-	OutputMemoryBitStream os;
-	os.Write(Define::RequestName, Define::bitofTypePacket);
-	os.Write(m_name);
-	socket->Send(os.GetBufferPtr(), os.GetByteLength());
+
 	
 
 	//Define position for the box
@@ -44,13 +41,12 @@ void WaitRoomScene::LoadContent()
 	myRect.bottom = myRect.top + 200;
 	myRect.right = myRect.left + 400;
 
-	label_name = Label("",30,20,D3DXVECTOR2(GameGlobal::GetWidth() / 2 - 150, GameGlobal::GetHeight() / 2 - 150));
+	label_name = Label("", 30, 20, D3DXVECTOR2(GameGlobal::GetWidth() / 2 - 150, GameGlobal::GetHeight() / 2 - 150)); 
+	m_list_players.clear();
 
 }
 
-int lastAdd = 0;
 
-int timetoStart = 0;
 
 void WaitRoomScene::ReceivePakcet()
 {
@@ -58,7 +54,7 @@ void WaitRoomScene::ReceivePakcet()
 	size_t receivedByteCount = socket->Receive(buff, 1024);
 
 
-	if (GetTickCount() - timetoStart >0 && timetoStart != 0)
+	if (GetTickCount() - timetoStart > 3000 && timetoStart != 0)
 		SceneManager::GetInstance()->ReplaceScene(new TestScene(socket, m_list_players));
 
 	if (receivedByteCount>0)
@@ -102,11 +98,7 @@ void WaitRoomScene::ReceivePakcet()
 			is.Read(id, Define::bitofID);
 			socket->ID = id;
 		}
-
-
 	}
-
-
 
 }
 
@@ -119,6 +111,7 @@ void WaitRoomScene::UpdateBox(int k)
 			box.at(i)->InitWithSprite("Resource files/box.png", RECT{ 0,0,50,50 },0,0,0);
 			box.at(i)->SetPosition(pos);
 		}
+
 }
 void WaitRoomScene::Update(float dt)
 {
@@ -136,7 +129,10 @@ void WaitRoomScene::Update(float dt)
 	os.Write(Define::UpdateCountPlayer, Define::bitofTypePacket);
 	socket->Send(os.GetBufferPtr(), os.GetByteLength());
 
-
+	OutputMemoryBitStream os1;
+	os1.Write(Define::RequestName, Define::bitofTypePacket);
+	os1.Write(m_name);
+	socket->Send(os1.GetBufferPtr(), os1.GetByteLength());
 
 
 	
@@ -175,4 +171,6 @@ WaitRoomScene::WaitRoomScene()
 
 WaitRoomScene::~WaitRoomScene()
 {
+	for (auto ele : box)
+		delete ele;
 }

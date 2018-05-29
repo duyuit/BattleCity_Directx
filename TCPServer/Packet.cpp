@@ -14,7 +14,7 @@ Packet::Packet(InputMemoryBitStream &is,int room,int type)
 
 		is.Read(id, Define::bitofID);
 		is.Read(action, Define::bitofID);
-		is.Read(time);
+		is.Read(last_time_id,Define::bitofID);
 		break;
 	}
 }
