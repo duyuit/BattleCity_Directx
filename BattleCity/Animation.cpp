@@ -18,7 +18,10 @@ Animation::Animation(const char* filePath, vector<RECT> source, float timePerFra
 }
 
 
-Animation::~Animation(){}
+Animation::~Animation()
+{
+	mTexture->Release();
+}
 
 int Animation::GetCurrentFrame()
 {

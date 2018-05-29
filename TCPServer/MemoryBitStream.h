@@ -26,6 +26,8 @@ namespace Define
 	const int ChooseRoom = 8;
 	const int ExitGame = 9;
 	const int CreateRoom = 10;
+	const int GameOver = 11;
+	const int OutRoom = 12;
 }
 
 //

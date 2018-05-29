@@ -9,7 +9,10 @@ BrickNormal::BrickNormal(D3DXVECTOR3 position)
 	bound = Entity::GetBound();
 }
 
-BrickNormal::~BrickNormal(){}
+BrickNormal::~BrickNormal()
+{
+	delete mSprite;
+}
 
 
 RECT BrickNormal::rect() {

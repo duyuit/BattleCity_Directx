@@ -19,4 +19,5 @@ void MetalBrick::BeCollideWith_Bullet()
 }
 MetalBrick::~MetalBrick()
 {
+	delete mSprite;
 }

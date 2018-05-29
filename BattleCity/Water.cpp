@@ -9,7 +9,7 @@ Water::Water(D3DXVECTOR3 position)
 }
 
 
-
+ 
 RECT Water::rect() {
 	reg.left = 0;
 	reg.right = this->GetWidth();
@@ -20,4 +20,5 @@ RECT Water::rect() {
 }
 Water::~Water()
 {
+	delete mSprite;
 }

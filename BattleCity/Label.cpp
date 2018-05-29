@@ -15,13 +15,14 @@ Label::Label(string s, int w, int h,D3DXVECTOR2 position, D3DCOLOR color)
 	my_rect.left = position.x;
 	my_rect.top =position.y;
 	my_rect.bottom = my_rect.top + 500;
-	my_rect.right = my_rect.left + 500;
+	my_rect.right = my_rect.left + 1000;
 
 	my_color = color;
 }
 
 Label::~Label()
 {
+	//my_font->Release();
 }
 
 Label::Label()
@@ -34,7 +35,10 @@ void Label::Update(float dt)
 
 void Label::Draw(string s)
 {
-	if(s._Equal(""))
-	my_font->DrawTextA(GameGlobal::GetCurrentSpriteHandler(), m_string.c_str(), -1, &my_rect, DT_LEFT,my_color);
-	else 	my_font->DrawTextA(GameGlobal::GetCurrentSpriteHandler(), s.c_str(), -1, &my_rect, DT_LEFT, my_color);
+	if (my_font!=NULL)
+	{
+		if (s._Equal(""))
+			my_font->DrawTextA(GameGlobal::GetCurrentSpriteHandler(), m_string.c_str(), -1, &my_rect, DT_LEFT, my_color);
+		else 	my_font->DrawTextA(GameGlobal::GetCurrentSpriteHandler(), s.c_str(), -1, &my_rect, DT_LEFT, my_color);
+	}
 }

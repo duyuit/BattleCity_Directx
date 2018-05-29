@@ -247,11 +247,15 @@ RECT GameMap::GetWorldMapBound()
 
 GameMap::~GameMap()
 {
-	delete mMap;
+	delete mQuadTree;
 	for (size_t i = 0; i < mListTileset.size(); i++)
 	{
 		if (mListTileset[i])
 			delete mListTileset[i];
 	}
 	mListTileset.clear();
+	delete mMap;
+	for (auto ele : mListBrick)
+		delete ele;
+	
 }

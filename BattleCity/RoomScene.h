@@ -13,6 +13,7 @@ class RoomScene : public Scene
 {
 public:
 	RoomScene();
+	RoomScene(bool again);
 	~RoomScene();
 
 	TCPSocketPtr socket;
@@ -21,7 +22,7 @@ public:
 	void ReceivePakcet() override;
 	void OnKeyDown(int keyCode);
 	void OnKeyUp(int keyCode);
-	void ActiveFailedString();
+	
 protected:
 	Label label_room_select;
 	Label label_failed;

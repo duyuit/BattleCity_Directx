@@ -101,16 +101,21 @@ void World::HandleObject(Packet p)
 {
 	int ID = p.id;
 	int action = p.action;
-	int time_of_packet = p.time;
-
-
-
+	int last_time_id = p.last_time_id;
+	for(int i=0;i<mListWorldState.size();i++)
+	{
+		if(mListWorldState[i].Check_If_Late(ID,last_time_id))
+		{
+			Handle_Late_Packet(i - 1,action,ID);
+			break;
+		}
+	}
 	for (auto ele : mListPlayer)
 	{
 		if (ele->ID == ID)
 		{
 			ele->OnChangeAction((Action)action);
-			ele->last_move_time = time_of_packet;
+			ele->last_id_packet = last_time_id;
 			if (ele->mAction == Fight)
 			{
 				ele->Up_ID_OfBullet();
@@ -149,11 +154,6 @@ Item* World::check_time_and_add_item()
 }
 
 
-void World::find_or_create(int ID,int action,int time_of_packet)
-{
-	
-	
-}
 
 void World::CheckCollision(float dt)
 {
@@ -270,7 +270,33 @@ void World::CheckCollision(float dt)
 }
 void World::Update(float dt)
 {
-	if (GetTickCount() - time_to_start>500 && time_to_start != -1)
+	if (isStart)
+	{
+		time_remaining -= dt;
+		if( time_remaining < 0)
+		{
+		
+			for (auto cl : listClient)
+			{
+				OutputMemoryBitStream os;
+				os.Write(Define::GameOver, Define::bitofTypePacket);
+				cl->Send(os.GetBufferPtr(), os.GetByteLength());
+			}
+			if(Count_player_exit>4)
+			{
+				Count_player_exit = 0;
+				isStart = false;
+				listClient.clear();
+				time_remaining =10;
+				isStart = false;
+				isDelete = true;
+				mCurrent_ID = 0;
+			}
+			
+			return;
+		}
+	}
+	if (GetTickCount() - time_to_start>1000 && time_to_start != -1)
 	{
 		isStart = true;
 		CreatePlayerAndSend();
@@ -370,8 +396,11 @@ void World::SendWorld()
 			printf("Send error");
 
 	}
-
-	
+	//Add a State World to the list
+	WorldState world(mListPlayer);
+	mListWorldState.push_back(world);
+	if (mListWorldState.size() >= 10) 
+		mListWorldState.erase(mListWorldState.begin());
 	
 	mMap->Update(0);
 	count_brick_send = 0;
@@ -393,7 +422,7 @@ void World::AddMember(TCPSocketPtr socket)
 	socket->Send(os.GetBufferPtr(), os.GetByteLength());
 
 
-	if (mCurrent_ID ==2) //if enought player, Provide them first position by ID
+	if (mCurrent_ID ==4) //if enought player, Provide them first position by ID
 			time_to_start = GetTickCount(); //Wait last player
 	
 
@@ -425,19 +454,25 @@ void World::Handle_Exit(int id)
 	}
 	if (listClient.size() == 0)
 	{
-		if(name._Equal("Room 1") || name._Equal("Room 2"))
-		{
-			isDelete = false;
-		}
-		else
-		{
-			isDelete = true;
-		}
+		isDelete = true;
 		isStart = false;
 		mCurrent_ID = 0;
 	}
 }
 
+
+void World::Handle_Late_Packet(int id_of_worldState, int action, int id_player_late)
+{
+	mListWorldState[id_of_worldState].mListPlayer[id_player_late - 1].mAction = (Action)action;
+	mListWorldState[id_of_worldState].Update();
+	for(int i=id_of_worldState+1;i<mListWorldState.size();i++)
+	{
+		mListWorldState[i].ReplaceNewVerSion(mListWorldState[i - 1]);
+		mListWorldState[i].Update();
+	}
+	for (int i = 0; i < mListPlayer.size(); i++)
+		mListPlayer[i]->SetPosition(mListWorldState[mListWorldState.size()].mListPlayer[i].GetPosition());
+}
 
 D3DXVECTOR2 World::GetRandomPosition()
 {

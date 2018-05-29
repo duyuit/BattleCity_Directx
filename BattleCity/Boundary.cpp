@@ -19,4 +19,5 @@ RECT Boundary::rect() {
 
 Boundary::~Boundary()
 {
+	delete mSprite;
 }

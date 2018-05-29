@@ -16,7 +16,9 @@ namespace Define {
 	const int RequestName = 7;
 	const int ChooseRoom =8;
 	const int ExitGame = 9;
-	const int CreateRoom = 10;
+	const int CreateRoom = 10; 
+	const int GameOver = 11;
+	const int OutRoom = 12;
 
 	const int bitofTypePacket = 4;
 	const int bitofID = 11;

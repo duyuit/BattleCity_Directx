@@ -28,6 +28,8 @@ public:
 	bool is_protect = false;
 	float time_start_protect = 0;
 
+	int last_id_packet = 0;
+
 	int mScore_send = 0;
 	D3DXVECTOR2 position_add = D3DXVECTOR2(0, 0);
 

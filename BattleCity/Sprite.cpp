@@ -15,14 +15,8 @@ Sprite::Sprite()
 
 Sprite::~Sprite()
 {
-	try
-	{
-		if (mTexture != NULL)
-			mTexture->Release();
-		
-	}
-	catch(std::exception){};
-	
+	if(mTexture)
+		mTexture->Release();
 }
 
 void Sprite::InitWithSprite(const char* filePath, RECT sourceRect, int width, int height, D3DCOLOR colorKey)

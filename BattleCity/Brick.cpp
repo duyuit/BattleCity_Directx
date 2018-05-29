@@ -51,4 +51,5 @@ void Brick::Draw(D3DXVECTOR3 position, RECT sourceRect, D3DXVECTOR2 scale, D3DXV
 
 Brick::~Brick()
 {
+//	delete mSprite;
 }
