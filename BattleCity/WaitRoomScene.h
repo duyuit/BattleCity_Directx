@@ -27,7 +27,7 @@ public:
 	ID3DXFont				*myFont; //Font dung de ve chu
 	RECT myRect; //RECT chua myFont
 	std::string my_string; //Support Font
-
+	std::map<int, bool> keys;
 	string room_name;
 	Label label_name;
 	void Update(float dt);
@@ -35,6 +35,8 @@ public:
 	void ReceivePakcet() override;
 	void Draw();
 	void UpdateBox(int i);
+	void OnKeyDown(int keyCode);
+	void OnKeyUp(int keyCode);
 	WaitRoomScene();
 	~WaitRoomScene();
 };

@@ -1,51 +1,7 @@
-﻿  Boundary.cpp
-  Brick.cpp
-  BrickNormal.cpp
-  Bullet.cpp
-d:\git\battlecity_directx\battlecity\bullet.cpp(32): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
-d:\git\battlecity_directx\battlecity\bullet.cpp(34): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
-  Entity.cpp
-d:\git\battlecity_directx\battlecity\entity.cpp(38): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\git\battlecity_directx\battlecity\entity.cpp(52): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
-d:\git\battlecity_directx\battlecity\entity.cpp(53): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
-d:\git\battlecity_directx\battlecity\entity.cpp(54): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
-d:\git\battlecity_directx\battlecity\entity.cpp(55): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
-d:\git\battlecity_directx\battlecity\entity.cpp(109): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-d:\git\battlecity_directx\battlecity\entity.cpp(114): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
-d:\git\battlecity_directx\battlecity\entity.cpp(119): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-d:\git\battlecity_directx\battlecity\entity.cpp(124): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
-  Game.cpp
+﻿  Game.cpp
   c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
 d:\git\battlecity_directx\battlecity\game.cpp(13): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
 d:\git\battlecity_directx\battlecity\game.cpp(87): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-  GameCollision.cpp
-  GameGlobal.cpp
-  GameMap.cpp
-d:\git\battlecity_directx\battlecity\gamemap.cpp(12): warning C4018: '<': signed/unsigned mismatch
-d:\git\battlecity_directx\battlecity\gamemap.cpp(47): warning C4018: '<': signed/unsigned mismatch
-d:\git\battlecity_directx\battlecity\gamemap.cpp(56): warning C4018: '<': signed/unsigned mismatch
-d:\git\battlecity_directx\battlecity\gamemap.cpp(60): warning C4018: '<': signed/unsigned mismatch
-d:\git\battlecity_directx\battlecity\gamemap.cpp(70): warning C4018: '<': signed/unsigned mismatch
-d:\git\battlecity_directx\battlecity\gamemap.cpp(72): warning C4018: '<': signed/unsigned mismatch
-d:\git\battlecity_directx\battlecity\gamemap.cpp(93): warning C4244: 'argument': conversion from 'size_t' to 'FLOAT', possible loss of data
-d:\git\battlecity_directx\battlecity\gamemap.cpp(178): warning C4018: '<': signed/unsigned mismatch
-d:\git\battlecity_directx\battlecity\gamemap.cpp(191): warning C4018: '<': signed/unsigned mismatch
-d:\git\battlecity_directx\battlecity\gamemap.cpp(193): warning C4018: '<': signed/unsigned mismatch
-d:\git\battlecity_directx\battlecity\gamemap.cpp(219): warning C4244: 'argument': conversion from 'size_t' to 'FLOAT', possible loss of data
-  Item.cpp
-  MemoryBitStream.cpp
-  MetalBrick.cpp
-  NPC.cpp
-d:\git\battlecity_directx\battlecity\npc.cpp(74): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
-d:\git\battlecity_directx\battlecity\npc.cpp(76): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
-  Player.cpp
-d:\git\battlecity_directx\battlecity\player.cpp(181): warning C4244: '=': conversion from 'int' to 'FLOAT', possible loss of data
-d:\git\battlecity_directx\battlecity\player.cpp(264): warning C4018: '>': signed/unsigned mismatch
-d:\git\battlecity_directx\battlecity\player.cpp(343): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
-d:\git\battlecity_directx\battlecity\player.cpp(345): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
-  ProtectPlayer.cpp
-  QuadTree.cpp
-  Room.cpp
   RoomScene.cpp
 d:\git\battlecity_directx\battlecity\roomscene.cpp(11): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 d:\git\battlecity_directx\battlecity\roomscene.cpp(12): warning C4244: 'argument': conversion from 'int' to 'FLOAT', possible loss of data
@@ -58,11 +14,6 @@ d:\git\battlecity_directx\battlecity\roomscene.cpp(131): warning C4018: '<': sig
 d:\git\battlecity_directx\battlecity\roomscene.cpp(146): warning C4018: '<': signed/unsigned mismatch
 d:\git\battlecity_directx\battlecity\roomscene.cpp(169): warning C4018: '<': signed/unsigned mismatch
 d:\git\battlecity_directx\battlecity\roomscene.cpp(174): warning C4018: '>': signed/unsigned mismatch
-  Sprite.cpp
-d:\git\battlecity_directx\battlecity\sprite.cpp(24): warning C4101: 'result': unreferenced local variable
-d:\git\battlecity_directx\battlecity\sprite.cpp(162): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-d:\git\battlecity_directx\battlecity\sprite.cpp(167): warning C4244: 'argument': conversion from 'int' to 'FLOAT', possible loss of data
-d:\git\battlecity_directx\battlecity\sprite.cpp(248): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   TestScene.cpp
 d:\git\battlecity_directx\battlecity\testscene.cpp(83): warning C4244: 'argument': conversion from 'int' to 'FLOAT', possible loss of data
 d:\git\battlecity_directx\battlecity\testscene.cpp(86): warning C4244: 'argument': conversion from 'int' to 'FLOAT', possible loss of data
@@ -76,13 +27,8 @@ d:\git\battlecity_directx\battlecity\testscene.cpp(188): warning C4018: '<': sig
 d:\git\battlecity_directx\battlecity\testscene.cpp(199): warning C4018: '<': signed/unsigned mismatch
 d:\git\battlecity_directx\battlecity\testscene.cpp(337): warning C4244: 'argument': conversion from 'int' to 'FLOAT', possible loss of data
 d:\git\battlecity_directx\battlecity\testscene.cpp(401): warning C4018: '<': signed/unsigned mismatch
-  Generating Code...
-  Compiling...
-  TestTiepScene.cpp
-  UpgradeItem.cpp
   WaitRoomScene.cpp
-d:\git\battlecity_directx\battlecity\waitroomscene.cpp(27): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\git\battlecity_directx\battlecity\waitroomscene.cpp(44): warning C4244: 'argument': conversion from 'int' to 'FLOAT', possible loss of data
-  Water.cpp
+d:\git\battlecity_directx\battlecity\waitroomscene.cpp(28): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\git\battlecity_directx\battlecity\waitroomscene.cpp(45): warning C4244: 'argument': conversion from 'int' to 'FLOAT', possible loss of data
   Generating Code...
   BattleCity.vcxproj -> D:\Git\BattleCity_Directx\Debug\BattleCity.exe
