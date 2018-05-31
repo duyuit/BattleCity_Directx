@@ -1,6 +1,7 @@
 #include "WaitRoomScene.h"
 #include "SceneManager.h"
 #include "GameLog.h"
+#include "RoomScene.h"
 
 
 void WaitRoomScene::LoadContent()
@@ -113,6 +114,23 @@ void WaitRoomScene::UpdateBox(int k)
 		}
 
 }
+
+
+void WaitRoomScene::OnKeyDown(int keyCode)
+{
+	keys[keyCode] = true;
+	if(keyCode==VK_ESCAPE)
+	{
+		GameGlobal::SendExitGame();
+		SceneManager::GetInstance()->ReplaceScene(new RoomScene());
+	}
+}
+
+void WaitRoomScene::OnKeyUp(int keyCode)
+{
+	keys[keyCode] = false;
+}
+
 void WaitRoomScene::Update(float dt)
 {
 
