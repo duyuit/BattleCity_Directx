@@ -27,7 +27,8 @@ public:
 		ProtectPlayerItem,
 		UpgradeItem,
 		boundary,
-		npc
+		npc,
+		boss
 	};
 	int ID = 0;
 	Direction dir = up;
@@ -87,7 +88,7 @@ protected:
 	float posX, posY;
 
 	//phan toc vx, vy
-	float vx, vy;
+	float vx=0, vy=0;
 
 	//size cua entity
 	float width, height;

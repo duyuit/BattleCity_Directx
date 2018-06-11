@@ -9,6 +9,7 @@
 #include "UpgradeItem.h"
 #include "ProtectPlayer.h"
 #include "WorldState.h"
+#include "Boss.h"
 using namespace std;
 class World
 {
@@ -21,7 +22,7 @@ public:
 	std::string name="";
 	int last_time_add_item = 0;
 	GameMap *mMap;
-
+	std::vector<Boss*> mBoss;
 	std::vector<TCPSocketPtr> listClient;
 	std::vector<NPC*>  mListNPC;
 	std::vector<PlayerServer*>  mListPlayer;
@@ -36,7 +37,7 @@ public:
 	int ID = 0;
 	int Count_player_exit = 0;
 
-	float time_remaining = 10;
+	float time_remaining = 120;
 	bool isDelete = false;
 	bool isStart = false;
 	int mCurrent_ID = 0;

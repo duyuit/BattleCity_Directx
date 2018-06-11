@@ -85,6 +85,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Boss.h" />
     <ClInclude Include="Boundary.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="BrickNormal.h" />
@@ -136,6 +137,7 @@
     <ClInclude Include="WorldState.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Boss.cpp" />
     <ClCompile Include="Boundary.cpp" />
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="BrickNormal.cpp" />

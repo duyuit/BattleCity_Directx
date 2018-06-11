@@ -60,28 +60,31 @@ TestScene::TestScene(TCPSocketPtr socket, vector<Player*> list)
 
 	//Add 16 bullet
 	{
-		mListBullets.push_back(new Bullet(11));
-		mListBullets.push_back(new Bullet(12));
-		mListBullets.push_back(new Bullet(13));
-		mListBullets.push_back(new Bullet(14));
-		mListBullets.push_back(new Bullet(21));
-		mListBullets.push_back(new Bullet(22));
-		mListBullets.push_back(new Bullet(23));
-		mListBullets.push_back(new Bullet(24));
-		mListBullets.push_back(new Bullet(31));
-		mListBullets.push_back(new Bullet(32));
-		mListBullets.push_back(new Bullet(33));
-		mListBullets.push_back(new Bullet(34));
-		mListBullets.push_back(new Bullet(41));
-		mListBullets.push_back(new Bullet(42));
-		mListBullets.push_back(new Bullet(43));
-		mListBullets.push_back(new Bullet(44));
+		mListBullets.push_back(new Bullet(11,1));
+		mListBullets.push_back(new Bullet(12, 1));
+		mListBullets.push_back(new Bullet(13, 1));
+		mListBullets.push_back(new Bullet(14, 1));
+		mListBullets.push_back(new Bullet(21, 2));
+		mListBullets.push_back(new Bullet(22, 2));
+		mListBullets.push_back(new Bullet(23, 2));
+		mListBullets.push_back(new Bullet(24, 2));
+		mListBullets.push_back(new Bullet(31, 3));
+		mListBullets.push_back(new Bullet(32, 3));
+		mListBullets.push_back(new Bullet(33, 3));
+		mListBullets.push_back(new Bullet(34, 3));
+		mListBullets.push_back(new Bullet(41, 4));
+		mListBullets.push_back(new Bullet(42, 4));
+		mListBullets.push_back(new Bullet(43, 4));
+		mListBullets.push_back(new Bullet(44, 4));
 	}
 
-
+		mBoss.push_back(new Boss(1,D3DXVECTOR2(68,462)));
+		mBoss.push_back(new Boss(2, D3DXVECTOR2(392, 727)));
+		mBoss.push_back(new Boss(3, D3DXVECTOR2(412, 47)));
+		mBoss.push_back(new Boss(4, D3DXVECTOR2(740, 462)));
 	{
 		label_time_remaing = Label("", 30, 10, D3DXVECTOR2(GameGlobal::GetWidth() - 450, 600));
-
+		FPS= Label("", 30, 10, D3DXVECTOR2(GameGlobal::GetWidth()-100, GameGlobal::GetHeight() - 100));
 		
 		label_RTT = Label("", 30, 10, D3DXVECTOR2(50, GameGlobal::GetHeight() - 100));
 		label_GameOver= Label("", 50, 30, D3DXVECTOR2(GameGlobal::GetWidth() / 2 - 300, GameGlobal::GetHeight() / 2));
@@ -89,6 +92,7 @@ TestScene::TestScene(TCPSocketPtr socket, vector<Player*> list)
 		label_Score2 = Label("", 30, 10, D3DXVECTOR2(GameGlobal::GetWidth() - 450, 100), D3DCOLOR_XRGB(195, 195, 195));
 		label_Score3= Label("", 30, 10, D3DXVECTOR2(GameGlobal::GetWidth() - 450, 200) ,D3DCOLOR_XRGB(34, 177, 76));
 		label_Score4 = Label("", 30, 10, D3DXVECTOR2(GameGlobal::GetWidth() - 450, 300), D3DCOLOR_XRGB(237, 28, 36));
+		label_youLose= Label("",50, 30, D3DXVECTOR2(GameGlobal::GetWidth()/2-50, GameGlobal::GetHeight() / 2), D3DCOLOR_XRGB(255, 255, 255));
 	}
 
 
@@ -116,6 +120,7 @@ TestScene::~TestScene()
 
 void TestScene::Update(float dt)
 {
+
 	if (isOver)
 	{
 		if (GetTickCount() - last_time_over >= 2000)
@@ -128,8 +133,8 @@ void TestScene::Update(float dt)
 	}
 	time_remain -= dt;
 
-	mPlayer->HandleKeyboard(keys);
 	
+	mPlayer->HandleKeyboard(keys);
 	CheckCollision(dt);
 	mMap->Update(dt);
 
@@ -162,11 +167,13 @@ void TestScene::Update(float dt)
 	}
 	for (auto ele : mListPoint)
 		ele->Update();
+
 }
 
 void TestScene::Draw()
 {
-	
+	for (auto boss : mBoss)
+		boss->Draw();
 	
 	for (auto ele:mListPlayer)
 	{
@@ -213,18 +220,23 @@ void TestScene::Draw()
 	{
 		DrawGameOver();
 	}	
-	label_time_remaing.Draw("Time remaining : " + std::to_string(time_remain) + "s");
+	label_time_remaing.Draw("Time remaining : " + std::to_string(time_remain) + "s" + std::to_string(mPlayer->GetPosition().x) +" "+ std::to_string(mPlayer->GetPosition().y));
 	if(mPlayer->isDelete)
 	{
 		int delta = 4 - (GetTickCount() - mPlayer->last_time_die)/1000;
 		string s = "Respawn in " + std::to_string(delta);
 		label_GameOver.Draw(s);
 	}
-
+	if(mPlayer->isLose)
+	{
+		label_youLose.Draw("YOU LOSE");
+	}
+	
+	FPS.Draw(std::to_string(GameGlobal::fps));
 	label_Score1.Draw(mListPlayer[0]->mName + ": " + std::to_string(mListPlayer.at(0)->mScore));
-	label_Score2.Draw(mListPlayer[1]->mName + ": " + std::to_string(mListPlayer.at(1)->mScore));
-	label_Score3.Draw(mListPlayer[2]->mName + ": " + std::to_string(mListPlayer.at(2)->mScore));
-	label_Score4.Draw(mListPlayer[3]->mName + ": " + std::to_string(mListPlayer.at(3)->mScore));
+//	label_Score2.Draw(mListPlayer[1]->mName + ": " + std::to_string(mListPlayer.at(1)->mScore));
+	//label_Score3.Draw(mListPlayer[2]->mName + ": " + std::to_string(mListPlayer.at(2)->mScore));
+	//label_Score4.Draw(mListPlayer[3]->mName + ": " + std::to_string(mListPlayer.at(3)->mScore));
 
 }
 
@@ -293,7 +305,23 @@ void TestScene::CheckCollision(float dt)
 				item->BeCollideWith_Player();
 			}
 		}
-		
+		for (auto player_another : mListPlayer)
+		{
+			if(player_another->ID == pl->ID) continue;
+			if (GameCollision::isCollide(pl, player_another, dt))
+			{
+				pl->CollisionWith(player_another);
+				player_another->CollisionWith(pl);
+			}
+		}
+		for (auto npc : mListNPC)
+		{
+			if (GameCollision::isCollide(pl, npc, dt))
+			{
+				pl->CollisionWith(npc);
+				npc->CollisionWith(pl);
+			}
+		}
 	}
 	for (auto npc : mListNPC)
 	{
@@ -305,9 +333,66 @@ void TestScene::CheckCollision(float dt)
 			if (GameCollision::isCollide(npc, brick, dt))
 				npc->CollideWith_World();
 		}
-
+		for (auto npc2 : mListNPC)
+		{
+			if (npc2->ID == npc->ID) continue;
+			if (GameCollision::isCollide(npc2, npc, dt))
+			{
+				npc2->CollisionWith(npc);
+				npc->CollisionWith(npc2);
+			}
+		}
 	}
 
+	for(auto bullet:mListBullets)
+	{
+		if(bullet->isActive)
+		{
+			vector<Entity*> listCollision;
+			mMap->GetQuadTree()->getEntitiesCollideAble(listCollision, bullet);
+			for (auto brick : listCollision)
+			{
+				if (brick->isDelete || brick->Tag==Entity::Water) continue;
+				if (GameCollision::isCollide(bullet, brick, dt))
+				{
+					if (brick->Tag == Entity::Brick)
+						mMap->DeleteByID(brick->ID);
+					bullet->isActive = false;
+					Explosion* explosion = new Explosion(bullet->GetPosition(), false);
+					mListAnimate.push_back(explosion);
+					
+				}
+			}
+			for(auto pl:mListPlayer)
+			{
+				if(bullet->ID_of_player==pl->ID) continue;
+				if (GameCollision::isCollide(bullet, pl, dt))
+				{
+					bullet->isActive = false;
+					Explosion* explosion = new Explosion(bullet->GetPosition(), false);
+					mListAnimate.push_back(explosion);
+				}
+			}
+			for (auto npc : mListNPC)
+			{
+				if (GameCollision::isCollide(bullet, npc, dt))
+				{
+					bullet->isActive = false;
+					Explosion* explosion = new Explosion(bullet->GetPosition(), false);
+					mListAnimate.push_back(explosion);
+				}
+			}
+			for (auto boss : mBoss)
+			{
+				if (GameCollision::isCollide(bullet, boss, dt))
+				{
+					bullet->isActive = false;
+					Explosion* explosion = new Explosion(bullet->GetPosition(), false);
+					mListAnimate.push_back(explosion);
+				}
+			}
+		}
+	}
 
 
 }
@@ -386,11 +471,11 @@ void TestScene::find_and_handle(int tag, InputMemoryBitStream &is)
 			if (ele->ID == id)
 			{
 				ele->Read(is);
-				if(ele->isActive == false)
+				/*if(ele->isActive == false)
 				{
 					Explosion* explosion = new Explosion(ele->GetPosition(), false);
 					mListAnimate.push_back(explosion);
-				}
+				}*/
 				return;
 
 			}
@@ -434,6 +519,27 @@ void TestScene::find_and_handle(int tag, InputMemoryBitStream &is)
 					{
 						Explosion* explosion = new Explosion(ele->last_position,true);
  						mListAnimate.push_back(explosion);
+					}
+				}
+			}
+		}
+		break;
+	case Entity::boss:
+		{
+			for(auto ele:mBoss)
+			{
+				if(ele->ID==id)
+				{
+					ele->Read(is);
+					if (ele->mHP <= 0)
+					{
+						ele->isDelete = true;
+						for (auto pl : mListPlayer)
+							if (pl->ID == ele->ID)
+							{
+								pl->SetPosition(-100, -100);
+								pl->isLose = true;
+							}
 					}
 				}
 			}

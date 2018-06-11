@@ -71,6 +71,7 @@ void Entity::Update(float dt)
 
 void Entity::CollisionWith(Entity* en)
 {
+	//isDelete = true;
 }
 
 void Entity::SetPosition(float x, float y)

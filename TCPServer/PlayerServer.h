@@ -28,6 +28,7 @@ public:
 	bool is_protect = false;
 	float time_start_protect = 0;
 
+	bool isLose = false;
 	int last_id_packet = 0;
 
 	int mScore_send = 0;

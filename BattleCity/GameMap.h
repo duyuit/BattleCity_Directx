@@ -31,6 +31,7 @@ public:
 	std::vector<Brick*> GetListBrick();
 	void eraseBrick(int i);
 	~GameMap();
+	void DeleteByID(int id);
 private:
 	void LoadMap(char* filePath);
 	bool isContain(RECT rect1, RECT rect2);

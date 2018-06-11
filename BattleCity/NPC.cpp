@@ -36,6 +36,15 @@ void NPC::CollideWith_World()
 	vy = 0;
 }
 
+void NPC::CollisionWith(Entity* en)
+{
+	if (en->Tag == EntityTypes::player || en->Tag == EntityTypes::npc)
+	{
+		vx = 0;
+		vy = 0;
+	}
+}
+
 bool NPC::Check_to_create_anim()
 {
 	if (mHeal == 0 && last_mHeal != 0)
@@ -65,16 +74,17 @@ void NPC::Update(float dt)
 		SetPosition(-30, -30);
 		return;
 	}
+	//OnsetDir();
 	Entity::Update(dt);
 }
 
 RECT NPC::GetBound()
 {
 	RECT rect;
-	rect.left = this->posX - mCurrentSprite->GetWidth() / 2;
-	rect.right = rect.left + mCurrentSprite->GetWidth();
-	rect.top = this->posY - mCurrentSprite->GetHeight() / 2;
-	rect.bottom = rect.top + mCurrentSprite->GetHeight();
+	rect.left = this->posX - 32 / 2;
+	rect.right = rect.left + 23;
+	rect.top = this->posY -32/ 2;
+	rect.bottom = rect.top + 32;
 	return rect;
 }
 
@@ -84,13 +94,13 @@ void NPC::Write(OutputMemoryBitStream& os)
 
 void NPC::OnsetDir()
 {
-	switch (dir) {
+	switch (dir) 
+	{
 	case left:MoveLeft(); mCurrentSprite = mLeftSprite; break;
 	case right:MoveRight(); mCurrentSprite = mRightSprite; break;
 	case up:MoveUp(); mCurrentSprite = mUpSprite; break;
 	case down:MoveDown(); mCurrentSprite = mDownSprite; break;
-	case Direction::none: break;
-	default: ; }
+	}
 }
 void NPC::MoveLeft()
 {

@@ -8,10 +8,11 @@ Bullet::Bullet()
 	mCurrentSprite = new Sprite("Resource files/Somethings.png", RECT{ 177,14, 177 + 10,14 + 10 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
 }
 
-Bullet::Bullet(int id)
+Bullet::Bullet(int id, int id_pl)
 {
 	Tag = bullet;
 	ID = id;
+	ID_of_player = id_pl;
 	mCurrentSprite = new Sprite("Resource files/Somethings.png", RECT{ 177,14, 177 + 10,14 + 10 }, 0, 0, D3DXCOLOR(255, 0, 255, 255));
 }
 

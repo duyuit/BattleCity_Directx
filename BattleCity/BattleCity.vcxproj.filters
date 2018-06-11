@@ -55,6 +55,9 @@
     <Filter Include="FrameWork\GameObjects\MapReader">
       <UniqueIdentifier>{32d99d3d-91d0-4e94-a1cc-3849575a35fb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FrameWork\GameObjects\Boss">
+      <UniqueIdentifier>{952cfc70-4f8a-48a3-b7be-1bb7d1fbe320}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -221,6 +224,9 @@
     </ClCompile>
     <ClCompile Include="Label.cpp">
       <Filter>FrameWork\GameComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss.cpp">
+      <Filter>FrameWork\GameObjects\Boss</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -406,6 +412,9 @@
     </ClInclude>
     <ClInclude Include="Label.h">
       <Filter>FrameWork\GameComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss.h">
+      <Filter>FrameWork\GameObjects\Boss</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

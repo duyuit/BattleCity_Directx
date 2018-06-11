@@ -232,27 +232,28 @@ void Player::Update(float dt)
 }
 void Player::HandleKeyboard(std::map<int, bool> keys)
 {
+	if (isLose) return;
 	if (isDelete) return;
 	if (is_respaw) return;
 	
 	if (keys[VK_LEFT]) {
-		if (mAction != GoLeft)
+		//if (mAction != GoLeft)
 		MoveLeft();
 	}
 	else if (keys[VK_RIGHT]) {
-		if (mAction != GoRight)
+		//if (mAction != GoRight)
 		MoveRight();
 	}
 	else if (keys[VK_DOWN]) {
-		if (mAction != GoDown)
+		//if (mAction != GoDown)
 		MoveDown();
 	}
 	else if (keys[VK_UP]) {
-		if (mAction != GoUp)
+		//if (mAction != GoUp)
 		MoveUp();
 	}
 	else {
-		if (mAction != Idle)
+		//if (mAction != Idle)
 		Stand();
 	}
 	
@@ -270,9 +271,9 @@ void Player::HandleKeyboard(std::map<int, bool> keys)
 
 	
 
-	if(mLastAction!=mAction)
-	{
-	
+	//if(mLastAction!=mAction)
+	//{
+	//
 		OutputMemoryBitStream os;
 		os.Write(Define::InputPacket, Define::bitofTypePacket);
 		os.Write(ID, Define::bitofID);
@@ -280,7 +281,7 @@ void Player::HandleKeyboard(std::map<int, bool> keys)
 		os.Write(last_id_packet++,Define::bitofID);
 		if (last_id_packet == 1000) last_id_packet = 0;
 		GameGlobal::socket->Send(os.GetBufferPtr(), os.GetByteLength());
-	}
+	//}
 		
 	mLastAction = mAction;
 	
@@ -288,6 +289,7 @@ void Player::HandleKeyboard(std::map<int, bool> keys)
 }
 void Player::Draw(D3DXVECTOR3 position, RECT sourceRect, D3DXVECTOR2 scale, D3DXVECTOR2 transform, float angle, D3DXVECTOR2 rotationCenter, D3DXCOLOR colorKey)
 {
+	if (isLose) return;
 	if (isDelete) return;
 	if (is_respaw)
 	{
@@ -349,7 +351,11 @@ RECT Player::GetBound()
 
 void Player::CollisionWith(Entity* en)
 {
-
+	if(en->Tag==EntityTypes::player || en->Tag==EntityTypes::npc)
+	{
+		vx = 0;
+		vy = 0;
+	}
 }
 
 void Player::onSetID(int ID)

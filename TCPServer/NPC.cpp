@@ -51,6 +51,10 @@ void NPC::CollisionWith(Entity* en)
 		{
 			Respawn();
 		}
+	}else if(en->Tag == EntityTypes::player || en->Tag == EntityTypes::npc)
+	{
+		vx = 0;
+		vy = 0;
 	}
 }
 

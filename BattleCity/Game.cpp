@@ -59,7 +59,7 @@ void Game::InitLoop()
 
 	//std::thread task_receive_packet(ReceivePacket);
 	//task_receive_packet.detach();
-	float tickPerFrame = 1.0f / mFPS, delta = 0;
+	float tickPerFrame = 1.0f / 60, delta = 0;
 
 	while (GameGlobal::isGameRunning)
 	{
@@ -78,7 +78,7 @@ void Game::InitLoop()
 		
 		if (delta >= tickPerFrame)
 		{
-		
+			GameGlobal::fps = 1 / delta;
 			Update(1.0f / 60);
 			delta = 0;
 		}

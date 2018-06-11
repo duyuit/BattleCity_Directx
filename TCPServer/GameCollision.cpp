@@ -3,8 +3,8 @@
 GameCollision::GameCollision(){}
 
 bool GameCollision::isCollide(Entity *ent1, Entity *ent2,float dt) {
-	if (abs(ent1->GetPosition().x - ent2->GetPosition().x)>50) return false;
-	if (abs(ent1->GetPosition().y - ent2->GetPosition().y)>50) return false;
+	//if (abs(ent1->GetPosition().x - ent2->GetPosition().x)>50) return false;
+	//if (abs(ent1->GetPosition().y - ent2->GetPosition().y)>50) return false;
 
 	float cur1X = ent1->GetPosition().x;
 	float cur1Y = ent1->GetPosition().y;
