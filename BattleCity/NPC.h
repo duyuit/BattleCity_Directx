@@ -15,6 +15,7 @@ public:
 	float last_random = 0;
 	bool isDelete = false;
 
+	void CollisionWith(Entity* en) override;
 	D3DXVECTOR2 last_position = D3DXVECTOR2(0, 0);
 	bool Check_to_create_anim();
 	void Read(InputMemoryBitStream& is) override;

@@ -1,34 +1,16 @@
-﻿  Game.cpp
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-d:\git\battlecity_directx\battlecity\game.cpp(13): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-d:\git\battlecity_directx\battlecity\game.cpp(87): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-  RoomScene.cpp
-d:\git\battlecity_directx\battlecity\roomscene.cpp(11): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\git\battlecity_directx\battlecity\roomscene.cpp(12): warning C4244: 'argument': conversion from 'int' to 'FLOAT', possible loss of data
-d:\git\battlecity_directx\battlecity\roomscene.cpp(43): warning C4244: 'argument': conversion from 'int' to 'FLOAT', possible loss of data
-d:\git\battlecity_directx\battlecity\roomscene.cpp(51): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\git\battlecity_directx\battlecity\roomscene.cpp(52): warning C4244: 'argument': conversion from 'int' to 'FLOAT', possible loss of data
-d:\git\battlecity_directx\battlecity\roomscene.cpp(61): warning C4244: 'argument': conversion from 'int' to 'FLOAT', possible loss of data
-d:\git\battlecity_directx\battlecity\roomscene.cpp(78): warning C4018: '<': signed/unsigned mismatch
-d:\git\battlecity_directx\battlecity\roomscene.cpp(131): warning C4018: '<': signed/unsigned mismatch
-d:\git\battlecity_directx\battlecity\roomscene.cpp(146): warning C4018: '<': signed/unsigned mismatch
-d:\git\battlecity_directx\battlecity\roomscene.cpp(169): warning C4018: '<': signed/unsigned mismatch
-d:\git\battlecity_directx\battlecity\roomscene.cpp(174): warning C4018: '>': signed/unsigned mismatch
-  TestScene.cpp
-d:\git\battlecity_directx\battlecity\testscene.cpp(83): warning C4244: 'argument': conversion from 'int' to 'FLOAT', possible loss of data
+﻿  TestScene.cpp
 d:\git\battlecity_directx\battlecity\testscene.cpp(86): warning C4244: 'argument': conversion from 'int' to 'FLOAT', possible loss of data
 d:\git\battlecity_directx\battlecity\testscene.cpp(87): warning C4244: 'argument': conversion from 'int' to 'FLOAT', possible loss of data
-d:\git\battlecity_directx\battlecity\testscene.cpp(88): warning C4244: 'argument': conversion from 'int' to 'FLOAT', possible loss of data
 d:\git\battlecity_directx\battlecity\testscene.cpp(89): warning C4244: 'argument': conversion from 'int' to 'FLOAT', possible loss of data
 d:\git\battlecity_directx\battlecity\testscene.cpp(90): warning C4244: 'argument': conversion from 'int' to 'FLOAT', possible loss of data
 d:\git\battlecity_directx\battlecity\testscene.cpp(91): warning C4244: 'argument': conversion from 'int' to 'FLOAT', possible loss of data
-d:\git\battlecity_directx\battlecity\testscene.cpp(154): warning C4018: '<': signed/unsigned mismatch
-d:\git\battlecity_directx\battlecity\testscene.cpp(188): warning C4018: '<': signed/unsigned mismatch
-d:\git\battlecity_directx\battlecity\testscene.cpp(199): warning C4018: '<': signed/unsigned mismatch
-d:\git\battlecity_directx\battlecity\testscene.cpp(337): warning C4244: 'argument': conversion from 'int' to 'FLOAT', possible loss of data
-d:\git\battlecity_directx\battlecity\testscene.cpp(401): warning C4018: '<': signed/unsigned mismatch
-  WaitRoomScene.cpp
-d:\git\battlecity_directx\battlecity\waitroomscene.cpp(28): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\git\battlecity_directx\battlecity\waitroomscene.cpp(45): warning C4244: 'argument': conversion from 'int' to 'FLOAT', possible loss of data
-  Generating Code...
+d:\git\battlecity_directx\battlecity\testscene.cpp(92): warning C4244: 'argument': conversion from 'int' to 'FLOAT', possible loss of data
+d:\git\battlecity_directx\battlecity\testscene.cpp(93): warning C4244: 'argument': conversion from 'int' to 'FLOAT', possible loss of data
+d:\git\battlecity_directx\battlecity\testscene.cpp(94): warning C4244: 'argument': conversion from 'int' to 'FLOAT', possible loss of data
+d:\git\battlecity_directx\battlecity\testscene.cpp(95): warning C4244: 'argument': conversion from 'int' to 'FLOAT', possible loss of data
+d:\git\battlecity_directx\battlecity\testscene.cpp(159): warning C4018: '<': signed/unsigned mismatch
+d:\git\battlecity_directx\battlecity\testscene.cpp(195): warning C4018: '<': signed/unsigned mismatch
+d:\git\battlecity_directx\battlecity\testscene.cpp(206): warning C4018: '<': signed/unsigned mismatch
+d:\git\battlecity_directx\battlecity\testscene.cpp(422): warning C4244: 'argument': conversion from 'int' to 'FLOAT', possible loss of data
+d:\git\battlecity_directx\battlecity\testscene.cpp(486): warning C4018: '<': signed/unsigned mismatch
   BattleCity.vcxproj -> D:\Git\BattleCity_Directx\Debug\BattleCity.exe

@@ -231,7 +231,7 @@ void GameMap::Draw()
 	for (size_t i = 0; i < mListBrick.size(); i++)
 	{
 		//D3DXVECTOR2 a = mListBrick[i]->GetPosition();
-		mDebugDraw->DrawRect(mListBrick[i]->GetBound());
+		//mDebugDraw->DrawRect(mListBrick[i]->GetBound());
 		mListBrick[i]->Draw();
 	}
 }
@@ -258,4 +258,27 @@ GameMap::~GameMap()
 	for (auto ele : mListBrick)
 		delete ele;
 	
+}
+
+void GameMap::DeleteByID(int id)
+{
+	for (int i = 0; i < mListBrick.size(); ++i)
+	{
+		if (mListBrick[i]->ID==id)
+		{
+
+			vector<Entity*> list_of_brick_quad;
+			GetQuadTree()->getAllEntities(list_of_brick_quad);
+			for (auto brick2 : list_of_brick_quad)
+			{
+				if (mListBrick[i]->ID == brick2->ID)
+				{
+					brick2->isDelete = true;
+					break;
+				}
+			}
+			eraseBrick(i);
+			i--;
+		}
+	}
 }

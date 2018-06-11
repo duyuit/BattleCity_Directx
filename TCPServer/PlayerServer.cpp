@@ -100,6 +100,10 @@ void PlayerServer::CollisionWith(Entity* en)
 		if(mHeal>0)
 		mHeal--;
 		
+	}else if(en->Tag==EntityTypes::player || en->Tag == EntityTypes::npc)
+	{
+		vx = 0;
+		vy = 0;
 	}
 }
 
@@ -143,6 +147,7 @@ void PlayerServer::onHandleKeyboard(int action)
 
  void PlayerServer::Update(float dt)
 {
+	 if (isLose) return;
 	if (mHeal == 0)
 	{
 		if (!isWaiting)

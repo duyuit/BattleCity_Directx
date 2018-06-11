@@ -34,6 +34,7 @@ public:
 	static TCPSocketPtr socket;
 	static bool isGameRunning; //trang thai xem game co dang chay khong
 	static int RTT;
+	static float fps;
 	static LPDIRECT3DTEXTURE9 mMapTexture;
 	static LPDIRECT3DTEXTURE9 mTankTexture;
 	static LPDIRECT3DTEXTURE9 mBoxTexture;

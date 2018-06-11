@@ -17,7 +17,7 @@
 #include "Explosion.h"
 #include "Pointed.h"
 #include "Label.h"
-
+#include "Boss.h"
 class TestScene : public Scene
 {
 public:
@@ -33,6 +33,7 @@ public:
 	
 	bool isReady = false;
 	GameMap *mMap;
+	vector<Boss*> mBoss;
 	vector<Pointed*> mListPoint;
 	vector<Explosion*> mListAnimate;
 	//vector<Entity*> mListObjects;
@@ -45,11 +46,14 @@ public:
 	void OnKeyUp(int keyCode);
 	void find_and_handle(int tag, InputMemoryBitStream &is);
 protected:
+
 	int last_time_over = 0;
 	Camera *mCamera;
 	Player *mPlayer;
 	TCPSocketPtr socket;
 	std::map<int, bool> keys;
+	Label label_youLose;
+	Label FPS;
 	Label label_time_remaing;
 	Label label_RTT;
 	Label label_GameOver;

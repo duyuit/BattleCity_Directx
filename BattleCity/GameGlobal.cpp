@@ -12,6 +12,7 @@ bool GameGlobal::isGameRunning = true;
 IDirect3DSurface9* GameGlobal::backSurface = nullptr;
 TCPSocketPtr GameGlobal::socket = NULL;
 int GameGlobal::RTT = 0;
+float GameGlobal::fps = 0;
 LPDIRECT3DTEXTURE9 GameGlobal::mMapTexture = NULL;
 LPDIRECT3DTEXTURE9 GameGlobal::mTankTexture = NULL;
 LPDIRECT3DTEXTURE9 GameGlobal::mBoxTexture = NULL;

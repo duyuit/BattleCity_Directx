@@ -38,7 +38,8 @@ public:
 		ProtectPlayerItem,
 		UpgradeItem,
 		boundary,
-		npc
+		npc,
+		boss
 	};
 	bool isDelete = false;
 	int ID = 0;
@@ -91,7 +92,7 @@ protected:
 	float posX, posY;
 
 	//phan toc vx, vy
-	float vx, vy;
+	float vx=0, vy=0;
 
 	//size cua entity
 	float width, height;

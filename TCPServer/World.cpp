@@ -65,7 +65,10 @@ World::World()
 		npc->SetPosition(GetRandomPosition());
 		mListNPC.push_back(npc);
 	}
-	
+	mBoss.push_back(new Boss(1, D3DXVECTOR2(68, 462)));
+	mBoss.push_back(new Boss(2, D3DXVECTOR2(392, 727)));
+	mBoss.push_back(new Boss(3, D3DXVECTOR2(412, 47)));
+	mBoss.push_back(new Boss(4, D3DXVECTOR2(740, 462)));
 }
 
 
@@ -102,14 +105,14 @@ void World::HandleObject(Packet p)
 	int ID = p.id;
 	int action = p.action;
 	int last_time_id = p.last_time_id;
-	for(int i=0;i<mListWorldState.size();i++)
+	/*for(int i=0;i<mListWorldState.size();i++)
 	{
 		if(mListWorldState[i].Check_If_Late(ID,last_time_id))
 		{
 			Handle_Late_Packet(i - 1,action,ID);
 			break;
 		}
-	}
+	}*/
 	for (auto ele : mListPlayer)
 	{
 		if (ele->ID == ID)
@@ -177,6 +180,23 @@ void World::CheckCollision(float dt)
 			{
 				pl->CollisionWith(item);
 				item->BeCollideWith_Player();
+			}
+		}
+		for (auto player_another : mListPlayer)
+		{
+			if (player_another->ID == pl->ID) continue;
+			if (GameCollision::isCollide(pl, player_another, dt))
+			{
+				pl->CollisionWith(player_another);
+				player_another->CollisionWith(pl);
+			}
+		}
+		for (auto npc : mListNPC)
+		{
+			if (GameCollision::isCollide(pl, npc, dt))
+			{
+				pl->CollisionWith(npc);
+				npc->CollisionWith(pl);
 			}
 		}
 
@@ -248,6 +268,25 @@ void World::CheckCollision(float dt)
 				bl->isChange = true;
 			}
 		}
+		for (auto boss : mBoss)
+		{
+
+			if (GameCollision::isCollide(bl, boss, dt))
+			{
+				boss->mHP--;
+				if (boss->mHP <= 0) {
+					boss->SetPosition(-100, -100);
+					for (auto pl : mListPlayer)
+						if (pl->ID == boss->ID)
+						{
+							pl->SetPosition(-100, -100);
+							pl->isLose = true;
+						}
+				}
+				bl->CollisionWith(boss);
+				bl->isChange = true;
+			}
+		}
 	}
 	
 	for(auto npc:mListNPC)
@@ -260,10 +299,19 @@ void World::CheckCollision(float dt)
 			if (GameCollision::isCollide(npc, brick, dt))
 				npc->CollideWith_World();
 		}
+		for (auto npc2 : mListNPC)
+		{
+			if (npc2->ID == npc->ID) continue;
+			if (GameCollision::isCollide(npc2, npc, dt))
+			{
+				npc2->CollisionWith(npc);
+				npc->CollisionWith(npc2);
+			}
+		}
 	}
 
 	
-			
+		
 	
 	
 	
@@ -282,7 +330,7 @@ void World::Update(float dt)
 				os.Write(Define::GameOver, Define::bitofTypePacket);
 				cl->Send(os.GetBufferPtr(), os.GetByteLength());
 			}
-			if(Count_player_exit>4)
+			if(Count_player_exit > listClient.size())
 			{
 				Count_player_exit = 0;
 				isStart = false;
@@ -306,15 +354,15 @@ void World::Update(float dt)
 
 	for (auto ele : mListPlayer)
 	{
-		ele->Update(1.0f/60);
+		ele->Update(dt);
 	}
 	for (auto ele : mListNPC)
 	{
-		ele->Update(1.0f / 60);
+		ele->Update(dt);
 	}
 	for (auto ele : mListBullets)
 	{
-		ele->Update(1.0f / 60);
+		ele->Update(dt);
 	}
 	for(int i=0;i<mListItems.size();i++)
 	{
@@ -331,7 +379,7 @@ void World::Update(float dt)
 
 void World::SendWorld()
 {
-	
+	if (!isStart) return;
 	OutputMemoryBitStream os;
 	os.Write(Define::WorldStatePacket, Define::bitofTypePacket);
 
@@ -346,13 +394,14 @@ void World::SendWorld()
 		}
 	}
 	
-	int size = mListPlayer.size() + count_brick_send + count_bullet_send+mListNPC.size();
+	int size = mListPlayer.size() + count_brick_send + count_bullet_send+mListNPC.size() + mBoss.size();
 	if (add != nullptr) size += 1;
 
 	os.Write(size,Define::bitofID);
 	if (add != nullptr)
 		add->Write(os);
-
+	for (auto ele : mBoss)
+		ele->Write(os);
 	for (auto ele : mListPlayer)
 	{
 		ele->Write(os);
@@ -381,13 +430,6 @@ void World::SendWorld()
 
 	}
 
-
-
-	
-
-
-	
-
 	for (auto client : listClient)
 	{
 		if (client->ID == 0) continue;
@@ -397,13 +439,16 @@ void World::SendWorld()
 
 	}
 	//Add a State World to the list
-	WorldState world(mListPlayer);
-	mListWorldState.push_back(world);
-	if (mListWorldState.size() >= 10) 
-		mListWorldState.erase(mListWorldState.begin());
+	//WorldState world(mListPlayer);
+	//mListWorldState.push_back(world);
+	//if (mListWorldState.size() >= 10) 
+	//	mListWorldState.erase(mListWorldState.begin());
 	
+	//Delete Map if Object's delete = true
 	mMap->Update(0);
 	count_brick_send = 0;
+
+	//reset state bullet
 	for (auto ele : mListBullets)
 	{
 			ele->isChange = false;
@@ -422,7 +467,7 @@ void World::AddMember(TCPSocketPtr socket)
 	socket->Send(os.GetBufferPtr(), os.GetByteLength());
 
 
-	if (mCurrent_ID ==4) //if enought player, Provide them first position by ID
+	if (mCurrent_ID == 2) //if enought player, Provide them first position by ID
 			time_to_start = GetTickCount(); //Wait last player
 	
 
