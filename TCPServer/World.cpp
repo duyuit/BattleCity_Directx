@@ -26,32 +26,32 @@ World::World()
 	int temp = 0;
 	for (int i = 0; i < 50; i++)
 	{
-		int x = 0; RandomNumber(235, 335);
-		int y = 0; RandomNumber(37, 187);
+		int x = 0; 
+		int y = 0;
 		if (temp == 0)
 		{
-			x = RandomNumber(235, 335);
-			y = RandomNumber(37, 187);
+			x = RandomNumber(533, 624);
+			y = RandomNumber(48, 77);
 		}
 		else if (temp == 1)
 		{
-			x = RandomNumber(439, 527);
-			y = RandomNumber(179, 287);
+			x = RandomNumber(508, 562);
+			y = RandomNumber(678,724);
 		}
 		else if (temp == 2)
 		{
-			x = RandomNumber(215, 573);
-			y = RandomNumber(626, 737);
+			x = RandomNumber(458, 512);
+			y = RandomNumber(200, 285);
 		}
 		else if (temp == 3)
 		{
-			x = RandomNumber(52, 77);
-			y = RandomNumber(395, 687);
+			x = RandomNumber(287, 484);
+			y = RandomNumber(375, 405);
 		}
 		else if (temp == 4)
 		{
-			x = RandomNumber(514, 635);
-			y = RandomNumber(37, 91);
+			x = RandomNumber(222, 272);
+			y = RandomNumber(614, 727);
 			temp = 0;
 		}
 		temp++;
@@ -335,7 +335,9 @@ void World::Update(float dt)
 				Count_player_exit = 0;
 				isStart = false;
 				listClient.clear();
-				time_remaining =10;
+				for (auto boss : mBoss)
+					boss->mHP = 10;
+				time_remaining =120;
 				isStart = false;
 				isDelete = true;
 				mCurrent_ID = 0;
