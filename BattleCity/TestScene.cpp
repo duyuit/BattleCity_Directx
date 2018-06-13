@@ -234,7 +234,7 @@ void TestScene::Draw()
 	
 	FPS.Draw(std::to_string(GameGlobal::fps));
 	label_Score1.Draw(mListPlayer[0]->mName + ": " + std::to_string(mListPlayer.at(0)->mScore));
-//	label_Score2.Draw(mListPlayer[1]->mName + ": " + std::to_string(mListPlayer.at(1)->mScore));
+	label_Score2.Draw(mListPlayer[1]->mName + ": " + std::to_string(mListPlayer.at(1)->mScore));
 	//label_Score3.Draw(mListPlayer[2]->mName + ": " + std::to_string(mListPlayer.at(2)->mScore));
 	//label_Score4.Draw(mListPlayer[3]->mName + ": " + std::to_string(mListPlayer.at(3)->mScore));
 

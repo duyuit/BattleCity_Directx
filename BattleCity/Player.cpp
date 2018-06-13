@@ -271,9 +271,9 @@ void Player::HandleKeyboard(std::map<int, bool> keys)
 
 	
 
-	//if(mLastAction!=mAction)
-	//{
-	//
+	if(mLastAction!=mAction)
+	{
+	
 		OutputMemoryBitStream os;
 		os.Write(Define::InputPacket, Define::bitofTypePacket);
 		os.Write(ID, Define::bitofID);
@@ -281,7 +281,7 @@ void Player::HandleKeyboard(std::map<int, bool> keys)
 		os.Write(last_id_packet++,Define::bitofID);
 		if (last_id_packet == 1000) last_id_packet = 0;
 		GameGlobal::socket->Send(os.GetBufferPtr(), os.GetByteLength());
-	//}
+	}
 		
 	mLastAction = mAction;
 	

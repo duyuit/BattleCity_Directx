@@ -1,59 +1,19 @@
 ﻿  Boss.cpp
-  Boundary.cpp
-  Brick.cpp
-  BrickNormal.cpp
-  Bullet.cpp
-d:\git\battlecity_directx\tcpserver\bullet.cpp(42): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
-d:\git\battlecity_directx\tcpserver\bullet.cpp(44): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
-  Entity.cpp
-d:\git\battlecity_directx\tcpserver\entity.cpp(28): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\git\battlecity_directx\tcpserver\entity.cpp(41): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
-d:\git\battlecity_directx\tcpserver\entity.cpp(42): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
-d:\git\battlecity_directx\tcpserver\entity.cpp(43): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
-d:\git\battlecity_directx\tcpserver\entity.cpp(44): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
-d:\git\battlecity_directx\tcpserver\entity.cpp(109): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-d:\git\battlecity_directx\tcpserver\entity.cpp(114): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
-d:\git\battlecity_directx\tcpserver\entity.cpp(119): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-d:\git\battlecity_directx\tcpserver\entity.cpp(124): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
-  GameCollision.cpp
-  GameMap.cpp
-d:\git\battlecity_directx\tcpserver\gamemap.cpp(9): warning C4018: '<': signed/unsigned mismatch
-d:\git\battlecity_directx\tcpserver\gamemap.cpp(41): warning C4018: '<': signed/unsigned mismatch
-d:\git\battlecity_directx\tcpserver\gamemap.cpp(45): warning C4018: '<': signed/unsigned mismatch
-d:\git\battlecity_directx\tcpserver\gamemap.cpp(55): warning C4018: '<': signed/unsigned mismatch
-d:\git\battlecity_directx\tcpserver\gamemap.cpp(57): warning C4018: '<': signed/unsigned mismatch
-d:\git\battlecity_directx\tcpserver\gamemap.cpp(78): warning C4244: 'argument': conversion from 'size_t' to 'FLOAT', possible loss of data
-  Item.cpp
-  MetalBrick.cpp
-  NPC.cpp
-d:\git\battlecity_directx\tcpserver\npc.cpp(77): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\git\battlecity_directx\tcpserver\npc.cpp(95): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
-d:\git\battlecity_directx\tcpserver\npc.cpp(97): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
   NetWorkManager.cpp
 d:\git\battlecity_directx\tcpserver\networkmanager.cpp(25): warning C4018: '<': signed/unsigned mismatch
 d:\git\battlecity_directx\tcpserver\networkmanager.cpp(56): warning C4018: '<': signed/unsigned mismatch
 d:\git\battlecity_directx\tcpserver\networkmanager.cpp(125): warning C4018: '<': signed/unsigned mismatch
-  PlayerServer.cpp
-d:\git\battlecity_directx\tcpserver\playerserver.cpp(66): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
-d:\git\battlecity_directx\tcpserver\playerserver.cpp(68): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
-d:\git\battlecity_directx\tcpserver\playerserver.cpp(172): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-  ProtectPlayer.cpp
-  QuadTree.cpp
   TCPServer.cpp
 d:\git\battlecity_directx\tcpserver\tcpserver.cpp(29): warning C4007: 'main': must be '__cdecl'
 d:\git\battlecity_directx\tcpserver\tcpserver.cpp(30): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
 d:\git\battlecity_directx\tcpserver\tcpserver.cpp(69): warning C4244: 'argument': conversion from 'float' to 'DWORD', possible loss of data
 d:\git\battlecity_directx\tcpserver\tcpserver.cpp(41): warning C4101: 'msg': unreferenced local variable
-  UpgradeItem.cpp
-  Water.cpp
   World.cpp
 d:\git\battlecity_directx\tcpserver\world.cpp(58): warning C4244: 'argument': conversion from 'int' to 'FLOAT', possible loss of data
 d:\git\battlecity_directx\tcpserver\world.cpp(333): warning C4018: '>': signed/unsigned mismatch
-d:\git\battlecity_directx\tcpserver\world.cpp(367): warning C4018: '<': signed/unsigned mismatch
-d:\git\battlecity_directx\tcpserver\world.cpp(492): warning C4018: '<': signed/unsigned mismatch
-d:\git\battlecity_directx\tcpserver\world.cpp(513): warning C4018: '<': signed/unsigned mismatch
-d:\git\battlecity_directx\tcpserver\world.cpp(518): warning C4018: '<': signed/unsigned mismatch
-  WorldState.cpp
-d:\git\battlecity_directx\tcpserver\worldstate.cpp(43): warning C4018: '<': signed/unsigned mismatch
+d:\git\battlecity_directx\tcpserver\world.cpp(369): warning C4018: '<': signed/unsigned mismatch
+d:\git\battlecity_directx\tcpserver\world.cpp(494): warning C4018: '<': signed/unsigned mismatch
+d:\git\battlecity_directx\tcpserver\world.cpp(515): warning C4018: '<': signed/unsigned mismatch
+d:\git\battlecity_directx\tcpserver\world.cpp(520): warning C4018: '<': signed/unsigned mismatch
   Generating Code...
   TCPServer.vcxproj -> D:\Git\BattleCity_Directx\TCPServer\Debug\TCPServer.exe
